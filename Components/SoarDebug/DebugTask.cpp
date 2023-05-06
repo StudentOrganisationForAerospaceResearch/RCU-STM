@@ -12,6 +12,7 @@
 #include <cstring>
 
 #include "FlightTask.hpp"
+#include "ThermocoupleTask.hpp"
 #include "GPIO.hpp"
 #include "stm32l4xx_hal.h"
 
