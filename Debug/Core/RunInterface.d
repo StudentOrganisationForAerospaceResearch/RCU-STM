@@ -1,5 +1,6 @@
-Components/Core/Queue.o: ../Components/Core/Queue.cpp \
- C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Queue.hpp \
+Core/RunInterface.o: ../Core/RunInterface.cpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/main_avionics.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Core/Inc/FreeRTOSConfig.h \
@@ -17,12 +18,6 @@ Components/Core/Queue.o: ../Components/Core/Queue.cpp \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp \
- C:/Users/shiva/Desktop/RCU-STM/Components/Utils.hpp \
- C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp \
- C:/Users/shiva/Desktop/RCU-STM/Components/SystemDefines.hpp \
- C:/Users/shiva/Desktop/RCU-STM/Components/main_avionics.hpp \
- C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -59,9 +54,9 @@ Components/Core/Queue.o: ../Components/Core/Queue.cpp \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
- ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- C:/Users/shiva/Desktop/RCU-STM/Components/Utils.hpp
-C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Queue.hpp:
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
+C:/Users/shiva/Desktop/RCU-STM/Components/main_avionics.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
@@ -79,12 +74,6 @@ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Queue.hpp:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
-C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp:
-C:/Users/shiva/Desktop/RCU-STM/Components/Utils.hpp:
-C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp:
-C:/Users/shiva/Desktop/RCU-STM/Components/SystemDefines.hpp:
-C:/Users/shiva/Desktop/RCU-STM/Components/main_avionics.hpp:
-C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h:
@@ -122,4 +111,3 @@ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
-C:/Users/shiva/Desktop/RCU-STM/Components/Utils.hpp:
