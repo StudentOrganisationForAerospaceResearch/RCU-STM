@@ -18,7 +18,7 @@ Components/main_avionics.o: ../Components/main_avionics.cpp \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
  ../Components/main_avionics.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Mutex.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -57,15 +57,15 @@ Components/main_avionics.o: ../Components/main_avionics.cpp \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
  ../Components/Utils.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Command.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Communication/Inc/UARTTask.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Task.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Queue.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Command.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Utils.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/SystemDefines.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/FlightControl/Inc/FlightTask.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/SoarDebug/Inc/DebugTask.hpp
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Communication/Inc/UARTTask.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Task.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Queue.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Utils.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/SystemDefines.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/FlightControl/Inc/FlightTask.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/SoarDebug/Inc/DebugTask.hpp
 ../Components/SystemDefines.hpp:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
@@ -85,7 +85,7 @@ Components/main_avionics.o: ../Components/main_avionics.cpp \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
 ../Components/main_avionics.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Mutex.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h:
@@ -124,12 +124,12 @@ C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Mutex.hpp:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 ../Components/Utils.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Command.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Communication/Inc/UARTTask.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Task.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Queue.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Command.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Utils.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/SystemDefines.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/FlightControl/Inc/FlightTask.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/SoarDebug/Inc/DebugTask.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Communication/Inc/UARTTask.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Task.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Queue.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Utils.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/SystemDefines.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/FlightControl/Inc/FlightTask.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/SoarDebug/Inc/DebugTask.hpp:

@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "main_avionics.hpp"
+#include "RunInterface.hpp"
 
 /* USER CODE END Includes */
 
@@ -119,7 +119,7 @@ int main(void)
   MX_CRC_Init();
   /* USER CODE BEGIN 2 */
 
-  run_main();
+  run_interface();
 #if 0
 
   /* USER CODE END 2 */
@@ -597,11 +597,6 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
   /* USER CODE END 5 */
 }
 

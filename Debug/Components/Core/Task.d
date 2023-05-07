@@ -1,5 +1,5 @@
 Components/Core/Task.o: ../Components/Core/Task.cpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Task.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Task.hpp \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Core/Inc/FreeRTOSConfig.h \
@@ -17,10 +17,10 @@ Components/Core/Task.o: ../Components/Core/Task.cpp \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Queue.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Command.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Utils.hpp
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Task.hpp:
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Queue.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Utils.hpp
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Task.hpp:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
@@ -38,6 +38,6 @@ C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Task.hpp:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Queue.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Command.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Utils.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Queue.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Command.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Utils.hpp:

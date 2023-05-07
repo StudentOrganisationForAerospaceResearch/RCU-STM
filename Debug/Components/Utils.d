@@ -54,7 +54,7 @@ Components/Utils.o: ../Components/Utils.cpp ../Components/Utils.hpp \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
  ../Components/main_avionics.hpp \
- C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Mutex.hpp \
+ C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp \
  ../Components/SystemDefines.hpp
 ../Components/Utils.hpp:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h:
@@ -112,5 +112,5 @@ Components/Utils.o: ../Components/Utils.cpp ../Components/Utils.hpp \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 ../Components/main_avionics.hpp:
-C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc/Mutex.hpp:
+C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc/Mutex.hpp:
 ../Components/SystemDefines.hpp:
