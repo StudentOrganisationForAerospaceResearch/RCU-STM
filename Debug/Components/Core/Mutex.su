@@ -1,4 +1,0 @@
-../Components/Core/Mutex.cpp:15:1:Mutex::Mutex()	16	static
-../Components/Core/Mutex.cpp:26:1:Mutex::~Mutex()	16	static
-../Components/Core/Mutex.cpp:36:6:bool Mutex::Lock(uint32_t)	16	static
-../Components/Core/Mutex.cpp:46:6:bool Mutex::Unlock()	16	static
