@@ -55,6 +55,11 @@ constexpr uint8_t TASK_BAROMETER_PRIORITY = 2;			// Priority of the barometer ta
 constexpr uint8_t TASK_BAROMETER_QUEUE_DEPTH_OBJS = 10;		// Size of the barometer task queue
 constexpr uint16_t TASK_BAROMETER_STACK_DEPTH_WORDS = 256;		// Size of the barometer task stack
 
+// PRESSURE TRANSDUCER TASK
+constexpr uint8_t TASK_PRESSURE_TRANSDUCER_PRIORITY = 2;			// Priority of the barometer task
+constexpr uint8_t TASK_PRESSURE_TRANSDUCER_QUEUE_DEPTH_OBJS = 10;		// Size of the barometer task queue
+constexpr uint16_t TASK_PRESSURE_TRANSDUCER_STACK_DEPTH_WORDS = 256;		// Size of the barometer task stack
+
 // THERMOCOUPLE TASK
 constexpr uint8_t TASK_THERMOCOUPLE_PRIORITY = 2;			// Priority of the thermocouple task
 constexpr uint8_t TASK_THERMOCOUPLE_QUEUE_DEPTH_OBJS = 10;		// Size of the thermocouple task queue
