@@ -6,6 +6,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Core/Src/freertos.c \
+../Core/Src/main.c \
 ../Core/Src/stm32l4xx_hal_msp.c \
 ../Core/Src/stm32l4xx_hal_timebase_tim.c \
 ../Core/Src/stm32l4xx_it.c \
@@ -13,11 +14,9 @@ C_SRCS += \
 ../Core/Src/sysmem.c \
 ../Core/Src/system_stm32l4xx.c 
 
-CPP_SRCS += \
-../Core/Src/main.cpp 
-
 C_DEPS += \
 ./Core/Src/freertos.d \
+./Core/Src/main.d \
 ./Core/Src/stm32l4xx_hal_msp.d \
 ./Core/Src/stm32l4xx_hal_timebase_tim.d \
 ./Core/Src/stm32l4xx_it.d \
@@ -35,15 +34,10 @@ OBJS += \
 ./Core/Src/sysmem.o \
 ./Core/Src/system_stm32l4xx.o 
 
-CPP_DEPS += \
-./Core/Src/main.d 
-
 
 # Each subdirectory must supply rules for building sources it contributes
 Core/Src/%.o Core/Src/%.su: ../Core/Src/%.c Core/Src/subdir.mk
-	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L431xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Communication/Inc" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/FlightControl/Inc" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/SoarDebug/Inc" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components" -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
-Core/Src/%.o Core/Src/%.su: ../Core/Src/%.cpp Core/Src/subdir.mk
-	arm-none-eabi-g++ "$<" -mcpu=cortex-m4 -std=gnu++20 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L431xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/_Libraries/embedded-template-library/include" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Communication/Inc" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/Core/Inc" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/FlightControl/Inc" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components/SoarDebug/Inc" -I"C:/Users/cjcha/OneDrive/Desktop/Git/RCU-STM/Components" -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -Wno-volatile -fstack-usage -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L431xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I"C:/Users/shiva/Desktop/RCU-STM/Components/Communication/Inc" -I"C:/Users/shiva/Desktop/RCU-STM/Components/Core/Inc" -I"C:/Users/shiva/Desktop/RCU-STM/Components/FlightControl/Inc" -I"C:/Users/shiva/Desktop/RCU-STM/Components/SoarDebug/Inc" -I"C:/Users/shiva/Desktop/RCU-STM/Components" -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 
 clean: clean-Core-2f-Src
 
