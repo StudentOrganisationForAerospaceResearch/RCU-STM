@@ -19,7 +19,7 @@
 #include "FlightTask.hpp"
 #include "DebugTask.hpp"
 #include "ThermocoupleTask.hpp"
-
+#include "PressureTransducerTask.hpp"
 
 /* Global Variables ------------------------------------------------------------------*/
 Mutex Global::vaListMutex;
@@ -34,6 +34,7 @@ void run_main() {
 	UARTTask::Inst().InitTask();
 	DebugTask::Inst().InitTask();
 	ThermocoupleTask::Inst().InitTask();
+	PressureTransducerTask::Inst().InitTask();
 
 	// Print System Boot Info : Warning, don't queue more than 10 prints before scheduler starts
 	SOAR_PRINT("\n-- AVIONICS CORE --\n");

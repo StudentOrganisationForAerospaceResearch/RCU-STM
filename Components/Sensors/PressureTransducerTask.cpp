@@ -58,7 +58,7 @@ void PressureTransducerTask::InitTask()
             (UBaseType_t)TASK_PRESSURE_TRANSDUCER_PRIORITY,
             (TaskHandle_t*)&rtTaskHandle);
 
-    //Ensure creation succeded
+    //Ensure creation succeeded
     SOAR_ASSERT(rtValue == pdPASS, "PressureTransducerTask::InitTask() - xTaskCreate() failed");
 }
 
