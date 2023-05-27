@@ -1,6 +1,0 @@
-../Components/Utils.hpp:44:14:bool Utils::IsAsciiNum(uint8_t)	16	static
-../Components/Utils.cpp:23:10:uint16_t Utils::averageArray(uint16_t*, int)	24	static
-../Components/Utils.cpp:42:6:void Utils::writeInt32ToArray(uint8_t*, int, int32_t)	24	static
-../Components/Utils.cpp:56:6:void Utils::readUInt32FromUInt8Array(uint8_t*, int, int32_t*)	32	static
-../Components/Utils.cpp:71:10:uint32_t Utils::getCRC32(uint8_t*, uint32_t)	56	dynamic
-../Components/Utils.cpp:101:9:int32_t Utils::stringToLong(const char*)	24	static
