@@ -7,6 +7,7 @@
 #include "FlightTask.hpp"
 #include "GPIO.hpp"
 #include "SystemDefines.hpp"
+#include "ThermocoupleTask.hpp"
 
 /**
  * @brief Constructor for FlightTask
@@ -68,6 +69,7 @@ void FlightTask::Run(void * pvParams)
 
         //Every cycle, print something out (for testing)
         SOAR_PRINT("FlightTask::Run() - [%d] Seconds\n", tempSecondCounter++);
+        ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_DEBUG ));
 
         //osDelay(FLIGHT_PHASE_DISPLAY_FREQ);
 

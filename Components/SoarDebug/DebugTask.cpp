@@ -77,6 +77,7 @@ void DebugTask::InitTask()
  */
 void DebugTask::Run(void * pvParams)
 {
+
 	// Arm the interrupt
 	ReceiveData();
 
@@ -101,6 +102,7 @@ void DebugTask::Run(void * pvParams)
  */
 void DebugTask::HandleDebugMessage(const char* msg)
 {
+
 	//-- SYSTEM / CHAR COMMANDS -- (Must be last)
 	if (strcmp(msg, "sysreset") == 0) {
 		// Reset the system
