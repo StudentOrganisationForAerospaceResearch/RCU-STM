@@ -4,10 +4,11 @@
  * Description        : Protocol task, specific to DMBRx UART Line
  ******************************************************************************
 */
-#include <SoarProtocol/DMBRxProtocolTask.hpp>
+#include "DMBRxProtocolTask.hpp"
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
 #include "PIRxProtocolTask.hpp"
+#include "SOBxProtocolTask.hpp"
 #include "UARTTask.hpp"
 
 /**
@@ -52,7 +53,7 @@ void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     if (msg.get_source() != Proto::Node::NODE_DMB || msg.get_target() != Proto::Node::NODE_SOB)
         return;
 
-    // If the message does not have a DMBRx command, do nothing
+    // If the message does not have a SOB command, do nothing
     if (!msg.has_sob_command())
         return;
 

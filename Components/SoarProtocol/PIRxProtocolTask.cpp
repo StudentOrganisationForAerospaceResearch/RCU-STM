@@ -4,9 +4,11 @@
  * Description        : Protocol task, specific to PIRx UART Line
  ******************************************************************************
 */
-#include <SoarProtocol/PIRxProtocolTask.hpp>
+#include "PIRxProtocolTask.hpp"
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
+#include "SOBxProtocolTask.hpp"
+#include "DMBRxProtocolTask.hpp"
 #include "UARTTask.hpp"
 
 /**
@@ -42,20 +44,22 @@ PIRxProtocolTask::PIRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU,
 /**
  * @brief Handle a command message
  */
-void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES> readBuffer)
+void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
     Proto::CommandMessage msg;
     msg.deserialize(readBuffer);
 
-    // Verify the source node, echo it if it does not have PIRx as the target (?)
-    if (msg.get_source() == Proto::Node::NODE_RCU)
-        return;
+    EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
+    msg.serialize(writeBuffer);
 
-    // If the message does not have []
-    if ()
+    if(msg.get_target() == Proto::Node::NODE_DMB || msg.get_target() == Proto::Node::NODE_PBB) {
+        DMBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
+    }
 
-    SOAR_PRINT("PROTO-INFO: Received PIRx Command Message");
+    if(msg.get_target() == Proto::Node::NODE_SOB) {
+        SOBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+        return;
     }
 
 }
@@ -63,15 +67,30 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
 /**
  * @brief Handle a control message
  */
-void PIRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES> readBuffer)
+void PIRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
+    //rewrap into a write buffer var because readBuffer and writeBuffer are not interchangeable
+    Proto::TelemetryMessage msg;
+    msg.deserialize(readBuffer);
 
+    EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
+    msg.serialize(writeBuffer);
+
+    if(msg.get_target() == Proto::Node::NODE_DMB || msg.get_target() == Proto::Node::NODE_PBB) {
+        DMBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
+        return;
+    }
+
+    if(msg.get_target() == Proto::Node::NODE_SOB) {
+        SOBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
+        return;
+    }
 }
 
 /**
  * @brief Handle a telemetry message (unused?)
  */
-void PIRxProtocolTask::HandleProtobufTelemetryMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES> readBuffer)
+void PIRxProtocolTask::HandleProtobufTelemetryMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
 
 }
