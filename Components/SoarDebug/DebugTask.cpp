@@ -36,6 +36,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
 {
 	if (huart->Instance == SystemHandles::UART_Debug->Instance)
 		DebugTask::Inst().InterruptRxData();
+	else if (huart->Instance == SystemHandles::UART_Protocol->Instance)
+        RCUProtocolTask::Inst().InterruptRxData();
 }
 
 /* Functions -----------------------------------------------------------------*/
