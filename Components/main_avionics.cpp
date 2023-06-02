@@ -32,6 +32,8 @@ void run_main() {
 	FlightTask::Inst().InitTask();
 	UARTTask::Inst().InitTask();
 	DebugTask::Inst().InitTask();
+	PIRxRepeaterTask::Inst().InitTask()
+	DMBRxRepeaterTask::Inst().InitTask()
 	SOBRxRepeaterTask::Inst().InitTask()
 
 	// Print System Boot Info : Warning, don't queue more than 10 prints before scheduler starts

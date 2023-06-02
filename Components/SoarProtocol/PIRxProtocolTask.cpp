@@ -7,6 +7,7 @@
 #include <SoarProtocol/PIRxProtocolTask.hpp>
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
+#include "UARTTask.hpp"
 
 /**
  * @brief Initialize the PIRxProtocolTask
@@ -32,7 +33,9 @@ void PIRxProtocolTask::InitTask()
 /**
  * @brief Default constructor
  */
-PIRxProtocolTask::PIRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU)
+PIRxProtocolTask::PIRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU, 
+    SystemHandles::UART_PI,
+    UART_TASK_COMMAND_SEND_PI)
 {
 }
 
@@ -66,7 +69,7 @@ void PIRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFi
 }
 
 /**
- * @brief Handle a telemetry message
+ * @brief Handle a telemetry message (unused?)
  */
 void PIRxProtocolTask::HandleProtobufTelemetryMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES> readBuffer)
 {
