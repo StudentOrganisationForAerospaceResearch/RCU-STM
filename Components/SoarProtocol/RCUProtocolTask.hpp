@@ -1,11 +1,11 @@
 /**
  ******************************************************************************
- * File Name          : RCUProtocolTask.hpp
- * Description        : Protocol task, specific to RCU
+ * File Name          : DMBRxProtocolTask.hpp
+ * Description        : Protocol task, specific to DMBRx
  ******************************************************************************
 */
-#ifndef SOAR_RCUPROTOCOL_HPP_
-#define SOAR_RCUPROTOCOL_HPP_
+#ifndef SOAR_DMBRXPROTOCOL_HPP_
+#define SOAR_DMBRXPROTOCOL_HPP_
 #include "ProtocolTask.hpp"
 #include "Task.hpp"
 #include "SystemDefines.hpp"
@@ -14,18 +14,18 @@
 /* Enums ------------------------------------------------------------------*/
 
 /* Class ------------------------------------------------------------------*/
-class RCUProtocolTask : public ProtocolTask
+class DMBRxProtocolTask : public ProtocolTask
 {
 public:
-    static RCUProtocolTask& Inst() {
-        static RCUProtocolTask inst;
+    static DMBRxProtocolTask& Inst() {
+        static DMBRxProtocolTask inst;
         return inst;
     }
 
     void InitTask();
 
 protected:
-    static void RunTask(void* pvParams) { RCUProtocolTask::Inst().Run(pvParams); } // Static Task Interface, passes control to the instance Run();
+    static void RunTask(void* pvParams) { DMBRxProtocolTask::Inst().Run(pvParams); } // Static Task Interface, passes control to the instance Run();
 
     // These handlers will receive a buffer and size corresponding to a decoded message
     void HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES> readBuffer);
@@ -35,9 +35,9 @@ protected:
     // Member variables
 
 private:
-    RCUProtocolTask();        // Private constructor
-    RCUProtocolTask(const RCUProtocolTask&);                        // Prevent copy-construction
-    RCUProtocolTask& operator=(const RCUProtocolTask&);            // Prevent assignment
+    DMBRxProtocolTask();        // Private constructor
+    DMBRxProtocolTask(const DMBRxProtocolTask&);                        // Prevent copy-construction
+    DMBRxProtocolTask& operator=(const DMBRxProtocolTask&);            // Prevent assignment
 };
 
-#endif    // SOAR_RCUPROTOCOL_HPP_
+#endif    // SOAR_DMBRxPROTOCOL_HPP_
