@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
  * File Name          : DMBRxProtocolTask.hpp
- * Description        : Protocol task, specific to DMBRx
+ * Description        : Protocol task, specific to DMBRx UART Line
  ******************************************************************************
 */
 #include <SoarProtocol/DMBRxProtocolTask.hpp>
