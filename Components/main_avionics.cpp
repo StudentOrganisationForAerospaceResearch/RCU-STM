@@ -19,6 +19,10 @@
 #include "FlightTask.hpp"
 #include "DebugTask.hpp"
 
+#include "PIRxProtocolTask.hpp"
+#include "SOBRxRepeaterTask.hpp"
+#include "DMBRxProtocolTask.hpp"
+
 
 /* Global Variables ------------------------------------------------------------------*/
 Mutex Global::vaListMutex;
@@ -32,9 +36,9 @@ void run_main() {
 	FlightTask::Inst().InitTask();
 	UARTTask::Inst().InitTask();
 	DebugTask::Inst().InitTask();
-	PIRxRepeaterTask::Inst().InitTask()
-	DMBRxRepeaterTask::Inst().InitTask()
-	SOBRxRepeaterTask::Inst().InitTask()
+	PIRxProtocolTask::Inst().InitTask();
+	DMBRxProtocolTask::Inst().InitTask();
+	SOBRxRepeaterTask::Inst().InitTask();
 
 	// Print System Boot Info : Warning, don't queue more than 10 prints before scheduler starts
 	SOAR_PRINT("\n-- AVIONICS CORE --\n");

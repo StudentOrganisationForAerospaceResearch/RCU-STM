@@ -7,7 +7,7 @@
 #include "PIRxProtocolTask.hpp"
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
-#include "SOBxProtocolTask.hpp"
+#include "SOBRxRepeaterTask.hpp"
 #include "DMBRxProtocolTask.hpp"
 #include "UARTTask.hpp"
 
@@ -53,12 +53,12 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
     msg.serialize(writeBuffer);
 
     if(msg.get_target() == Proto::Node::NODE_DMB || msg.get_target() == Proto::Node::NODE_PBB) {
-        DMBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+        DMBRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
     }
 
     if(msg.get_target() == Proto::Node::NODE_SOB) {
-        SOBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+        SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
     }
 
@@ -77,12 +77,12 @@ void PIRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFi
     msg.serialize(writeBuffer);
 
     if(msg.get_target() == Proto::Node::NODE_DMB || msg.get_target() == Proto::Node::NODE_PBB) {
-        DMBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
+        DMBRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
         return;
     }
 
     if(msg.get_target() == Proto::Node::NODE_SOB) {
-        SOBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
+        SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
         return;
     }
 }

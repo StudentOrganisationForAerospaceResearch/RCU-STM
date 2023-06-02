@@ -15,6 +15,10 @@
 #include "GPIO.hpp"
 #include "stm32l4xx_hal.h"
 
+#include "PIRxProtocolTask.hpp"
+#include "SOBRxRepeaterTask.hpp"
+#include "DMBRxProtocolTask.hpp"
+
 /* Macros --------------------------------------------------------------------*/
 
 /* Structs -------------------------------------------------------------------*/
@@ -39,7 +43,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
 	else if (huart->Instance == SystemHandles::UART_Radio->Instance)
         DMBRxProtocolTask::Inst().InterruptRxData();
 	else if (huart->Instance == SystemHandles::UART_SOB->Instance)
-        SOBRxProtocolTask::Inst().InterruptRxData();
+        SOBRxRepeaterTask::Inst().InterruptRxData();
 	else if (huart->Instance == SystemHandles::UART_PI->Instance)
         PIRxProtocolTask::Inst().InterruptRxData();
 }

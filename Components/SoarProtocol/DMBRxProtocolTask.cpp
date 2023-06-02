@@ -8,7 +8,7 @@
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
 #include "PIRxProtocolTask.hpp"
-#include "SOBxProtocolTask.hpp"
+#include "SOBRxRepeaterTask.hpp"
 #include "UARTTask.hpp"
 
 /**
@@ -36,7 +36,7 @@ void DMBRxProtocolTask::InitTask()
  * @brief Default constructor
  */
 DMBRxProtocolTask::DMBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU, 
-    SystemHandles::UART_DMB,
+    SystemHandles::UART_Radio,
     UART_TASK_COMMAND_SEND_DMB)
 {
 }
@@ -59,13 +59,10 @@ void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
 
     SOAR_PRINT("PROTO-INFO: Received DMBRx Command Message");
 
-    // We repackage the message as a RCU Command message
-	Proto::CommandMessage msg;
-
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);
 
-    SOBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+    SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
 }
 
 /**
@@ -95,5 +92,5 @@ void DMBRxProtocolTask::HandleProtobufTelemetryMessage(EmbeddedProto::ReadBuffer
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);
 
-    PIRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_TELEMETRY);
+    PIRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_TELEMETRY);
 }

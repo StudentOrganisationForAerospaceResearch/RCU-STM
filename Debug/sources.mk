@@ -14,6 +14,7 @@ C_SRCS :=
 CPP_SRCS := 
 S_UPPER_SRCS := 
 O_SRCS := 
+CYCLO_FILES := 
 OBJDUMP_LIST := 
 C_UPPER_DEPS := 
 S_DEPS := 
@@ -35,6 +36,9 @@ Components/Communication \
 Components/Core \
 Components/FlightControl \
 Components/SoarDebug \
+Components/SoarProtocol \
+Components/SoarProtocol/SoarProto \
+Components/SoarProtocol/SoarProto/_EmbeddedProtoLib \
 Components \
 Core \
 Core/Src \
