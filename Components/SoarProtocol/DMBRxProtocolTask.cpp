@@ -59,6 +59,7 @@ void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
 
     SOAR_PRINT("PROTO-INFO: Received DMBRx Command Message");
 
+    //Send SOB command
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);
 
