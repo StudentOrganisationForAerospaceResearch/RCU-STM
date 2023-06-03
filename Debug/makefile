@@ -88,8 +88,8 @@ all: main-build
 main-build: RCU-STM.elf secondary-outputs
 
 # Tool invocations
-RCU-STM.elf RCU-STM.map: $(OBJS) $(USER_OBJS) C:\Users\marce\Desktop\RCU-STM\STM32L431RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "RCU-STM.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\marce\Desktop\RCU-STM\STM32L431RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RCU-STM.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+RCU-STM.elf RCU-STM.map: $(OBJS) $(USER_OBJS) C:\Users\marce\Downloads\SOAR\RCU\RCU-STM\STM32L431RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "RCU-STM.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\marce\Downloads\SOAR\RCU\RCU-STM\STM32L431RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RCU-STM.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
