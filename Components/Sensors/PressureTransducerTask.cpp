@@ -125,6 +125,10 @@ void PressureTransducerTask::HandleRequestCommand(uint16_t taskCommand)
         timestampPT);
         SOAR_PRINT("|PT_TASK| Pressure 2 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_2 / 1000, data->pressure_2 % 1000,
                 timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 3 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_3 / 1000, data->pressure_3 % 1000,
+                        timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 4 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_4 / 1000, data->pressure_4 % 1000,
+                        timestampPT);
         //SOAR_PRINT(" Pressure (psi): %d.%d\n", data->pressure_ / 1000, data->pressure_ % 1000);
         break;
     default:
@@ -141,7 +145,7 @@ void ADC_Select_CH1 (void)
 	  */
 	  sConfig.Channel = ADC_CHANNEL_1;
 	  sConfig.Rank = 1;
-	  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_6CYCLES_5;
 	  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 	  {
 	    Error_Handler();
@@ -196,12 +200,12 @@ void ADC_Select_CH4 (void)
 void PressureTransducerTask::SamplePressureTransducer()
 {
 	static const int PT_VOLTAGE_ADC_POLL_TIMEOUT = 50;
-	static const double PRESSURE_SCALE = 1.5220883534136546; // Value to scale to original voltage value
-	double adcVal[4] = {};
+	static const double PRESSURE_SCALE = 1.5; // Value to scale to original voltage value
+	double adcVal[1] = {};
 	double pressureTransducerValue1 = 0;
-	double pressureTransducerValue2 = 0;
-	double pressureTransducerValue3 = 0;
-	double pressureTransducerValue4 = 0;
+	//double pressureTransducerValue2 = 0;
+	//double pressureTransducerValue3 = 0;
+	//double pressureTransducerValue4 = 0;
 	double vi = 0;
 
 	/* Functions -----------------------------------------------------------------*/
@@ -211,35 +215,35 @@ void PressureTransducerTask::SamplePressureTransducer()
 			adcVal[0] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
 			HAL_ADC_Stop(&hadc1);
 		}
-	ADC_Select_CH2();
-		HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
-		if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
-			adcVal[1] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
-			HAL_ADC_Stop(&hadc1);
-		}
-	ADC_Select_CH3();
-	HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
-	if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
-		adcVal[2] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
-		HAL_ADC_Stop(&hadc1);
-		}
-	ADC_Select_CH4();
-		HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
-		if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
-			adcVal[3] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
-			HAL_ADC_Stop(&hadc1);
-		}
-	vi = ((3.3/4095) * (adcVal[0])); // Converts 12 bit ADC value into voltage
+//	ADC_Select_CH2();
+//		HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
+//		if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
+//			adcVal[1] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
+//			HAL_ADC_Stop(&hadc1);
+//		}
+//	ADC_Select_CH3();
+//	HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
+//	if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
+//		adcVal[2] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
+//		HAL_ADC_Stop(&hadc1);
+//		}
+//	ADC_Select_CH4();
+//		HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
+//		if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
+//			adcVal[3] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
+//			HAL_ADC_Stop(&hadc1);
+//		}
+	vi = ((3.3/4096) * (adcVal[0])); // Converts 12 bit ADC value into voltage
 		pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 		data->pressure_1 = (int32_t) pressureTransducerValue1; // Pressure in PSI
-	vi = ((3.3/4095) * (adcVal[1])); // Converts 12 bit ADC value into voltage
-		pressureTransducerValue2 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-		data->pressure_2 = (int32_t) pressureTransducerValue2; // Pressure in PSI
-	vi = ((3.3/4095) * (adcVal[2])); // Converts 12 bit ADC value into voltage
-			pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-			data->pressure_3 = (int32_t) pressureTransducerValue3; // Pressure in PSI
-	vi = ((3.3/4095) * (adcVal[3])); // Converts 12 bit ADC value into voltage
-			pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-			data->pressure_4 = (int32_t) pressureTransducerValue4; // Pressure in PSI
+//	vi = ((3.3/4095) * (adcVal[1])); // Converts 12 bit ADC value into voltage
+//		pressureTransducerValue2 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
+//		data->pressure_2 = (int32_t) pressureTransducerValue2; // Pressure in PSI
+//	vi = ((3.3/4095) * (adcVal[2])); // Converts 12 bit ADC value into voltage
+//			pressureTransducerValue3 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
+//			data->pressure_3 = (int32_t) pressureTransducerValue3; // Pressure in PSI
+//	vi = ((3.3/4095) * (adcVal[3])); // Converts 12 bit ADC value into voltage
+//			pressureTransducerValue4 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
+//			data->pressure_4 = (int32_t) pressureTransducerValue4; // Pressure in PSI
 	timestampPT = HAL_GetTick();
 }

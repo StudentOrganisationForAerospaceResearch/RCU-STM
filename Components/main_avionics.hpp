@@ -34,6 +34,10 @@ extern UART_HandleTypeDef huart1;   // UART1 - SOB
 extern UART_HandleTypeDef huart2;   // UART2 - UMBILICAL
 extern UART_HandleTypeDef huart3;   // UART3 - RADIO
 
+
+//timer Handles
+extern TIM_HandleTypeDef htim2;      // ADC1
+
 //ADC Handles
 extern ADC_HandleTypeDef hadc1;      // ADC1
 extern ADC_HandleTypeDef hadc2;      // ADC2
