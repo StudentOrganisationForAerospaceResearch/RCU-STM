@@ -71,7 +71,7 @@ void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
 void DMBRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
     //rewrap into a write buffer var because readBuffer and writeBuffer are not interchangeable
-    Proto::TelemetryMessage msg;
+    Proto::ControlMessage msg;
     msg.deserialize(readBuffer);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
