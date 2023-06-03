@@ -144,8 +144,10 @@ void ADC_Select_CH1 (void)
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
 	  sConfig.Channel = ADC_CHANNEL_1;
-	  sConfig.Rank = 1;
+	  sConfig.Rank = ADC_REGULAR_RANK_1;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+		sConfig.OffsetNumber = ADC_OFFSET_NONE;
 	  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 	  {
 	    Error_Handler();
@@ -158,8 +160,10 @@ void ADC_Select_CH2 (void)
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
 	  sConfig.Channel = ADC_CHANNEL_2;
-	  sConfig.Rank = 1;
-	  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+	  sConfig.Rank = ADC_REGULAR_RANK_1;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+		sConfig.OffsetNumber = ADC_OFFSET_NONE;
 	  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 	  {
 	    Error_Handler();
@@ -172,8 +176,10 @@ void ADC_Select_CH3 (void)
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
 	  sConfig.Channel = ADC_CHANNEL_3;
-	  sConfig.Rank = 1;
-	  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+	  sConfig.Rank = ADC_REGULAR_RANK_1;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+		sConfig.OffsetNumber = ADC_OFFSET_NONE;
 	  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 	  {
 	    Error_Handler();
@@ -186,8 +192,10 @@ void ADC_Select_CH4 (void)
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
 	  sConfig.Channel = ADC_CHANNEL_4;
-	  sConfig.Rank = 1;
-	  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+	  sConfig.Rank = ADC_REGULAR_RANK_1;
+	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
+	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+		sConfig.OffsetNumber = ADC_OFFSET_NONE;
 	  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
 	  {
 	    Error_Handler();
@@ -200,7 +208,7 @@ void ADC_Select_CH4 (void)
 void PressureTransducerTask::SamplePressureTransducer()
 {
 	static const int PT_VOLTAGE_ADC_POLL_TIMEOUT = 5;
-	//static const double PRESSURE_SCALE = 1.5; // Value to scale to original voltage value
+	static const double PRESSURE_SCALE = 1.5; // Value to scale to original voltage value
 	uint32_t adcVal[4] = {};
 	double pressureTransducerValue1 = 0;
 	double pressureTransducerValue2 = 0;
@@ -214,24 +222,28 @@ void PressureTransducerTask::SamplePressureTransducer()
 
 	/* Functions -----------------------------------------------------------------*/
 	ADC_Select_CH1();
+	osDelay(1);
 		HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
 		if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
 			adcVal[0] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
 			HAL_ADC_Stop(&hadc1);
 		}
 	ADC_Select_CH2();
+	osDelay(1);
 		HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
 		if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
 			adcVal[1] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
 			HAL_ADC_Stop(&hadc1);
 		}
 	ADC_Select_CH3();
+	osDelay(1);
 	HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
 	if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
 		adcVal[2] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
 		HAL_ADC_Stop(&hadc1);
 		}
 	ADC_Select_CH4();
+	osDelay(1);
 		HAL_ADC_Start(&hadc1);  // Enables ADC and starts conversion of regular channels
 		if(HAL_ADC_PollForConversion(&hadc1, PT_VOLTAGE_ADC_POLL_TIMEOUT) == HAL_OK) { //Check if conversion is completed
 			adcVal[3] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
@@ -241,27 +253,23 @@ void PressureTransducerTask::SamplePressureTransducer()
 
 	SOAR_PRINT("here is the binary value of adcVal[0] %d\n", adcVal[0]);
 
-	//pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-	pressureTransducerValue1 = vi * 1000;
+	pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_1 = (int32_t) pressureTransducerValue1; // Pressure in PSI
 
 	vi = ((3.3/4095.0) * (adcVal[1])); // Converts 12 bit ADC value into voltage
 
-	//pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-	pressureTransducerValue2 = vi * 1000;
+	pressureTransducerValue2 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_2 = (int32_t) pressureTransducerValue2; // Pressure in PSI
 
 
 	vi = ((3.3/4095.0) * (adcVal[2])); // Converts 12 bit ADC value into voltage
 
-		//pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-	pressureTransducerValue3 = vi * 1000;
+	pressureTransducerValue3 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_3 = (int32_t) pressureTransducerValue3; // Pressure in PSI
 
 	vi = ((3.3/4095.0) * (adcVal[3])); // Converts 12 bit ADC value into voltage
 
-	//pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-	pressureTransducerValue4 = vi * 1000;
+	pressureTransducerValue4 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_4 = (int32_t) pressureTransducerValue4; // Pressure in PSI
 
 

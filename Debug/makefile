@@ -13,10 +13,12 @@ RM := rm -rf
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
+-include Drivers/hx711\ Driver/subdir.mk
 -include Drivers/STM32L4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include Components/SoarDebug/subdir.mk
+-include Components/Sensors/subdir.mk
 -include Components/FlightControl/subdir.mk
 -include Components/Core/subdir.mk
 -include Components/Communication/subdir.mk
@@ -84,8 +86,8 @@ all: main-build
 main-build: RCU-STM.elf secondary-outputs
 
 # Tool invocations
-RCU-STM.elf RCU-STM.map: $(OBJS) $(USER_OBJS) C:\Users\cjcha\OneDrive\Desktop\Git\RCU-STM\STM32L431RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "RCU-STM.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\cjcha\OneDrive\Desktop\Git\RCU-STM\STM32L431RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RCU-STM.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+RCU-STM.elf RCU-STM.map: $(OBJS) $(USER_OBJS) C:\Users\marce\Downloads\SOAR\RCU\RCU-STM\STM32L431RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "RCU-STM.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\marce\Downloads\SOAR\RCU\RCU-STM\STM32L431RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RCU-STM.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
