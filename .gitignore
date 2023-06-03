@@ -22,6 +22,7 @@
 
 # Executables
 build/
+Debug/*
 *.exe
 *.out
 *.app
