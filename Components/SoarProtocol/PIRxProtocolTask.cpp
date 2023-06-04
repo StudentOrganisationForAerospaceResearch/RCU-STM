@@ -10,6 +10,7 @@
 #include "SOBRxRepeaterTask.hpp"
 #include "DMBRxProtocolTask.hpp"
 #include "UARTTask.hpp"
+#include "GPIO.hpp"
 
 /**
  * @brief Initialize the PIRxProtocolTask
@@ -61,6 +62,124 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
     if(msg.get_target() == Proto::Node::NODE_SOB) {
         SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
+    }
+
+    switch(msg.get_rcu_command()) {
+    case Proto::RCUCommand::Command::RCU_OPEN_AC1: {
+        GPIO::AC1::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_AC1: {
+        GPIO::AC1::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_AC2: {
+        GPIO::AC2::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_AC2: {
+        GPIO::AC2::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_PBV1: {
+        GPIO::PBV1::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_PBV1: {
+        GPIO::PBV1::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_PBV2: {
+        GPIO::PBV2::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_PBV2: {
+        GPIO::PBV2::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_PBV3: {
+        GPIO::PBV3::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_PBV3: {
+        GPIO::PBV3::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL1: {
+        GPIO::SOL1::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL1: {
+        GPIO::SOL1::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL2: {
+        GPIO::SOL2::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL2: {
+        GPIO::SOL2::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL3: {
+        GPIO::SOL3::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL3: {
+        GPIO::SOL3::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL4: {
+        GPIO::SOL4::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL4: {
+        GPIO::SOL4::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL5: {
+        GPIO::SOL5::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL5: {
+        GPIO::SOL5::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL6: {
+        GPIO::SOL6::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL6: {
+        GPIO::SOL6::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL7: {
+        GPIO::SOL7::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL7: {
+        GPIO::SOL7::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL8A: {
+        GPIO::SOL8A::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL8A: {
+        GPIO::SOL8A::Close();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_OPEN_SOL8B: {
+        GPIO::SOL8B::Open();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CLOSE_SOL8B: {
+        GPIO::SOL8B::Close();
+        break;
+    }
+    default:
+        SOAR_PRINT("PIRxProtocolTask - Received Unsupported RCU commmand {%d}\n", msg.get_rcu_command());
+		break;
     }
 
 }
