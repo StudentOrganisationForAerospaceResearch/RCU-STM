@@ -64,7 +64,7 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
         return;
     }
 
-    switch(msg.get_rcu_command()) {
+    switch(msg.get_rcu_command().get_command_enum()) {
     case Proto::RCUCommand::Command::RCU_OPEN_AC1: {
         GPIO::AC1::Open();
         break;
