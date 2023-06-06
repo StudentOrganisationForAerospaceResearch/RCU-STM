@@ -63,6 +63,15 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
         SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
     }
+    
+    if(msg.get_target() != Proto::Node::NODE_RCU) {
+        return;
+    }
+
+    if(msg.get_rcu_command() == Proto::RCUCommand::Command::RCU_TARE_LOAD_CELL || msg.get_rcu_command() == Proto::RCUCommand::Command::RCU_CALIBRATE_LOAD_CELL) {
+        SOAR_PRINT("PIRxProtocolTask - RCU_TARE_LOAD_CELL Unsupported RCU commmand {%d}\n", msg.get_rcu_command());
+        return;
+    }
 
     switch(msg.get_rcu_command().get_command_enum()) {
     case Proto::RCUCommand::Command::RCU_OPEN_AC1: {
