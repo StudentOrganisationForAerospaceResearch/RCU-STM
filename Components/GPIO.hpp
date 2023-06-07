@@ -15,8 +15,8 @@
 #include "main.h"
 #include "stm32l4xx_hal.h"
 
-#define RELAY_OPEN GPIO_PIN_SET
-#define RELAY_CLOSE GPIO_PIN_RESET
+#define RELAY_OPEN GPIO_PIN_RESET
+#define RELAY_CLOSE GPIO_PIN_SET
 
 #define IS_CONTINUOUS GPIO_PIN_SET
 
