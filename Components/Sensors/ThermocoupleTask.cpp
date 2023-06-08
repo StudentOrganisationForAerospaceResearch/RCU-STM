@@ -199,16 +199,16 @@ void ThermocoupleTask::SampleThermocouple()
 	sign1=(dataBuffer1[0]&(0x80))>>7;							  // Sign Bit calculation
 
 	if(dataBuffer1[1] & 0x01){								  // Returns Error Number
-		SOAR_PRINT("THERE IS AN ERROR:\n");
 		if(Error1 & 0x01){
 			SOAR_PRINT("Thermocouple 1 is not connected\n");
 		}
 		if(Error1 & 0x02){
 			SOAR_PRINT("Thermocouple 1 is shorted to GND\n");
 		}
-		if(Error1 & 0x03){
+		if(Error1 & 0x04){
 			SOAR_PRINT("Thermocouple 1 is shorted to VCC\n");
 		}
+		SOAR_PRINT("\n");
 		//temp1_value = (-1*(dataBuffer1[3] & 0x07));
 	}
 	else if(sign1==1){									  // Negative Temperature
@@ -225,7 +225,7 @@ void ThermocoupleTask::SampleThermocouple()
 
 	if(!(dataBuffer1[1] & 0x01)){
 		temp1_value = temp1_value*100-320; //room temp should've been 22.5, it was reading ambient 25.7
-		SOAR_PRINT("The Temperature read by TC1 is %d.%d C \n\n" , (int)temp1_value/100, (uint8_t)(int)temp1_value%100);
+		SOAR_PRINT("Thermocouple 1 is reading %d.%d C \n\n" , (int)temp1_value/100, (uint8_t)(int)temp1_value%100);
 	}
 
 	uint8_t dataBuffer2[4] = {0};
@@ -259,16 +259,16 @@ void ThermocoupleTask::SampleThermocouple()
 	sign2=(dataBuffer2[0]&(0x80))>>7;							  // Sign Bit calculation
 
 	if(dataBuffer2[1] & 0x01){								  // Returns Error Number
-		SOAR_PRINT("THERE IS AN ERROR:\n");
 		if(Error2 & 0x01){
 			SOAR_PRINT("Thermocouple 2 is not connected\n");
 		}
 		if(Error2 & 0x02){
 			SOAR_PRINT("Thermocouple 2 is shorted to GND\n");
 		}
-		if(Error2 & 0x03){
+		if(Error2 & 0x04){
 			SOAR_PRINT("Thermocouple 2 is shorted to VCC\n");
 		}
+		SOAR_PRINT("\n");
 		//temp2_value = (-1*(dataBuffer2[3] & 0x07));
 	}
 	else if(sign2==1){									  // Negative Temperature
@@ -285,7 +285,7 @@ void ThermocoupleTask::SampleThermocouple()
 
 	if(!(dataBuffer2[1] & 0x01)){
 		temp2_value = temp2_value*100-320; //room temp should've been 22.5, it was reading ambient 25.7
-		SOAR_PRINT("The Temperature read by TC2 is %d.%d C \n\n", (int)temp2_value/100, (uint8_t)(int)temp2_value%100);
+		SOAR_PRINT("Thermocouple 2 is reading %d.%d C \n\n", (int)temp2_value/100, (uint8_t)(int)temp2_value%100);
 	}
 }
 
