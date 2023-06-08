@@ -70,9 +70,9 @@ void FlightTask::Run(void * pvParams)
 
         //Every cycle, print something out (for testing)
         SOAR_PRINT("FlightTask::Run() - [%d] Seconds\n", tempSecondCounter++);
-        PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_NEW_SAMPLE ));
-        PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_DEBUG ));
-
+//        PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_NEW_SAMPLE ));
+//        PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_DEBUG ));
+        ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_DEBUG ));
 
         //osDelay(FLIGHT_PHASE_DISPLAY_FREQ);
 

@@ -117,7 +117,7 @@ void ThermocoupleTask::HandleRequestCommand(uint16_t taskCommand)
         SOAR_PRINT("Stubbed: Thermocouple task transmit not implemented\n");
         break;
     case THERMOCOUPLE_REQUEST_DEBUG: //Temporary data debug sender
-        SOAR_PRINT("\t-- Thermocouple Data --\n");
+        SOAR_PRINT("\n-- Thermocouple Data --\n");
         SampleThermocouple();
         break;
     default:
@@ -187,46 +187,46 @@ void ThermocoupleTask::SampleThermocouple()
 	HAL_Delay(10);
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_SET); //end read with setting CS pin to high again
 
-	SOAR_PRINT("------------1-------------\n");
-
-	for(int i = 0; i<4; i++){
-		dataBuffer1[i] = dataBuffer5[i+1];
-		SOAR_PRINT("databufferTC1[%d] are: %d\n",i, dataBuffer1[i]);
+	for(int i = 0; i<5; i++){
+		if(i!=4)
+		dataBuffer1[i] = dataBuffer5[i];
+//		SOAR_PRINT("databufferTC1[%d] are: %d\n",i, dataBuffer5[i]);
 	}
-	SOAR_PRINT("\n");
 
-
-	double temp_debug_1 = 0;
+	double temp1_value = 0;
 
 	Error1=dataBuffer1[3]&0x07;								  // Error Detection
 	sign1=(dataBuffer1[0]&(0x80))>>7;							  // Sign Bit calculation
 
-	if(dataBuffer1[3] & 0x07){								  // Returns Error Number
-		SOAR_PRINT("THERE IS AN ERROR !!!!!!!");
-		temp_debug_1 = (-1*(dataBuffer1[3] & 0x07));
+	if(dataBuffer1[1] & 0x01){								  // Returns Error Number
+		SOAR_PRINT("THERE IS AN ERROR:\n");
+		if(Error1 & 0x01){
+			SOAR_PRINT("Thermocouple 1 is not connected\n");
+		}
+		if(Error1 & 0x02){
+			SOAR_PRINT("Thermocouple 1 is shorted to GND\n");
+		}
+		if(Error1 & 0x03){
+			SOAR_PRINT("Thermocouple 1 is shorted to VCC\n");
+		}
+		//temp1_value = (-1*(dataBuffer1[3] & 0x07));
 	}
 	else if(sign1==1){									  // Negative Temperature
 		Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
 		Temp1&=0b01111111111111;
 		Temp1^=0b01111111111111;
-		temp_debug_1 = (double)-Temp1/4;
+		temp1_value = (double)-Temp1/4;
 	}
 	else												  // Positive Temperature
 	{
 		Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
-		temp_debug_1 = ((double)Temp1 / 4);
+		temp1_value = ((double)Temp1 / 4);
 	}
 
-	temp_debug_1 = temp_debug_1*100-320; //room temp should've been 22.5, it was reading ambient 25.7
-	SOAR_PRINT(
-				"\t-- The new Temp as big number say its read by TC1 is %d \n"
-				, (int)temp_debug_1);
-
-	SOAR_PRINT("\t-- The new Temp say its read by TC1 is %d.%d C \n"
-			"-------------------------\n", (int)temp_debug_1/100, (uint8_t)(int)temp_debug_1%100);
-
-
-
+	if(!(dataBuffer1[1] & 0x01)){
+		temp1_value = temp1_value*100-320; //room temp should've been 22.5, it was reading ambient 25.7
+		SOAR_PRINT("The Temperature read by TC1 is %d.%d C \n\n" , (int)temp1_value/100, (uint8_t)(int)temp1_value%100);
+	}
 
 	uint8_t dataBuffer2[4] = {0};
 	dataBuffer5[5] = {0};
@@ -247,45 +247,47 @@ void ThermocoupleTask::SampleThermocouple()
 	HAL_Delay(10);
 	HAL_GPIO_WritePin(TC2_NCS_GPIO_Port, TC2_NCS_Pin, GPIO_PIN_SET); //end read with setting CS pin to high again
 
-	SOAR_PRINT("------------2-------------\n");
-
-	for(int i = 0; i<4; i++){
-		dataBuffer2[i] = dataBuffer5[i+1];
-		SOAR_PRINT("databufferTC2[%d] are: %d\n",i, dataBuffer2[i]);
+	for(int i = 0; i<5; i++){
+		if(i!=4)
+		dataBuffer2[i] = dataBuffer5[i];
+		//SOAR_PRINT("databufferTC1[%d] are: %d\n",i, dataBuffer5[i]);
 	}
-	SOAR_PRINT("\n");
 
-
-	double temp_debug_2 = 0;
+	double temp2_value = 0;
 
 	Error2=dataBuffer2[3]&0x07;								  // Error Detection
 	sign2=(dataBuffer2[0]&(0x80))>>7;							  // Sign Bit calculation
 
-	if(dataBuffer2[3] & 0x07){								  // Returns Error Number
-		SOAR_PRINT("THERE IS AN ERROR !!!!!!!");
-		temp_debug_2 = (-1*(dataBuffer2[3] & 0x07));
+	if(dataBuffer2[1] & 0x01){								  // Returns Error Number
+		SOAR_PRINT("THERE IS AN ERROR:\n");
+		if(Error2 & 0x01){
+			SOAR_PRINT("Thermocouple 2 is not connected\n");
+		}
+		if(Error2 & 0x02){
+			SOAR_PRINT("Thermocouple 2 is shorted to GND\n");
+		}
+		if(Error2 & 0x03){
+			SOAR_PRINT("Thermocouple 2 is shorted to VCC\n");
+		}
+		//temp2_value = (-1*(dataBuffer2[3] & 0x07));
 	}
 	else if(sign2==1){									  // Negative Temperature
 		Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
 		Temp2&=0b01111111111111;
 		Temp2^=0b01111111111111;
-		temp_debug_2 = (double)-Temp2/4;
+		temp2_value = (double)-Temp2/4;
 	}
 	else												  // Positive Temperature
 	{
 		Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
-		temp_debug_2 = ((double)Temp2 / 4);
+		temp2_value = ((double)Temp2 / 4);
 	}
 
-	temp_debug_2 = temp_debug_2*100-320; //room temp should've been 22.5, it was reading ambient 25.7
-	SOAR_PRINT(
-				"\t-- The new Temp as big number say its read by TC2 is %d \n"
-				, (int)temp_debug_2);
-
-	SOAR_PRINT("\t-- The new Temp say its read by TC2 is %d.%d C \n"
-			"-------------------------\n", (int)temp_debug_2/100, (uint8_t)(int)temp_debug_2%100);
-
-}\
+	if(!(dataBuffer2[1] & 0x01)){
+		temp2_value = temp2_value*100-320; //room temp should've been 22.5, it was reading ambient 25.7
+		SOAR_PRINT("The Temperature read by TC2 is %d.%d C \n\n", (int)temp2_value/100, (uint8_t)(int)temp2_value%100);
+	}
+}
 
 
 
