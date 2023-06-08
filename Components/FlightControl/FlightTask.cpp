@@ -8,7 +8,10 @@
 #include "GPIO.hpp"
 #include "SystemDefines.hpp"
 #include "ThermocoupleTask.hpp"
+<<<<<<< HEAD
 #include "PressureTransducerTask.hpp"
+=======
+>>>>>>> 125bdba935a65a33aeea1c3afb3a64b8b7779d1d
 
 /**
  * @brief Constructor for FlightTask
@@ -70,8 +73,11 @@ void FlightTask::Run(void * pvParams)
 
         //Every cycle, print something out (for testing)
         SOAR_PRINT("FlightTask::Run() - [%d] Seconds\n", tempSecondCounter++);
+<<<<<<< HEAD
 //        PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_NEW_SAMPLE ));
 //        PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_DEBUG ));
+=======
+>>>>>>> 125bdba935a65a33aeea1c3afb3a64b8b7779d1d
         ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_DEBUG ));
 
         //osDelay(FLIGHT_PHASE_DISPLAY_FREQ);
