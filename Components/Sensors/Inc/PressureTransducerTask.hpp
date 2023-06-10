@@ -41,6 +41,7 @@ protected:
 
     // Sampling
     void SamplePressureTransducer();
+    void TransmitProtocolPressureData();
 
     // Data
     PressureTransducerData* data;

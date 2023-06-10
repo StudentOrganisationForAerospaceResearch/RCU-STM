@@ -22,6 +22,9 @@
 #include <time.h>
 
 
+#include "TelemetryMessage.hpp"
+#include "PIRxProtocolTask.hpp"
+
 /* Macros --------------------------------------------------------------------*/
 
 /* Structs -------------------------------------------------------------------*/
@@ -117,7 +120,7 @@ void PressureTransducerTask::HandleRequestCommand(uint16_t taskCommand)
         SamplePressureTransducer();
         break;
     case PT_REQUEST_TRANSMIT:
-        SOAR_PRINT("Stubbed: Pressure Transducer task transmit not implemented\n");
+    	TransmitProtocolPressureData();
         break;
     case PT_REQUEST_DEBUG:
         SOAR_PRINT("|PT_TASK| Pressure 1 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_1 / 1000,
@@ -133,6 +136,31 @@ void PressureTransducerTask::HandleRequestCommand(uint16_t taskCommand)
         SOAR_PRINT("UARTTask - Received Unsupported REQUEST_COMMAND {%d}\n", taskCommand);
         break;
     }
+}
+
+/**
+ * @brief Transmits a protocol barometer data sample
+ */
+void PressureTransducerTask::TransmitProtocolPressureData()
+{
+    SOAR_PRINT("Pressure Transducer Task Transmit...\n");
+
+    Proto::TelemetryMessage msg;
+    msg.set_source(Proto::Node::NODE_RCU);
+    msg.set_target(Proto::Node::NODE_RCU);
+    msg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
+    Proto::RCUPressure pressureData;
+    pressureData.set_pt1_pressure(data->pressure_1);
+    pressureData.set_pt2_pressure(data->pressure_2);
+    pressureData.set_pt3_pressure(data->pressure_3);
+    pressureData.set_pt4_pressure(data->pressure_4);
+	msg.set_pressrcu(pressureData);
+
+    EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
+    msg.serialize(writeBuffer);
+
+    // Send the pressure data
+    PIRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_TELEMETRY);
 }
 
 

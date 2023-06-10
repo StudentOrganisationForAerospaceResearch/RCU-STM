@@ -112,14 +112,13 @@ void ThermocoupleTask::HandleRequestCommand(uint16_t taskCommand)
 {
     //Switch for task specific command within DATA_COMMAND
     switch (taskCommand) {
-    case THERMOCOUPLE_REQUEST_NEW_SAMPLE:
+    case THERMOCOUPLE_REQUEST_NEW_SAMPLE: //Sample TC and store in class fields
     	SampleThermocouple();
         break;
-    case THERMOCOUPLE_REQUEST_TRANSMIT: //This is where we will actually be sending data
+    case THERMOCOUPLE_REQUEST_TRANSMIT: //Sending data to PI
         TransmitProtocolThermoData();
         break;
-    case THERMOCOUPLE_REQUEST_DEBUG: //Temporary data debug sender
-        SampleThermocouple();
+    case THERMOCOUPLE_REQUEST_DEBUG: //Output TC data
         ThermocoupleDebugPrint();
         break;
     default:
@@ -138,7 +137,7 @@ void ThermocoupleTask::TransmitProtocolThermoData()
     ThermocoupleDebugPrint();
 
     Proto::TelemetryMessage msg;
-    msg.set_source(Proto::Node::NODE_DMB);
+    msg.set_source(Proto::Node::NODE_RCU);
     msg.set_target(Proto::Node::NODE_RCU);
     msg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
     Proto::RCUTemp tempData;
