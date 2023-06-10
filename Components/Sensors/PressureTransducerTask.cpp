@@ -120,14 +120,14 @@ void PressureTransducerTask::HandleRequestCommand(uint16_t taskCommand)
         SOAR_PRINT("Stubbed: Pressure Transducer task transmit not implemented\n");
         break;
     case PT_REQUEST_DEBUG:
-        SOAR_PRINT("|PT_TASK| Pressure 1 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_1 / 1000, data->pressure_1 % 1000,
-        timestampPT);
-        SOAR_PRINT("|PT_TASK| Pressure 2 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_2 / 1000, data->pressure_2 % 1000,
-                timestampPT);
-        SOAR_PRINT("|PT_TASK| Pressure 3 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_3 / 1000, data->pressure_3 % 1000,
-                        timestampPT);
-        SOAR_PRINT("|PT_TASK| Pressure 4 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_4 / 1000, data->pressure_4 % 1000,
-                        timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 1 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_1 / 1000,
+        		((data->pressure_1 % 1000)<0) ? -(data->pressure_1 % 1000): (data->pressure_1 % 1000), timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 2 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_2 / 1000,
+        		((data->pressure_2 % 1000)<0) ? -(data->pressure_2 % 1000): (data->pressure_2 % 1000), timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 3 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_3 / 1000,
+        		((data->pressure_3 % 1000)<0) ? -(data->pressure_3 % 1000): (data->pressure_3 % 1000), timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 4 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_4 / 1000,
+        		((data->pressure_4 % 1000)<0) ? -(data->pressure_4 % 1000): (data->pressure_4 % 1000), timestampPT);
         break;
     default:
         SOAR_PRINT("UARTTask - Received Unsupported REQUEST_COMMAND {%d}\n", taskCommand);
