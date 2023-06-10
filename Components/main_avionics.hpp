@@ -33,7 +33,7 @@ namespace Global
 extern UART_HandleTypeDef huart1;   // UART1 - SOB
 extern UART_HandleTypeDef huart2;   // UART2 - UMBILICAL
 extern UART_HandleTypeDef huart3;   // UART3 - RADIO
-
+extern UART_HandleTypeDef hlpuart1; // LPUART1 - PI
 
 //timer Handles
 extern TIM_HandleTypeDef htim2;      // ADC1
@@ -60,7 +60,8 @@ namespace SystemHandles {
 	constexpr UART_HandleTypeDef* UART_SOB = &huart1;
 	constexpr UART_HandleTypeDef* UART_Umbilical = &huart2;
 	constexpr UART_HandleTypeDef* UART_Radio = &huart3;
-	constexpr UART_HandleTypeDef* UART_Debug = &huart3;
+	constexpr UART_HandleTypeDef* UART_Debug = &huart2;
+	constexpr UART_HandleTypeDef* UART_PI = &hlpuart1;
 
 	constexpr ADC_HandleTypeDef* ADC_CombustionChamber = &hadc1;
 	constexpr ADC_HandleTypeDef* ADC_Battery = &hadc2;

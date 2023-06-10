@@ -91,6 +91,10 @@ void Error_Handler(void);
 #define RELAY1_GPIO_Port GPIOA
 #define RELAY0_Pin GPIO_PIN_12
 #define RELAY0_GPIO_Port GPIOA
+#define RADIO_TX_Pin GPIO_PIN_10
+#define RADIO_TX_GPIO_Port GPIOC
+#define RADIO_RX_Pin GPIO_PIN_11
+#define RADIO_RX_GPIO_Port GPIOC
 #define RS422_TX_EN_Pin GPIO_PIN_12
 #define RS422_TX_EN_GPIO_Port GPIOC
 #define LED_2_Pin GPIO_PIN_5
