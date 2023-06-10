@@ -1,0 +1,3 @@
+[submodule "Components/SoarProtocol/SoarProto"]
+	path = Components/SoarProtocol/SoarProto
+	url = git@github.com:StudentOrganisationForAerospaceResearch/SoarProto.git
