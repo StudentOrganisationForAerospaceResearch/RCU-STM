@@ -120,7 +120,6 @@ void PressureTransducerTask::HandleRequestCommand(uint16_t taskCommand)
         SOAR_PRINT("Stubbed: Pressure Transducer task transmit not implemented\n");
         break;
     case PT_REQUEST_DEBUG:
-        //SOAR_PRINT("\t-- Pressure Transducer Data --\n");
         SOAR_PRINT("|PT_TASK| Pressure 1 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_1 / 1000, data->pressure_1 % 1000,
         timestampPT);
         SOAR_PRINT("|PT_TASK| Pressure 2 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_2 / 1000, data->pressure_2 % 1000,
@@ -129,7 +128,6 @@ void PressureTransducerTask::HandleRequestCommand(uint16_t taskCommand)
                         timestampPT);
         SOAR_PRINT("|PT_TASK| Pressure 4 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_4 / 1000, data->pressure_4 % 1000,
                         timestampPT);
-        //SOAR_PRINT(" Pressure (psi): %d.%d\n", data->pressure_ / 1000, data->pressure_ % 1000);
         break;
     default:
         SOAR_PRINT("UARTTask - Received Unsupported REQUEST_COMMAND {%d}\n", taskCommand);
@@ -249,39 +247,23 @@ void PressureTransducerTask::SamplePressureTransducer()
 			adcVal[3] = HAL_ADC_GetValue(&hadc1); // Get ADC Value
 			HAL_ADC_Stop(&hadc1);
 		}
-	vi = (adcVal[0]*3.3)/4095;
 
-	SOAR_PRINT("here is the binary value of adcVal[0] %d\n", adcVal[0]);
-
+	vi = ((3.3/4095.0) * (adcVal[0]));
 	pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_1 = (int32_t) pressureTransducerValue1; // Pressure in PSI
 
 	vi = ((3.3/4095.0) * (adcVal[1])); // Converts 12 bit ADC value into voltage
-
 	pressureTransducerValue2 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_2 = (int32_t) pressureTransducerValue2; // Pressure in PSI
 
 
 	vi = ((3.3/4095.0) * (adcVal[2])); // Converts 12 bit ADC value into voltage
-
 	pressureTransducerValue3 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_3 = (int32_t) pressureTransducerValue3; // Pressure in PSI
 
 	vi = ((3.3/4095.0) * (adcVal[3])); // Converts 12 bit ADC value into voltage
-
 	pressureTransducerValue4 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_4 = (int32_t) pressureTransducerValue4; // Pressure in PSI
 
-
-
-//	vi = ((3.3/4095) * (adcVal[1])); // Converts 12 bit ADC value into voltage
-//		pressureTransducerValue2 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-//		data->pressure_2 = (int32_t) pressureTransducerValue2; // Pressure in PSI
-//	vi = ((3.3/4095) * (adcVal[2])); // Converts 12 bit ADC value into voltage
-//			pressureTransducerValue3 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-//			data->pressure_3 = (int32_t) pressureTransducerValue3; // Pressure in PSI
-//	vi = ((3.3/4095) * (adcVal[3])); // Converts 12 bit ADC value into voltage
-//			pressureTransducerValue4 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
-//			data->pressure_4 = (int32_t) pressureTransducerValue4; // Pressure in PSI
 	timestampPT = HAL_GetTick();
 }
