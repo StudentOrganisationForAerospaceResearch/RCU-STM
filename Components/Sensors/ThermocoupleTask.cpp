@@ -134,7 +134,7 @@ void ThermocoupleTask::HandleRequestCommand(uint16_t taskCommand)
 void ThermocoupleTask::TransmitProtocolThermoData()
 {
     SOAR_PRINT("Thermocouple Task Transmit...\n");
-    ThermocoupleDebugPrint();
+    //ThermocoupleDebugPrint();
 
     Proto::TelemetryMessage msg;
     msg.set_source(Proto::Node::NODE_RCU);
