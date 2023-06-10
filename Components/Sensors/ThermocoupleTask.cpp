@@ -11,6 +11,8 @@
 #include "DebugTask.hpp"
 #include "Task.hpp"
 
+#include "TelemetryMessage.hpp"
+#include "PIRxProtocolTask.hpp"
 
 /* Macros --------------------------------------------------------------------*/
 
@@ -19,7 +21,7 @@
 /* Constants -----------------------------------------------------------------*/
 
 /* Values should not be modified, non-const due to HAL and C++ strictness) ---*/
-constexpr int CMD_TIMEOUT = 150; //TODO: Taken from IMU not sure if it needs to be different
+constexpr int CMD_TIMEOUT = 150;
 
 /* Variables -----------------------------------------------------------------*/
 
@@ -114,11 +116,11 @@ void ThermocoupleTask::HandleRequestCommand(uint16_t taskCommand)
     	SampleThermocouple();
         break;
     case THERMOCOUPLE_REQUEST_TRANSMIT: //This is where we will actually be sending data
-        SOAR_PRINT("Stubbed: Thermocouple task transmit not implemented\n");
+        TransmitProtocolThermoData();
         break;
     case THERMOCOUPLE_REQUEST_DEBUG: //Temporary data debug sender
-        SOAR_PRINT("\n-- Thermocouple Data --\n");
         SampleThermocouple();
+        ThermocoupleDebugPrint();
         break;
     default:
         SOAR_PRINT("UARTTask - Received Unsupported REQUEST_COMMAND {%d}\n", taskCommand);
@@ -126,10 +128,82 @@ void ThermocoupleTask::HandleRequestCommand(uint16_t taskCommand)
     }
 }
 
+
+/**
+ * @brief Transmits a protocol barometer data sample
+ */
+void ThermocoupleTask::TransmitProtocolThermoData()
+{
+    SOAR_PRINT("Thermocouple Task Transmit...\n");
+    ThermocoupleDebugPrint();
+
+    Proto::TelemetryMessage msg;
+    msg.set_source(Proto::Node::NODE_DMB);
+    msg.set_target(Proto::Node::NODE_RCU);
+    msg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
+    Proto::RCUTemp tempData;
+	tempData.set_tc1_temp(temperature1);
+	tempData.set_tc1_temp(temperature2);
+	msg.set_temprcu(tempData);
+
+    EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
+    msg.serialize(writeBuffer);
+
+    // Send the thermocouple data
+    PIRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_TELEMETRY);
+}
+
+
+/**
+ * @brief display any error messages and the temperature
+ */
+void ThermocoupleTask::ThermocoupleDebugPrint()
+{
+	uint8_t Error1= dataBuffer1[3]&0x07;
+	uint8_t Error2= dataBuffer2[3]&0x07;
+
+	//thermo 1 print
+	if(dataBuffer1[1] & 0x01)
+	{								  // Returns Error Number
+		if(Error1 & 0x01){
+			SOAR_PRINT("Thermocouple 1 is not connected\n");
+		}
+		if(Error1 & 0x02){
+			SOAR_PRINT("Thermocouple 1 is shorted to GND\n");
+		}
+		if(Error1 & 0x04){
+			SOAR_PRINT("Thermocouple 1 is shorted to VCC\n");
+		}
+		SOAR_PRINT("\n");
+	}
+	else
+	{
+		SOAR_PRINT("Thermocouple 1 is reading %d.%d C \n\n" , temperature1/100, temperature1%100);
+	}
+
+	//thermo 2 print
+	if(dataBuffer2[1] & 0x01)
+	{								  // Returns Error Number
+		if(Error2 & 0x01){
+			SOAR_PRINT("Thermocouple 2 is not connected\n");
+		}
+		if(Error2 & 0x02){
+			SOAR_PRINT("Thermocouple 2 is shorted to GND\n");
+		}
+		if(Error2 & 0x04){
+			SOAR_PRINT("Thermocouple 2 is shorted to VCC\n");
+		}
+		SOAR_PRINT("\n");
+	}
+	else
+	{
+		SOAR_PRINT("Thermocouple 2 is reading %d.%d C \n\n", temperature2/100, temperature2%100);
+	}
+}
+
 /**
  * @brief This method receives the voltage reading through spi from the thermocouple readings
  */
-
 void ThermocoupleTask::SampleThermocouple()
 {
 	/*DATA FROM MAX31855KASA+T ------------------------------------------------------
@@ -166,14 +240,11 @@ void ThermocoupleTask::SampleThermocouple()
 
 	//Storable Data ------------------------------------------------------------------------------
 
-	uint8_t dataBuffer1[4] = {0};
-	uint8_t dataBuffer5[5] = {0};
+
+	SOAR_PRINT("\n-- Sample Thermocouple Data --\n");
+
+	uint8_t tempDataBuffer5[5] = {0};
 	//See Above bit mem-map
-
-
-	uint8_t Error1=0;// Thermocouple Connection acknowledge Flag
-	uint32_t sign1=0;
-	int Temp1=0;
 
 	//Read ---------------------------------------------------------------------------------------
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_SET);
@@ -183,58 +254,40 @@ void ThermocoupleTask::SampleThermocouple()
     //Read From Thermocouple 1 first
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_RESET); //begin read with CS pin low
 	HAL_Delay(10);
-	HAL_SPI_Receive(SystemHandles::SPI_Thermocouple1, dataBuffer5, 5, 1000); //Fill the data buffer with data from TC1
+	HAL_SPI_Receive(SystemHandles::SPI_Thermocouple1, tempDataBuffer5, 5, 1000); //Fill the data buffer with data from TC1
 	HAL_Delay(10);
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_SET); //end read with setting CS pin to high again
 
 	for(int i = 0; i<5; i++){
 		if(i!=4)
-		dataBuffer1[i] = dataBuffer5[i];
-//		SOAR_PRINT("databufferTC1[%d] are: %d\n",i, dataBuffer5[i]);
+		dataBuffer1[i] = tempDataBuffer5[i];\
 	}
 
-	double temp1_value = 0;
+	int Temp1=0;
 
-	Error1=dataBuffer1[3]&0x07;								  // Error Detection
-	sign1=(dataBuffer1[0]&(0x80))>>7;							  // Sign Bit calculation
-
-	if(dataBuffer1[1] & 0x01){								  // Returns Error Number
-		if(Error1 & 0x01){
-			SOAR_PRINT("Thermocouple 1 is not connected\n");
+	if(!(dataBuffer1[1] & 0x01)){ //if there is not an error with TC1 compute temperature
+		if((dataBuffer1[0]&(0x80))>>7==1)  // Negative Temperature
+		{
+			Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
+			Temp1&=0b01111111111111;
+			Temp1^=0b01111111111111;
+			temperature1 = (((double)-Temp1 / 4)*100-320);
 		}
-		if(Error1 & 0x02){
-			SOAR_PRINT("Thermocouple 1 is shorted to GND\n");
+		else  // Positive Temperature
+		{
+			Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
+			temperature1 = (((double)Temp1 / 4)*100-320);
 		}
-		if(Error1 & 0x04){
-			SOAR_PRINT("Thermocouple 1 is shorted to VCC\n");
-		}
-		SOAR_PRINT("\n");
-		//temp1_value = (-1*(dataBuffer1[3] & 0x07));
 	}
-	else if(sign1==1){									  // Negative Temperature
-		Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
-		Temp1&=0b01111111111111;
-		Temp1^=0b01111111111111;
-		temp1_value = (double)-Temp1/4;
-	}
-	else												  // Positive Temperature
+	else
 	{
-		Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
-		temp1_value = ((double)Temp1 / 4);
+		temperature1 = 999; //there is an error detected with TC1
 	}
 
-	if(!(dataBuffer1[1] & 0x01)){
-		temp1_value = temp1_value*100-320; //room temp should've been 22.5, it was reading ambient 25.7
-		SOAR_PRINT("Thermocouple 1 is reading %d.%d C \n\n" , (int)temp1_value/100, (uint8_t)(int)temp1_value%100);
-	}
 
-	uint8_t dataBuffer2[4] = {0};
-	dataBuffer5[5] = {0};
+
+	tempDataBuffer5[5] = {0}; //reset for TC2 reading
 	//See Above bit mem-map
-
-	uint8_t Error2=0;// Thermocouple Connection acknowledge Flag
-	uint32_t sign2=0;
-	int Temp2=0;
 
 	//Read ---------------------------------------------------------------------------------------
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_SET);
@@ -243,49 +296,34 @@ void ThermocoupleTask::SampleThermocouple()
 	//Read From Thermocouple 1 first
 	HAL_GPIO_WritePin(TC2_NCS_GPIO_Port, TC2_NCS_Pin, GPIO_PIN_RESET); //begin read with CS pin low
 	HAL_Delay(10);
-	HAL_SPI_Receive(SystemHandles::SPI_Thermocouple1, dataBuffer5, 5, 1000); //Fill the data buffer with data from TC1
+	HAL_SPI_Receive(SystemHandles::SPI_Thermocouple1, tempDataBuffer5, 5, 1000); //Fill the data buffer with data from TC1
 	HAL_Delay(10);
 	HAL_GPIO_WritePin(TC2_NCS_GPIO_Port, TC2_NCS_Pin, GPIO_PIN_SET); //end read with setting CS pin to high again
 
 	for(int i = 0; i<5; i++){
 		if(i!=4)
-		dataBuffer2[i] = dataBuffer5[i];
-		//SOAR_PRINT("databufferTC1[%d] are: %d\n",i, dataBuffer5[i]);
+		dataBuffer2[i] = tempDataBuffer5[i];
 	}
 
-	double temp2_value = 0;
+	int Temp2=0;
 
-	Error2=dataBuffer2[3]&0x07;								  // Error Detection
-	sign2=(dataBuffer2[0]&(0x80))>>7;							  // Sign Bit calculation
-
-	if(dataBuffer2[1] & 0x01){								  // Returns Error Number
-		if(Error2 & 0x01){
-			SOAR_PRINT("Thermocouple 2 is not connected\n");
+	if(!(dataBuffer2[1] & 0x01)){ //if there is not an error with TC1 compute temperature
+		if((dataBuffer2[0]&(0x80))>>7==1)  // Negative Temperature
+		{
+			Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
+			Temp2&=0b01111111111111;
+			Temp2^=0b01111111111111;
+			temperature2 = (((double)-Temp2 / 4)*100-320);
 		}
-		if(Error2 & 0x02){
-			SOAR_PRINT("Thermocouple 2 is shorted to GND\n");
+		else  // Positive Temperature
+		{
+			Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
+			temperature2 = (((double)Temp2 / 4)*100-320);
 		}
-		if(Error2 & 0x04){
-			SOAR_PRINT("Thermocouple 2 is shorted to VCC\n");
-		}
-		SOAR_PRINT("\n");
-		//temp2_value = (-1*(dataBuffer2[3] & 0x07));
 	}
-	else if(sign2==1){									  // Negative Temperature
-		Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
-		Temp2&=0b01111111111111;
-		Temp2^=0b01111111111111;
-		temp2_value = (double)-Temp2/4;
-	}
-	else												  // Positive Temperature
+	else
 	{
-		Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
-		temp2_value = ((double)Temp2 / 4);
-	}
-
-	if(!(dataBuffer2[1] & 0x01)){
-		temp2_value = temp2_value*100-320; //room temp should've been 22.5, it was reading ambient 25.7
-		SOAR_PRINT("Thermocouple 2 is reading %d.%d C \n\n", (int)temp2_value/100, (uint8_t)(int)temp2_value%100);
+		temperature2 = 999; //there is an error detected with TC2
 	}
 }
 

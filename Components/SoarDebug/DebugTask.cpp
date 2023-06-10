@@ -135,7 +135,8 @@ void DebugTask::HandleDebugMessage(const char* msg)
 	else if (strcmp(msg, "tct") == 0)
 		{
 			SOAR_PRINT("Debug 'Thermocouple' Sampling Temperature Reading");
-			ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_DEBUG ));
+			ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_NEW_SAMPLE));
+			ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_DEBUG));
 		}
 	else if (strcmp(msg, "ptc") == 0) {
 			// Print message

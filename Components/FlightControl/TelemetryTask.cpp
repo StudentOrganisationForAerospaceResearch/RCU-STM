@@ -10,6 +10,7 @@
 #include "PIRxProtocolTask.hpp"
 
 #include "FlightTask.hpp"
+#include "ThermocoupleTask.hpp"
 
 /**
  * @brief Constructor for TelemetryTask
@@ -128,4 +129,7 @@ void TelemetryTask::RunLogSequence()
     // Send the padbox continuity data
     PIRxProtocolTask::SendProtobufMessage(padBoxWriteBuffer, Proto::MessageID::MSG_TELEMETRY);
 
+    //Thermocouple
+    ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_NEW_SAMPLE));
+    ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_TRANSMIT));
 }
