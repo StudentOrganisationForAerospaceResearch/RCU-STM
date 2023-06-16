@@ -69,7 +69,7 @@ constexpr uint16_t TASK_PRESSURE_TRANSDUCER_STACK_DEPTH_WORDS = 256;		// Size of
 // THERMOCOUPLE TASK
 constexpr uint8_t TASK_THERMOCOUPLE_PRIORITY = 2;			// Priority of the thermocouple task
 constexpr uint8_t TASK_THERMOCOUPLE_QUEUE_DEPTH_OBJS = 10;		// Size of the thermocouple task queue
-constexpr uint16_t TASK_THERMOCOUPLE_STACK_DEPTH_WORDS = 256;		// Size of the thermocouple task stack
+constexpr uint16_t TASK_THERMOCOUPLE_STACK_DEPTH_WORDS = 384;		// Size of the thermocouple task stack
 
 constexpr uint32_t TELEMETRY_DEFAULT_LOGGING_RATE_MS = 500; // Default logging delay for telemetry task
 

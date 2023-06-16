@@ -131,7 +131,7 @@ void ThermocoupleTask::HandleRequestCommand(uint16_t taskCommand)
 void ThermocoupleTask::TransmitProtocolThermoData()
 {
     SOAR_PRINT("Thermocouple Task Transmit...\n");
-    //ThermocoupleDebugPrint(); //when this is uncommented it causes a hardfault??
+    //ThermocoupleDebugPrint();
 
     Proto::TelemetryMessage msg;
     msg.set_source(Proto::Node::NODE_RCU);
