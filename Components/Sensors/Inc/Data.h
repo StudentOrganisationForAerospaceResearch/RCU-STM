@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef SOAR_DATA_H_
+#define SOAR_DATA_H_
 /* Structs containing data primitives */
 
 /*
@@ -24,3 +24,6 @@ typedef struct
 {
     PressureTransducerData* pressureTransducerData_;
 } AllData;
+
+
+#endif

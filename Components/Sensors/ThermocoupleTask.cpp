@@ -19,6 +19,7 @@
 /* Structs -------------------------------------------------------------------*/
 
 /* Constants -----------------------------------------------------------------*/
+#define ERROR_TEMPURATURE_VALUE 999
 
 /* Values should not be modified, non-const due to HAL and C++ strictness) ---*/
 constexpr int CMD_TIMEOUT = 150;
@@ -40,7 +41,7 @@ ThermocoupleTask::ThermocoupleTask() : Task(TASK_THERMOCOUPLE_QUEUE_DEPTH_OBJS)
 /**
  * @brief Creates a task for the FreeRTOS Scheduler
  */
-void ThermocoupleTask::InitTask() //TODO: ETHAN NOTE: IDK IF WE ARE STILL DOING THIS
+void ThermocoupleTask::InitTask()
 {
     // Make sure the task is not already initialized
     SOAR_ASSERT(rtTaskHandle == nullptr, "Cannot initialize Thermocouple task twice");
@@ -82,15 +83,11 @@ void ThermocoupleTask::Run(void * pvParams)
  */
 void ThermocoupleTask::HandleCommand(Command& cm)
 {
-
-	//ETHAN NOTE: IDK WHAT TODO IS ABOUT
-    //TODO: Since this task will stall for a few milliseconds, we may need a way to eat the whole queue (combine similar eg. REQUEST commands and eat to WDG command etc)
-    //TODO: Maybe a HandleEvtQueue instead that takes in the whole queue and eats the whole thing in order of non-blocking to blocking
-
     //Switch for the GLOBAL_COMMAND
     switch (cm.GetCommand()) {
     case REQUEST_COMMAND: {
         HandleRequestCommand(cm.GetTaskCommand()); //Sends task specific request command to task request handler
+        break;
     }
     case TASK_SPECIFIC_COMMAND: {
         break; //No task specific commands need
@@ -134,7 +131,7 @@ void ThermocoupleTask::HandleRequestCommand(uint16_t taskCommand)
 void ThermocoupleTask::TransmitProtocolThermoData()
 {
     SOAR_PRINT("Thermocouple Task Transmit...\n");
-    //ThermocoupleDebugPrint();
+    //ThermocoupleDebugPrint(); //when this is uncommented it causes a hardfault??
 
     Proto::TelemetryMessage msg;
     msg.set_source(Proto::Node::NODE_RCU);
@@ -265,22 +262,36 @@ void ThermocoupleTask::SampleThermocouple()
 	int Temp1=0;
 
 	if(!(dataBuffer1[1] & 0x01)){ //if there is not an error with TC1 compute temperature
-		if((dataBuffer1[0]&(0x80))>>7==1)  // Negative Temperature
+		if((dataBuffer1[0]&(0x80))>>7==1)  // Negative Temperature (check if sign bit is 1)
 		{
+			//or together the 2 parts of the temperature after multiplying to the correct position
+			//if there is no error read all bits in buffer[0] and [1] will be temperature values
 			Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
-			Temp1&=0b01111111111111;
-			Temp1^=0b01111111111111;
+
+			//since the temperature is negative we need to do 2's compliment calculations
+			Temp1^=0b11111111111111; //first XOR all 14 bits of temp data including the sign bit (bits 31-18)
+									 //this will flip the bits
+			Temp1+=0b1; //then add 1
+
+			//here we first divide by 4 as the lower 2 bits are decimal bits, then because of this we scale
+			//the number to fit in an int_16t so it includes the decimal digits and we
+			//also correct the temperature by 3.2C which was the approximate error recorded
 			temperature1 = (((double)-Temp1 / 4)*100-320);
 		}
 		else  // Positive Temperature
 		{
+			//or together the 2 parts of the temperature after multiplying to the correct position
+			//if there is no error read all bits in buffer[0] and [1] will be temperature values
 			Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
+
+			//here we scale the number to fit in an int_16t so it includes the decimal digits and we
+			//also correct the temperature by 3.2C which was the approximate error recorded
 			temperature1 = (((double)Temp1 / 4)*100-320);
 		}
 	}
 	else
 	{
-		temperature1 = 999; //there is an error detected with TC1
+		temperature1 = ERROR_TEMPURATURE_VALUE; //there is an error detected with TC1
 	}
 
 
@@ -310,8 +321,8 @@ void ThermocoupleTask::SampleThermocouple()
 		if((dataBuffer2[0]&(0x80))>>7==1)  // Negative Temperature
 		{
 			Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
-			Temp2&=0b01111111111111;
-			Temp2^=0b01111111111111;
+			Temp2^=0b11111111111111;
+			Temp2+=0b1;
 			temperature2 = (((double)-Temp2 / 4)*100-320);
 		}
 		else  // Positive Temperature
@@ -322,7 +333,7 @@ void ThermocoupleTask::SampleThermocouple()
 	}
 	else
 	{
-		temperature2 = 999; //there is an error detected with TC2
+		temperature2 = ERROR_TEMPURATURE_VALUE; //there is an error detected with TC2
 	}
 }
 

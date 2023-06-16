@@ -31,6 +31,8 @@
 
 /* Constants -----------------------------------------------------------------*/
 
+#define PRESSURE_MULTIPLIER_COEFFICIENT (3.3/4095.0)
+
 /* Variables -----------------------------------------------------------------*/
 
 /* Prototypes ----------------------------------------------------------------*/
@@ -95,6 +97,7 @@ void PressureTransducerTask::HandleCommand(Command& cm)
     switch (cm.GetCommand()) {
     case REQUEST_COMMAND: {
         HandleRequestCommand(cm.GetTaskCommand());
+        break;
     }
     case TASK_SPECIFIC_COMMAND: {
         break;
@@ -276,20 +279,20 @@ void PressureTransducerTask::SamplePressureTransducer()
 			HAL_ADC_Stop(&hadc1);
 		}
 
-	vi = ((3.3/4095.0) * (adcVal[0]));
+	vi = PRESSURE_MULTIPLIER_COEFFICIENT * (adcVal[0]);
 	pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_1 = (int32_t) pressureTransducerValue1; // Pressure in PSI
 
-	vi = ((3.3/4095.0) * (adcVal[1])); // Converts 12 bit ADC value into voltage
+	vi =  PRESSURE_MULTIPLIER_COEFFICIENT * (adcVal[1]); // Converts 12 bit ADC value into voltage
 	pressureTransducerValue2 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_2 = (int32_t) pressureTransducerValue2; // Pressure in PSI
 
 
-	vi = ((3.3/4095.0) * (adcVal[2])); // Converts 12 bit ADC value into voltage
+	vi =  PRESSURE_MULTIPLIER_COEFFICIENT * (adcVal[2]); // Converts 12 bit ADC value into voltage
 	pressureTransducerValue3 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_3 = (int32_t) pressureTransducerValue3; // Pressure in PSI
 
-	vi = ((3.3/4095.0) * (adcVal[3])); // Converts 12 bit ADC value into voltage
+	vi =  PRESSURE_MULTIPLIER_COEFFICIENT * (adcVal[3]); // Converts 12 bit ADC value into voltage
 	pressureTransducerValue4 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
 	data->pressure_4 = (int32_t) pressureTransducerValue4; // Pressure in PSI
 

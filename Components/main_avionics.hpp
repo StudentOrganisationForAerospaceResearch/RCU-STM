@@ -60,7 +60,7 @@ namespace SystemHandles {
 	constexpr UART_HandleTypeDef* UART_SOB = &huart1;
 	constexpr UART_HandleTypeDef* UART_Umbilical = &huart2;
 	constexpr UART_HandleTypeDef* UART_Radio = &huart3;
-	constexpr UART_HandleTypeDef* UART_Debug = &huart3;
+	constexpr UART_HandleTypeDef* UART_Debug = &huart2;
 	constexpr UART_HandleTypeDef* UART_PI = &hlpuart1;
 
 	constexpr ADC_HandleTypeDef* ADC_CombustionChamber = &hadc1;
