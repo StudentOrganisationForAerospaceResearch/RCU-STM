@@ -123,9 +123,9 @@ void LoadCellTask::HandleRequestCommand(uint16_t taskCommand)
     	SOAR_PRINT("Load Cell offset NOS1: %d NOS2: %d\n", nos1_loadcell.offset, nos2_loadcell.offset);
     	SOAR_PRINT("Load Cell coef NOS1: %d.%d NOS2: %d.%d\n",
     				(int)nos1_loadcell.coef,
-    				(int)(nos1_loadcell.coef * 1000) % 1000,
+					abs(int(nos1_loadcell.coef * 1000) % 1000),
 					(int)nos2_loadcell.coef,
-					(int)(nos2_loadcell.coef * 1000) % 1000);
+					abs(int(nos2_loadcell.coef * 1000) % 1000));
     	SOAR_PRINT("Load Cell last used calibration weight %d.%d grams\n",
     			(int)calibration_mass_g, abs(int(calibration_mass_g * 1000) % 1000));
     	break;
@@ -174,7 +174,8 @@ void LoadCellTask::SampleLoadCellData()
 {
 	uint32_t nos1_ADCdata, nos2_ADCdata;
 	two_fill_mass_sample.nos1_mass_g = hx711_weight(&nos1_loadcell, 10, nos1_ADCdata);
-	two_fill_mass_sample.nos2_mass_g = hx711_weight(&nos2_loadcell, 10, nos2_ADCdata);
+	// NOTE: currently not using NOS2 LC
+	// two_fill_mass_sample.nos2_mass_g = hx711_weight(&nos2_loadcell, 10, nos2_ADCdata);
 	two_fill_mass_sample.timestamp_ms = HAL_GetTick();
 }
 

@@ -8,7 +8,7 @@
 #include "GPIO.hpp"
 #include "SystemDefines.hpp"
 #include "PIRxProtocolTask.hpp"
-
+#include "LoadCellTask.hpp"
 #include "FlightTask.hpp"
 
 /**
@@ -128,4 +128,10 @@ void TelemetryTask::RunLogSequence()
     // Send the padbox continuity data
     PIRxProtocolTask::SendProtobufMessage(padBoxWriteBuffer, Proto::MessageID::MSG_TELEMETRY);
 
+	// Load Cell
+    LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_NEW_SAMPLE));
+    LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_TRANSMIT));
+
+    //TODO: Thermocouples
+    //TODO: Pressure Transducers
 }
