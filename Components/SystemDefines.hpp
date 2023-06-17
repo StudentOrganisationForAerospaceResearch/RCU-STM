@@ -51,6 +51,11 @@ constexpr uint8_t TASK_DEBUG_PRIORITY = 2;			// Priority of the debug task
 constexpr uint8_t TASK_DEBUG_QUEUE_DEPTH_OBJS = 10;		// Size of the debug task queue
 constexpr uint16_t TASK_DEBUG_STACK_DEPTH_WORDS = 256;		// Size of the debug task stack
 
+// LoadCell Task
+constexpr uint8_t LOADCELL_TASK_RTOS_PRIORITY = 2;			// Priority of the LoadCell task
+constexpr uint8_t LOADCELL_TASK_QUEUE_DEPTH_OBJS = 10;		// Size of the LoadCell task queue
+constexpr uint16_t LOADCELL_TASK_STACK_DEPTH_WORDS = 256;		// Size of the LoadCell task stack
+
 // TELEMETRY Task
 constexpr uint8_t TELEMETRY_TASK_RTOS_PRIORITY = 2;            // Priority of the flight task
 constexpr uint8_t TELEMETRY_TASK_QUEUE_DEPTH_OBJS = 5;        // Size of the flight task queue

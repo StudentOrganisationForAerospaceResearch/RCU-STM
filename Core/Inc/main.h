@@ -95,12 +95,18 @@ void Error_Handler(void);
 #define RADIO_RX_GPIO_Port GPIOC
 #define RS422_TX_EN_Pin GPIO_PIN_12
 #define RS422_TX_EN_GPIO_Port GPIOC
+#define USART1_TX_EN_Pin GPIO_PIN_2
+#define USART1_TX_EN_GPIO_Port GPIOD
 #define LED_2_Pin GPIO_PIN_5
 #define LED_2_GPIO_Port GPIOB
 #define LED_1_Pin GPIO_PIN_6
 #define LED_1_GPIO_Port GPIOB
 #define LED_0_Pin GPIO_PIN_7
 #define LED_0_GPIO_Port GPIOB
+#define NOS1_LC_CLK_Pin GPIO_PIN_8
+#define NOS1_LC_CLK_GPIO_Port GPIOB
+#define NOS1_LC_DATA_Pin GPIO_PIN_9
+#define NOS1_LC_DATA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
