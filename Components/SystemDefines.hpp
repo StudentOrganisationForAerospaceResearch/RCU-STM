@@ -36,24 +36,24 @@
 // FLIGHT PHASE
 constexpr uint8_t FLIGHT_TASK_RTOS_PRIORITY = 2;			// Priority of the flight task
 constexpr uint8_t FLIGHT_TASK_QUEUE_DEPTH_OBJS = 10;		// Size of the flight task queue
-constexpr uint16_t FLIGHT_TASK_STACK_DEPTH_WORDS = 256;		// Size of the flight task stack
+constexpr uint16_t FLIGHT_TASK_STACK_DEPTH_WORDS = 512;		// Size of the flight task stack
 
 constexpr uint16_t FLIGHT_PHASE_DISPLAY_FREQ = 1000;	// Display frequency for flight phase information
 
 // UART TASK
 constexpr uint8_t UART_TASK_RTOS_PRIORITY = 2;			// Priority of the uart task
 constexpr uint8_t UART_TASK_QUEUE_DEPTH_OBJS = 10;		// Size of the uart task queue
-constexpr uint16_t UART_TASK_STACK_DEPTH_WORDS = 256;	// Size of the uart task stack
+constexpr uint16_t UART_TASK_STACK_DEPTH_WORDS = 512;	// Size of the uart task stack
 
 // DEBUG TASK
 constexpr uint8_t TASK_DEBUG_PRIORITY = 2;			// Priority of the debug task
 constexpr uint8_t TASK_DEBUG_QUEUE_DEPTH_OBJS = 10;		// Size of the debug task queue
-constexpr uint16_t TASK_DEBUG_STACK_DEPTH_WORDS = 256;		// Size of the debug task stack
+constexpr uint16_t TASK_DEBUG_STACK_DEPTH_WORDS = 512;		// Size of the debug task stack
 
 // TELEMETRY Task
 constexpr uint8_t TELEMETRY_TASK_RTOS_PRIORITY = 2;            // Priority of the flight task
 constexpr uint8_t TELEMETRY_TASK_QUEUE_DEPTH_OBJS = 5;        // Size of the flight task queue
-constexpr uint16_t TELEMETRY_TASK_STACK_DEPTH_WORDS = 1024;        // Size of the flight task stack
+constexpr uint16_t TELEMETRY_TASK_STACK_DEPTH_WORDS = 1280;        // Size of the flight task stack
 
 constexpr uint32_t TELEMETRY_DEFAULT_LOGGING_RATE_MS = 500; // Default logging delay for telemetry task
 
