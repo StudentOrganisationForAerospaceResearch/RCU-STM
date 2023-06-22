@@ -1,25 +1,33 @@
 /**
   ******************************************************************************
   * File Name          : ThermocoupleTask.cpp
-  * Description        :
+  *
+  * Description        : This file contains constants and functions designed to
+  *                      obtain accurate temperature readings from
+  *                      the thermocouples on the plumbing bay board. A
+  *                      thread task is included that will wait for update and transmit
+  *                      requests for reading and updating the temperature fields.
   ******************************************************************************
 */
 
 /* Includes ------------------------------------------------------------------*/
+#include <string.h>
+
 #include "ThermocoupleTask.hpp"
 #include "main.h"
 #include "DebugTask.hpp"
 #include "Task.hpp"
-
-#include "TelemetryMessage.hpp"
 #include "PIRxProtocolTask.hpp"
+#include "TelemetryMessage.hpp"
 
 /* Macros --------------------------------------------------------------------*/
 
 /* Structs -------------------------------------------------------------------*/
 
 /* Constants -----------------------------------------------------------------*/
-#define ERROR_TEMPURATURE_VALUE 999
+#define ERROR_TEMPERATURE_VALUE 9999
+#define TEMPERATURE_OFFSET 6.0 //in degrees Celsius
+#define THERMOCOUPLE_SPI_TIMEOUT 100 //in ms
 
 /* Values should not be modified, non-const due to HAL and C++ strictness) ---*/
 constexpr int CMD_TIMEOUT = 150;
@@ -76,7 +84,6 @@ void ThermocoupleTask::Run(void * pvParams)
     }
 }
 
-
 /**
  * @brief Handles a command
  * @param cm Command reference to handle
@@ -124,7 +131,6 @@ void ThermocoupleTask::HandleRequestCommand(uint16_t taskCommand)
     }
 }
 
-
 /**
  * @brief Transmits a protocol barometer data sample
  */
@@ -148,7 +154,6 @@ void ThermocoupleTask::TransmitProtocolThermoData()
     // Send the thermocouple data
     PIRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_TELEMETRY);
 }
-
 
 /**
  * @brief display any error messages and the temperature
@@ -198,6 +203,48 @@ void ThermocoupleTask::ThermocoupleDebugPrint()
 }
 
 /**
+ * @brief This method converts the thermocouple data buffer information to readable a temperature
+ * takes the array containing temperature data, returns a temperature value
+ */
+int16_t ThermocoupleTask::ExtractTempurature(uint8_t temperatureData[])
+{
+	int temperature=0;
+
+	if(!(temperatureData[1] & 0x01)){ //if there is not an error with TC1 compute temperature
+		if((temperatureData[0]&(0x80))>>7==1)  // Negative Temperature (check if sign bit is 1)
+		{
+			//or together the 2 parts of the temperature after multiplying to the correct position
+			//if there is no error read all bits in buffer[0] and [1] will be temperature values
+			temperature = (temperatureData[0] << 6) | (temperatureData[1] >> 2);
+
+			//since the temperature is negative we need to do 2's compliment calculations
+			temperature^=0b11111111111111;   //first XOR all 14 bits of temperature data including the sign bit (bits 31-18)
+									 	 	 //this will flip the bits
+			temperature+=0b1; //then add 1
+
+			//here we first divide by 4 as the lower 2 bits are decimal bits, then because of this we scale
+			//the number to fit in an int_16t so it includes the decimal digits and we
+			//also correct the temperature by 3.2C which was the approximate error recorded
+			return (int16_t)((((double)-temperature / 4)-TEMPERATURE_OFFSET)*100);
+		}
+		else  // Positive Temperature
+		{
+			//or together the 2 parts of the temperature after multiplying to the correct position
+			//if there is no error read all bits in buffer[0] and [1] will be temperature values
+			temperature = (temperatureData[0] << 6) | (temperatureData[1] >> 2);
+
+			//here we scale the number to fit in an int_16t so it includes the decimal digits and we
+			//also correct the temperature by 3.2C which was the approximate error recorded
+			return (int16_t)((((double)temperature / 4)-TEMPERATURE_OFFSET)*100);
+		}
+	}
+	else
+	{
+		return (int16_t)ERROR_TEMPERATURE_VALUE; //there is an error detected
+	}
+}
+
+/**
  * @brief This method receives the voltage reading through spi from the thermocouple readings
  */
 void ThermocoupleTask::SampleThermocouple()
@@ -236,7 +283,6 @@ void ThermocoupleTask::SampleThermocouple()
 
 	//Storable Data ------------------------------------------------------------------------------
 
-
 	SOAR_PRINT("\n-- Sample Thermocouple Data --\n");
 
 	uint8_t tempDataBuffer5[5] = {0};
@@ -246,58 +292,21 @@ void ThermocoupleTask::SampleThermocouple()
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(TC2_NCS_GPIO_Port, TC2_NCS_Pin, GPIO_PIN_SET);
 
-
     //Read From Thermocouple 1 first
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_RESET); //begin read with CS pin low
 	HAL_Delay(10);
-	HAL_SPI_Receive(SystemHandles::SPI_Thermocouple1, tempDataBuffer5, 5, 1000); //Fill the data buffer with data from TC1
+	HAL_SPI_Receive(SystemHandles::SPI_Thermocouple1, tempDataBuffer5, 5, THERMOCOUPLE_SPI_TIMEOUT); //Fill the data buffer with data from TC1
 	HAL_Delay(10);
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_SET); //end read with setting CS pin to high again
 
-	for(int i = 0; i<5; i++){
-		if(i!=4)
-		dataBuffer1[i] = tempDataBuffer5[i];\
+	for(int i = 0; i<4; i++){
+		dataBuffer1[i] = tempDataBuffer5[i+1];
 	}
 
-	int Temp1=0;
+	temperature1 = ExtractTempurature(dataBuffer1);
 
-	if(!(dataBuffer1[1] & 0x01)){ //if there is not an error with TC1 compute temperature
-		if((dataBuffer1[0]&(0x80))>>7==1)  // Negative Temperature (check if sign bit is 1)
-		{
-			//or together the 2 parts of the temperature after multiplying to the correct position
-			//if there is no error read all bits in buffer[0] and [1] will be temperature values
-			Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
-
-			//since the temperature is negative we need to do 2's compliment calculations
-			Temp1^=0b11111111111111; //first XOR all 14 bits of temp data including the sign bit (bits 31-18)
-									 //this will flip the bits
-			Temp1+=0b1; //then add 1
-
-			//here we first divide by 4 as the lower 2 bits are decimal bits, then because of this we scale
-			//the number to fit in an int_16t so it includes the decimal digits and we
-			//also correct the temperature by 3.2C which was the approximate error recorded
-			temperature1 = (((double)-Temp1 / 4)*100-320);
-		}
-		else  // Positive Temperature
-		{
-			//or together the 2 parts of the temperature after multiplying to the correct position
-			//if there is no error read all bits in buffer[0] and [1] will be temperature values
-			Temp1 = (dataBuffer1[0] << 6) | (dataBuffer1[1] >> 2);
-
-			//here we scale the number to fit in an int_16t so it includes the decimal digits and we
-			//also correct the temperature by 3.2C which was the approximate error recorded
-			temperature1 = (((double)Temp1 / 4)*100-320);
-		}
-	}
-	else
-	{
-		temperature1 = ERROR_TEMPURATURE_VALUE; //there is an error detected with TC1
-	}
-
-
-
-	tempDataBuffer5[5] = {0}; //reset for TC2 reading
-	//See Above bit mem-map
+	//reset the buffer array to all 0s
+	memset(tempDataBuffer5, 0, 5);
 
 	//Read ---------------------------------------------------------------------------------------
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_SET);
@@ -306,35 +315,15 @@ void ThermocoupleTask::SampleThermocouple()
 	//Read From Thermocouple 1 first
 	HAL_GPIO_WritePin(TC2_NCS_GPIO_Port, TC2_NCS_Pin, GPIO_PIN_RESET); //begin read with CS pin low
 	HAL_Delay(10);
-	HAL_SPI_Receive(SystemHandles::SPI_Thermocouple1, tempDataBuffer5, 5, 1000); //Fill the data buffer with data from TC1
+	HAL_SPI_Receive(SystemHandles::SPI_Thermocouple1, tempDataBuffer5, 5, THERMOCOUPLE_SPI_TIMEOUT); //Fill the data buffer with data from TC1
 	HAL_Delay(10);
 	HAL_GPIO_WritePin(TC2_NCS_GPIO_Port, TC2_NCS_Pin, GPIO_PIN_SET); //end read with setting CS pin to high again
 
-	for(int i = 0; i<5; i++){
-		if(i!=4)
-		dataBuffer2[i] = tempDataBuffer5[i];
+	for(int i = 0; i<4; i++){
+		dataBuffer2[i] = tempDataBuffer5[i+1];
 	}
 
-	int Temp2=0;
-
-	if(!(dataBuffer2[1] & 0x01)){ //if there is not an error with TC1 compute temperature
-		if((dataBuffer2[0]&(0x80))>>7==1)  // Negative Temperature
-		{
-			Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
-			Temp2^=0b11111111111111;
-			Temp2+=0b1;
-			temperature2 = (((double)-Temp2 / 4)*100-320);
-		}
-		else  // Positive Temperature
-		{
-			Temp2 = (dataBuffer2[0] << 6) | (dataBuffer2[1] >> 2);
-			temperature2 = (((double)Temp2 / 4)*100-320);
-		}
-	}
-	else
-	{
-		temperature2 = ERROR_TEMPURATURE_VALUE; //there is an error detected with TC2
-	}
+	temperature2 = ExtractTempurature(dataBuffer2);
 }
 
 
