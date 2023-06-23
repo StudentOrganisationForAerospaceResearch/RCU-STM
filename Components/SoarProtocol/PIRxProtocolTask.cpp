@@ -70,18 +70,32 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
     }
 
     switch(msg.get_rcu_command().get_command_enum()) {
-    case Proto::RCUCommand::Command::RCU_TARE_LOAD_CELL: {
+    case Proto::RCUCommand::Command::RCU_TARE_NOS1_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Tare NOS1 Load Cell Command\n");
         LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)NOS1_LOADCELL_REQUEST_TARE));
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CALIBRATE_LOAD_CELL: {
+    case Proto::RCUCommand::Command::RCU_TARE_NOS2_LOAD_CELL: {
+    	//NOTE: WORKS FOR TO NOS1 ONLY
+        SOAR_PRINT("PROTO-INFO: Received RCU Tare NOS2 Load Cell Command\n");
+        LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)NOS2_LOADCELL_REQUEST_TARE));
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_CALIBRATE_NOS1_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Calibrate NOS1 Load Cell Command\n");
         int32_t mass_mg = msg.get_rcu_command().get_command_param();
 		LoadCellTask::Inst().SetCalibrationMassGrams((float)mass_mg / 1000);
 		LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, NOS1_LOADCELL_REQUEST_CALIBRATE));
+		break;
+    }
+    case Proto::RCUCommand::Command::RCU_CALIBRATE_NOS2_LOAD_CELL: {
+    	//NOTE: WORKS FOR TO NOS1 ONLY
+        SOAR_PRINT("PROTO-INFO: Received RCU Calibrate NOS2 Load Cell Command\n");
+        int32_t mass_mg = msg.get_rcu_command().get_command_param();
+		LoadCellTask::Inst().SetCalibrationMassGrams((float)mass_mg / 1000);
+		LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, NOS2_LOADCELL_REQUEST_CALIBRATE));
 		break;
     }
     case Proto::RCUCommand::Command::RCU_OPEN_AC1: {

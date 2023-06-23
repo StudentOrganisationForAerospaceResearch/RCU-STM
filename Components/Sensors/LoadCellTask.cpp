@@ -15,6 +15,8 @@
  */
 LoadCellTask::LoadCellTask() : Task(LOADCELL_TASK_QUEUE_DEPTH_OBJS)
 {
+	two_fill_mass_sample = { 0 };
+	calibration_mass_g = 0.0f;
 }
 
 /**

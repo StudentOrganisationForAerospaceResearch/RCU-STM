@@ -61,6 +61,10 @@ void Error_Handler(void);
 #define CONT_CK0_GPIO_Port GPIOC
 #define CONT_CK1_Pin GPIO_PIN_14
 #define CONT_CK1_GPIO_Port GPIOC
+#define NOS2_LC_CLK_Pin GPIO_PIN_0
+#define NOS2_LC_CLK_GPIO_Port GPIOC
+#define NOS2_LC_DATA_Pin GPIO_PIN_1
+#define NOS2_LC_DATA_GPIO_Port GPIOC
 #define RELAY11_Pin GPIO_PIN_0
 #define RELAY11_GPIO_Port GPIOA
 #define RELAY10_Pin GPIO_PIN_1
