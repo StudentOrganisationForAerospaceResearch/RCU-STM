@@ -26,7 +26,7 @@
 
 /* Constants -----------------------------------------------------------------*/
 #define ERROR_TEMPERATURE_VALUE 9999
-#define TEMPERATURE_OFFSET 6.0 //in degrees Celsius
+#define TEMPERATURE_OFFSET -4.0 //in degrees Celsius
 #define THERMOCOUPLE_SPI_TIMEOUT 100 //in ms
 
 /* Values should not be modified, non-const due to HAL and C++ strictness) ---*/
@@ -225,7 +225,7 @@ int16_t ThermocoupleTask::ExtractTempurature(uint8_t temperatureData[])
 			//here we first divide by 4 as the lower 2 bits are decimal bits, then because of this we scale
 			//the number to fit in an int_16t so it includes the decimal digits and we
 			//also correct the temperature by 3.2C which was the approximate error recorded
-			return (int16_t)((((double)-temperature / 4)-TEMPERATURE_OFFSET)*100);
+			return (int16_t)((((double)-temperature / 4)+TEMPERATURE_OFFSET)*100);
 		}
 		else  // Positive Temperature
 		{
@@ -235,7 +235,7 @@ int16_t ThermocoupleTask::ExtractTempurature(uint8_t temperatureData[])
 
 			//here we scale the number to fit in an int_16t so it includes the decimal digits and we
 			//also correct the temperature by 3.2C which was the approximate error recorded
-			return (int16_t)((((double)temperature / 4)-TEMPERATURE_OFFSET)*100);
+			return (int16_t)((((double)temperature / 4)+TEMPERATURE_OFFSET)*100);
 		}
 	}
 	else
@@ -283,8 +283,6 @@ void ThermocoupleTask::SampleThermocouple()
 
 	//Storable Data ------------------------------------------------------------------------------
 
-	SOAR_PRINT("\n-- Sample Thermocouple Data --\n");
-
 	uint8_t tempDataBuffer5[5] = {0};
 	//See Above bit mem-map
 
@@ -300,7 +298,7 @@ void ThermocoupleTask::SampleThermocouple()
 	HAL_GPIO_WritePin(TC1_NCS_GPIO_Port, TC1_NCS_Pin, GPIO_PIN_SET); //end read with setting CS pin to high again
 
 	for(int i = 0; i<4; i++){
-		dataBuffer1[i] = tempDataBuffer5[i+1];
+		dataBuffer1[i] = tempDataBuffer5[i]; //getting rid of the 0 byte (signifies end of data)
 	}
 
 	temperature1 = ExtractTempurature(dataBuffer1);
@@ -320,12 +318,8 @@ void ThermocoupleTask::SampleThermocouple()
 	HAL_GPIO_WritePin(TC2_NCS_GPIO_Port, TC2_NCS_Pin, GPIO_PIN_SET); //end read with setting CS pin to high again
 
 	for(int i = 0; i<4; i++){
-		dataBuffer2[i] = tempDataBuffer5[i+1];
+		dataBuffer2[i] = tempDataBuffer5[i];
 	}
 
 	temperature2 = ExtractTempurature(dataBuffer2);
 }
-
-
-
-
