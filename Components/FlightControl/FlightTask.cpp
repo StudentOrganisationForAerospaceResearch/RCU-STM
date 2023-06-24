@@ -67,7 +67,7 @@ void FlightTask::Run(void * pvParams)
         osDelay(500);
 
         //Every cycle, print something out (for testing)
-        SOAR_PRINT("FlightTask::Run() - [%d] Seconds\n", tempSecondCounter++);
+        //SOAR_PRINT("FlightTask::Run() - [%d] Seconds\n", tempSecondCounter++);
 
         //osDelay(FLIGHT_PHASE_DISPLAY_FREQ);
 
