@@ -18,7 +18,8 @@
 #include "UARTTask.hpp"
 #include "FlightTask.hpp"
 #include "DebugTask.hpp"
-
+#include "ThermocoupleTask.hpp"
+#include "PressureTransducerTask.hpp"
 #include "PIRxProtocolTask.hpp"
 #include "SOBRxRepeaterTask.hpp"
 #include "DMBRxProtocolTask.hpp"
@@ -37,6 +38,8 @@ void run_main() {
 	FlightTask::Inst().InitTask();
 	UARTTask::Inst().InitTask();
 	DebugTask::Inst().InitTask();
+	ThermocoupleTask::Inst().InitTask();
+	PressureTransducerTask::Inst().InitTask();
 	PIRxProtocolTask::Inst().InitTask();
 	DMBRxProtocolTask::Inst().InitTask();
 	SOBRxRepeaterTask::Inst().InitTask();

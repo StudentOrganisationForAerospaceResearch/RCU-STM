@@ -68,7 +68,6 @@ void FlightTask::Run(void * pvParams)
 
         //Every cycle, print something out (for testing)
         SOAR_PRINT("FlightTask::Run() - [%d] Seconds\n", tempSecondCounter++);
-
         //osDelay(FLIGHT_PHASE_DISPLAY_FREQ);
 
         //// Half the buzzer frequency for flight phase beeps
