@@ -82,7 +82,7 @@ void TelemetryTask::HandleCommand(Command& cm)
  */
 void TelemetryTask::RunLogSequence()
 {
-    SOAR_PRINT("GPIO Transmit...\n");
+    //SOAR_PRINT("GPIO Transmit...\n");
 
 	//Relay status
     Proto::TelemetryMessage relayMsg;

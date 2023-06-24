@@ -61,7 +61,7 @@ constexpr uint8_t TELEMETRY_TASK_RTOS_PRIORITY = 2;           // Priority of the
 constexpr uint8_t TELEMETRY_TASK_QUEUE_DEPTH_OBJS = 5;        // Size of the flight task queue
 constexpr uint16_t TELEMETRY_TASK_STACK_DEPTH_WORDS = 1024;   // Size of the flight task stack
 
-constexpr uint32_t TELEMETRY_DEFAULT_LOGGING_RATE_MS = 500; 	// Default logging delay for telemetry task
+constexpr uint32_t TELEMETRY_DEFAULT_LOGGING_RATE_MS = 1100; 	// Default logging delay for telemetry task
 
 
 /* System Defines ------------------------------------------------------------------*/
