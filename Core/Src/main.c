@@ -646,8 +646,11 @@ static void MX_GPIO_Init(void)
                           |RELAY0_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RELAY8_Pin|RELAY7_Pin|RELAY6_Pin|RELAY5_Pin
+  HAL_GPIO_WritePin(GPIOB, RELAY8_Pin|RELAY6_Pin|RELAY5_Pin
                           |LED_2_Pin|LED_1_Pin|LED_0_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, RELAY7_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : CONT_CK0_Pin CONT_CK1_Pin RELAY9_Pin TC1_NCS_Pin
                            TC2_NCS_Pin RELAY4_Pin RELAY3_Pin RS422_TX_EN_Pin */
