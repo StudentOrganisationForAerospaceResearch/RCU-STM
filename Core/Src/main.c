@@ -399,7 +399,7 @@ static void MX_LPUART1_UART_Init(void)
 
   /* USER CODE END LPUART1_Init 1 */
   hlpuart1.Instance = LPUART1;
-  hlpuart1.Init.BaudRate = 115200;
+  hlpuart1.Init.BaudRate = 57600;
   hlpuart1.Init.WordLength = UART_WORDLENGTH_8B;
   hlpuart1.Init.StopBits = UART_STOPBITS_1;
   hlpuart1.Init.Parity = UART_PARITY_NONE;
@@ -638,19 +638,21 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, CONT_CK0_Pin|CONT_CK1_Pin|RELAY9_Pin|TC1_NCS_Pin
-                          |TC2_NCS_Pin|RELAY4_Pin|RELAY3_Pin|RS422_TX_EN_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOC, CONT_CK0_Pin|CONT_CK1_Pin|TC1_NCS_Pin|TC2_NCS_Pin
+                          |RS422_TX_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, RELAY11_Pin|RELAY10_Pin|RELAY2_Pin|RELAY1_Pin
                           |RELAY0_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RELAY8_Pin|RELAY6_Pin|RELAY5_Pin
-                          |LED_2_Pin|LED_1_Pin|LED_0_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOC, RELAY9_Pin|RELAY4_Pin|RELAY3_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RELAY7_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, RELAY8_Pin|RELAY7_Pin|RELAY5_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, RELAY6_Pin|LED_2_Pin|LED_1_Pin|LED_0_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : CONT_CK0_Pin CONT_CK1_Pin RELAY9_Pin TC1_NCS_Pin
                            TC2_NCS_Pin RELAY4_Pin RELAY3_Pin RS422_TX_EN_Pin */
