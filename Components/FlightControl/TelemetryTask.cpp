@@ -8,7 +8,7 @@
 #include "GPIO.hpp"
 #include "SystemDefines.hpp"
 #include "PIRxProtocolTask.hpp"
-
+#include "LoadCellTask.hpp"
 #include "FlightTask.hpp"
 #include "ThermocoupleTask.hpp"
 #include "PressureTransducerTask.hpp"
@@ -83,7 +83,7 @@ void TelemetryTask::HandleCommand(Command& cm)
  */
 void TelemetryTask::RunLogSequence()
 {
-    SOAR_PRINT("GPIO Transmit...\n");
+    //SOAR_PRINT("GPIO Transmit...\n");
 
 	//Relay status
     Proto::TelemetryMessage relayMsg;
@@ -129,6 +129,12 @@ void TelemetryTask::RunLogSequence()
     // Send the padbox continuity data
     PIRxProtocolTask::SendProtobufMessage(padBoxWriteBuffer, Proto::MessageID::MSG_TELEMETRY);
 
+	// Load Cell
+    LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_NEW_SAMPLE));
+    LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_TRANSMIT));
+
+    //TODO: Thermocouples
+    //TODO: Pressure Transducers
     //Thermocouple
     ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_NEW_SAMPLE));
     ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_TRANSMIT));
