@@ -256,7 +256,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_3;
+  sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
@@ -586,13 +586,12 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, CONT_CK0_Pin|CONT_CK1_Pin|NOS2_LC_CLK_Pin|TC2_NCS_Pin
-                          |TC1_NCS_Pin
+  HAL_GPIO_WritePin(GPIOC, CONT_CK0_Pin|CONT_CK1_Pin|TC1_NCS_Pin|TC2_NCS_Pin
                           |RS422_TX_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RELAY11_Pin|RELAY10_Pin|RELAY2_Pin|RELAY1_Pin
-                          |RELAY0_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, RELAY11_Pin|RELAY10_Pin|NOS2_LC_CLK_Pin|RELAY2_Pin
+                          |RELAY1_Pin|RELAY0_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, RELAY9_Pin|RELAY4_Pin|RELAY3_Pin, GPIO_PIN_SET);
@@ -601,18 +600,16 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, RELAY8_Pin|RELAY7_Pin|RELAY5_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RELAY8_Pin|RELAY7_Pin|RELAY6_Pin|RELAY5_Pin
-                          |LED_2_Pin|LED_1_Pin|LED_0_Pin|NOS1_LC_CLK_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, RELAY6_Pin|LED_2_Pin|LED_1_Pin|LED_0_Pin
+                          |NOS1_LC_CLK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USART1_TX_EN_GPIO_Port, USART1_TX_EN_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : CONT_CK0_Pin CONT_CK1_Pin NOS2_LC_CLK_Pin RELAY9_Pin
-                           TC1_NCS_Pin TC2_NCS_Pin RELAY4_Pin RELAY3_Pin
-                           RS422_TX_EN_Pin */
-  GPIO_InitStruct.Pin = CONT_CK0_Pin|CONT_CK1_Pin|NOS2_LC_CLK_Pin|RELAY9_Pin
-                          |TC1_NCS_Pin|TC2_NCS_Pin|RELAY4_Pin|RELAY3_Pin
-                          |RS422_TX_EN_Pin;
+  /*Configure GPIO pins : CONT_CK0_Pin CONT_CK1_Pin RELAY9_Pin TC1_NCS_Pin
+                           TC2_NCS_Pin RELAY4_Pin RELAY3_Pin RS422_TX_EN_Pin */
+  GPIO_InitStruct.Pin = CONT_CK0_Pin|CONT_CK1_Pin|RELAY9_Pin|TC1_NCS_Pin
+                          |TC2_NCS_Pin|RELAY4_Pin|RELAY3_Pin|RS422_TX_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -624,10 +621,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(NOS2_LC_DATA_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : RELAY11_Pin RELAY10_Pin RELAY2_Pin RELAY1_Pin
-                           RELAY0_Pin */
-  GPIO_InitStruct.Pin = RELAY11_Pin|RELAY10_Pin|RELAY2_Pin|RELAY1_Pin
-                          |RELAY0_Pin;
+  /*Configure GPIO pins : RELAY11_Pin RELAY10_Pin NOS2_LC_CLK_Pin RELAY2_Pin
+                           RELAY1_Pin RELAY0_Pin */
+  GPIO_InitStruct.Pin = RELAY11_Pin|RELAY10_Pin|NOS2_LC_CLK_Pin|RELAY2_Pin
+                          |RELAY1_Pin|RELAY0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
