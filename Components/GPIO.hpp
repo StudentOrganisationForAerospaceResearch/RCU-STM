@@ -18,6 +18,9 @@
 #define RELAY_OPEN GPIO_PIN_RESET
 #define RELAY_CLOSE GPIO_PIN_SET
 
+#define SOL4_OPEN GPIO_PIN_SET
+#define SOL4_CLOSE GPIO_PIN_RESET
+
 #define IS_CONTINUOUS GPIO_PIN_SET
 
 #define AC1_GPIO_Port RELAY0_GPIO_Port
@@ -157,11 +160,11 @@ namespace GPIO
 
 	namespace SOL4
 	{
-		inline void Open() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL4_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL4_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(SOL4_GPIO_Port, SOL4_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL4_GPIO_Port, SOL4_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL4_GPIO_Port, SOL4_Pin) == SOL4_OPEN; }
 	}
 
 	namespace SOL5

@@ -8,7 +8,7 @@
 #include "GPIO.hpp"
 #include "SystemDefines.hpp"
 #include "PIRxProtocolTask.hpp"
-
+#include "LoadCellTask.hpp"
 #include "FlightTask.hpp"
 #include "ThermocoupleTask.hpp"
 #include "PressureTransducerTask.hpp"
@@ -83,7 +83,7 @@ void TelemetryTask::HandleCommand(Command& cm)
  */
 void TelemetryTask::RunLogSequence()
 {
-    SOAR_PRINT("GPIO Transmit...\n");
+    //SOAR_PRINT("GPIO Transmit...\n");
 
 	//Relay status
     Proto::TelemetryMessage relayMsg;
@@ -136,4 +136,7 @@ void TelemetryTask::RunLogSequence()
     //Pressure Transducer
     PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_NEW_SAMPLE));
     PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_TRANSMIT));
+	// Load Cell
+    LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_NEW_SAMPLE));
+    LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_TRANSMIT));
 }

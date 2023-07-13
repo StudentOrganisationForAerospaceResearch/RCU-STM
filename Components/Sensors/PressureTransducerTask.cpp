@@ -126,14 +126,10 @@ void PressureTransducerTask::HandleRequestCommand(uint16_t taskCommand)
     	TransmitProtocolPressureData();
         break;
     case PT_REQUEST_DEBUG:
-        SOAR_PRINT("|PT_TASK| Pressure 1 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_1 / 1000,
-        		((data->pressure_1 % 1000)<0) ? -(data->pressure_1 % 1000): (data->pressure_1 % 1000), timestampPT);
-        SOAR_PRINT("|PT_TASK| Pressure 2 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_2 / 1000,
-        		((data->pressure_2 % 1000)<0) ? -(data->pressure_2 % 1000): (data->pressure_2 % 1000), timestampPT);
-        SOAR_PRINT("|PT_TASK| Pressure 3 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_3 / 1000,
-        		((data->pressure_3 % 1000)<0) ? -(data->pressure_3 % 1000): (data->pressure_3 % 1000), timestampPT);
-        SOAR_PRINT("|PT_TASK| Pressure 4 (PSI): %d.%d, MCU Timestamp: %u\r\n", data->pressure_4 / 1000,
-        		((data->pressure_4 % 1000)<0) ? -(data->pressure_4 % 1000): (data->pressure_4 % 1000), timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 1 (PSI): %d, MCU Timestamp: %u\r\n", data->pressure_1, timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 2 (PSI): %d, MCU Timestamp: %u\r\n", data->pressure_2, timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 3 (PSI): %d, MCU Timestamp: %u\r\n", data->pressure_3, timestampPT);
+        SOAR_PRINT("|PT_TASK| Pressure 4 (PSI): %d, MCU Timestamp: %u\r\n", data->pressure_4, timestampPT);
         break;
     default:
         SOAR_PRINT("UARTTask - Received Unsupported REQUEST_COMMAND {%d}\n", taskCommand);
@@ -188,7 +184,7 @@ void ADC_Select_CH2 (void)
 	ADC_ChannelConfTypeDef sConfig = {0};
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
-	  sConfig.Channel = ADC_CHANNEL_2;
+	  sConfig.Channel = ADC_CHANNEL_3;
 	  sConfig.Rank = ADC_REGULAR_RANK_1;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
 	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
@@ -204,7 +200,7 @@ void ADC_Select_CH3 (void)
 	ADC_ChannelConfTypeDef sConfig = {0};
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
-	  sConfig.Channel = ADC_CHANNEL_3;
+	  sConfig.Channel = ADC_CHANNEL_4;
 	  sConfig.Rank = ADC_REGULAR_RANK_1;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
 	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
@@ -220,7 +216,7 @@ void ADC_Select_CH4 (void)
 	ADC_ChannelConfTypeDef sConfig = {0};
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
-	  sConfig.Channel = ADC_CHANNEL_4;
+	  sConfig.Channel = ADC_CHANNEL_9;
 	  sConfig.Rank = ADC_REGULAR_RANK_1;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
 	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
@@ -279,21 +275,20 @@ void PressureTransducerTask::SamplePressureTransducer()
 			HAL_ADC_Stop(&hadc1);
 		}
 
-	vi = PRESSURE_MULTIPLIER_COEFFICIENT * (adcVal[0]);
-	pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
+	vi = ((3.3/4095.0) * (adcVal[0]));
+	pressureTransducerValue1 = (250 * (vi * PRESSURE_SCALE) - 125); // Multiply by 1000 to keep decimal places
 	data->pressure_1 = (int32_t) pressureTransducerValue1; // Pressure in PSI
 
-	vi =  PRESSURE_MULTIPLIER_COEFFICIENT * (adcVal[1]); // Converts 12 bit ADC value into voltage
-	pressureTransducerValue2 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
+	vi = ((3.3/4095.0) * (adcVal[1])); // Converts 12 bit ADC value into voltage
+	pressureTransducerValue2 = (250 * (vi * PRESSURE_SCALE) - 125); // Multiply by 1000 to keep decimal places
 	data->pressure_2 = (int32_t) pressureTransducerValue2; // Pressure in PSI
 
-
-	vi =  PRESSURE_MULTIPLIER_COEFFICIENT * (adcVal[2]); // Converts 12 bit ADC value into voltage
-	pressureTransducerValue3 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
+	vi = ((3.3/4095.0) * (adcVal[2])); // Converts 12 bit ADC value into voltage
+	pressureTransducerValue3 = (250 * (vi * PRESSURE_SCALE) - 125); // Multiply by 1000 to keep decimal places
 	data->pressure_3 = (int32_t) pressureTransducerValue3; // Pressure in PSI
 
-	vi =  PRESSURE_MULTIPLIER_COEFFICIENT * (adcVal[3]); // Converts 12 bit ADC value into voltage
-	pressureTransducerValue4 = (250 * (vi * PRESSURE_SCALE) - 125) * 1000; // Multiply by 1000 to keep decimal places
+	vi = ((3.3/4095.0) * (adcVal[3])); // Converts 12 bit ADC value into voltage
+	pressureTransducerValue4 = (250 * (vi * PRESSURE_SCALE) - 125); // Multiply by 1000 to keep decimal places
 	data->pressure_4 = (int32_t) pressureTransducerValue4; // Pressure in PSI
 
 	timestampPT = HAL_GetTick();
