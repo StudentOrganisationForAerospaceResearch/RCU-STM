@@ -10,7 +10,8 @@
 #include "PIRxProtocolTask.hpp"
 #include "LoadCellTask.hpp"
 #include "FlightTask.hpp"
-
+#include "ThermocoupleTask.hpp"
+#include "PressureTransducerTask.hpp"
 /**
  * @brief Constructor for TelemetryTask
  */
@@ -128,10 +129,14 @@ void TelemetryTask::RunLogSequence()
     // Send the padbox continuity data
     PIRxProtocolTask::SendProtobufMessage(padBoxWriteBuffer, Proto::MessageID::MSG_TELEMETRY);
 
+    //Thermocouple
+    ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_NEW_SAMPLE));
+    ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_TRANSMIT));
+
+    //Pressure Transducer
+    PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_NEW_SAMPLE));
+    PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_TRANSMIT));
 	// Load Cell
     LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_NEW_SAMPLE));
     LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_TRANSMIT));
-
-    //TODO: Thermocouples
-    //TODO: Pressure Transducers
 }

@@ -12,6 +12,8 @@
 #include <cstring>
 
 #include "FlightTask.hpp"
+#include "ThermocoupleTask.hpp"
+#include "PressureTransducerTask.hpp"
 #include "GPIO.hpp"
 #include "LoadCellTask.hpp"
 #include "stm32l4xx_hal.h"
@@ -87,6 +89,7 @@ void DebugTask::InitTask()
  */
 void DebugTask::Run(void * pvParams)
 {
+
 	// Arm the interrupt
 	ReceiveData();
 
@@ -163,6 +166,19 @@ void DebugTask::HandleDebugMessage(const char* msg)
 		GPIO::LED1::On();
 		// TODO: Send to HID task to blink LED, this shouldn't delay
 	}
+	else if (strcmp(msg, "tct") == 0)
+		{
+			SOAR_PRINT("Debug 'Thermocouple' Sampling Temperature Reading");
+			ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_NEW_SAMPLE));
+			ThermocoupleTask::Inst().SendCommand(Command(REQUEST_COMMAND, THERMOCOUPLE_REQUEST_DEBUG));
+		}
+	else if (strcmp(msg, "ptc") == 0) {
+			// Print message
+			SOAR_PRINT("Debug 'Pressure Transducer' Sample and Output Received\n");
+			PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_NEW_SAMPLE));
+			PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_DEBUG));
+			// TODO: Send to HID task to blink LED, this shouldn't delay
+		}
 	else {
 		// Single character command, or unknown command
 		switch (msg[0]) {
