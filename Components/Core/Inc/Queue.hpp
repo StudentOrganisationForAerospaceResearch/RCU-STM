@@ -34,6 +34,8 @@ public:
 
 	//Functions
 	bool Send(Command& command);
+	bool SendWait(Command& command);
+
 	bool SendFromISR(Command& command);
 
 	bool SendToFront(Command& command);

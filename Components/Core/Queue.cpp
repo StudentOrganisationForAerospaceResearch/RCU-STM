@@ -83,6 +83,22 @@ bool Queue::Send(Command& command)
 }
 
 /**
+ * @brief Sends a command object to the queue (sends to back of queue in FIFO order)
+ * @param command Command object reference to send
+ * @return true on success, false on failure (queue full)
+*/
+bool Queue::SendWait(Command& command)
+{
+    if (xQueueSend(rtQueueHandle, &command, HAL_MAX_DELAY) == pdPASS)
+        return true;
+
+    SOAR_PRINT("Could not send data to queue!");
+    command.Reset();
+
+    return false;
+}
+
+/**
  * @brief Polls queue with specific timeout, blocks for timeout_ms, returns null on no data
  * @param timeout_ms Time to block for
  * @param cm Command object to copy received data into
@@ -108,3 +124,6 @@ bool Queue::ReceiveWait(Command& cm)
     }
     return false;
 }
+
+
+

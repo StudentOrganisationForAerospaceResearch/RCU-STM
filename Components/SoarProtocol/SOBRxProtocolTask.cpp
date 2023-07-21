@@ -1,27 +1,28 @@
 /**
  ******************************************************************************
- * File Name          : DMBRxProtocolTask.hpp
- * Description        : Protocol task, specific to DMBRx UART Line
+ * File Name          : SOBRxProtocolTask.hpp
+ * Description        : Protocol task, specific to SOBRx UART Line
  ******************************************************************************
 */
-#include "DMBRxProtocolTask.hpp"
+#include "SOBRxProtocolTask.hpp"
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
 #include "PIRxProtocolTask.hpp"
 #include "SOBRxRepeaterTask.hpp"
 #include "UARTTask.hpp"
 
+
 /**
- * @brief Initialize the DMBRxProtocolTask
+ * @brief Initialize the SOBRxProtocolTask
  */
-void DMBRxProtocolTask::InitTask()
+void SOBRxProtocolTask::InitTask()
 {
     // Make sure the task is not already initialized
     SOAR_ASSERT(rtTaskHandle == nullptr, "Cannot initialize Protocol task twice");
 
     // Start the task
     BaseType_t rtValue =
-        xTaskCreate((TaskFunction_t)DMBRxProtocolTask::RunTask,
+        xTaskCreate((TaskFunction_t)SOBRxProtocolTask::RunTask,
             (const char*)"ProtocolTask",
             (uint16_t)TASK_PROTOCOL_STACK_DEPTH_WORDS,
             (void*)this,
@@ -35,32 +36,50 @@ void DMBRxProtocolTask::InitTask()
 /**
  * @brief Default constructor
  */
-DMBRxProtocolTask::DMBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU, 
-    SystemHandles::UART_Radio,
-    UART_TASK_COMMAND_SEND_DMB)
+SOBRxProtocolTask::SOBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_SOB,
+    SystemHandles::UART_SOB,
+    UART_TASK_COMMAND_SEND_SOB)
 {
 }
 
 /**
  * @brief Handle a command message
  */
-void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
+void SOBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
+
+
     Proto::CommandMessage msg;
     msg.deserialize(readBuffer);
 
-    // Verify the source and target nodes, echo it if it does not have DMBRx as the target
-    if (msg.get_source() != Proto::Node::NODE_DMB)
+    // Verify the target node, if it isn't as expected, do nothing
+    if (msg.get_target() != Proto::Node::NODE_SOB)
+        return;
+     // If the message does not have a SOB command, do nothing
+    if (!msg.has_sob_command())
         return;
 
-    SOAR_PRINT("PROTO-INFO: Received DMBRx Command Message");
+    SOAR_PRINT("PROTO-INFO: Received SOB Command Message\n");
+
+    // Process the SOB command
+    switch (msg.get_sob_command().get_command_enum())
+    {
+    case Proto::SOBCommand::Command::SOB_FAST_SAMPLE_IR: // EOF command from SOB
+    {
+       SOBManager::Inst().ConfirmEOF();
+       break;
+    }
+    default:
+       break;
+    }
+
 
 }
 
 /**
  * @brief Handle a control message
  */
-void DMBRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
+void SOBRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
     //rewrap into a write buffer var because readBuffer and writeBuffer are not interchangeable
     Proto::ControlMessage msg;
@@ -75,7 +94,7 @@ void DMBRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferF
 /**
  * @brief Handle a telemetry message
  */
-void DMBRxProtocolTask::HandleProtobufTelemetryMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
+void SOBRxProtocolTask::HandleProtobufTelemetryMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
     //rewrap into a write buffer var because readBuffer and writeBuffer are not interchangeable
     Proto::TelemetryMessage msg;

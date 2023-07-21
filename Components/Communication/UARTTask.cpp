@@ -78,7 +78,7 @@ void UARTTask::HandleCommand(Command& cm)
 			HAL_UART_Transmit(SystemHandles::UART_Radio, cm.GetDataPointer(), cm.GetDataSize(), DEBUG_SEND_MAX_TIME_MS);
 			break;
 		case UART_TASK_COMMAND_SEND_SOB:
-			HAL_UART_Transmit(SystemHandles::UART_SOB, cm.GetDataPointer(), cm.GetDataSize(), DEBUG_SEND_MAX_TIME_MS);
+			SOBManager::Inst().HandleSOBTx(cm);
 			break;
 		case UART_TASK_COMMAND_SEND_PBB:
 			HAL_UART_Transmit(SystemHandles::UART_Radio, cm.GetDataPointer(), cm.GetDataSize(), DEBUG_SEND_MAX_TIME_MS);
