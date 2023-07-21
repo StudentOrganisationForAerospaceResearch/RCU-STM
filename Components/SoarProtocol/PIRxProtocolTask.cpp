@@ -7,7 +7,7 @@
 #include "PIRxProtocolTask.hpp"
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
-#include "SOBRxRepeaterTask.hpp"
+#include "SOBRxProtocolTask.hpp"
 #include "DMBRxProtocolTask.hpp"
 #include "UARTTask.hpp"
 #include "LoadCellTask.hpp"
@@ -61,7 +61,7 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
     }
 
     if(msg.get_target() == Proto::Node::NODE_SOB) {
-        SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+        SOBRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
     }
 
@@ -236,7 +236,7 @@ void PIRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFi
     }
 
     if(msg.get_target() == Proto::Node::NODE_SOB) {
-        SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
+        SOBRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
         return;
     }
 }

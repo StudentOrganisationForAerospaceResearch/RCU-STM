@@ -8,7 +8,7 @@
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
 #include "PIRxProtocolTask.hpp"
-#include "SOBRxRepeaterTask.hpp"
+#include "SOBRxProtocolTask.hpp"
 #include "UARTTask.hpp"
 
 /**

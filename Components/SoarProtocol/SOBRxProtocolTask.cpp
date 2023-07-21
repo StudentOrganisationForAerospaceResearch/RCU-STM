@@ -8,7 +8,7 @@
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
 #include "PIRxProtocolTask.hpp"
-#include "SOBRxRepeaterTask.hpp"
+#include "SOBRxProtocolTask.hpp"
 #include "UARTTask.hpp"
 
 
@@ -66,7 +66,7 @@ void SOBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     {
     case Proto::SOBCommand::Command::SOB_FAST_SAMPLE_IR: // EOF command from SOB
     {
-       SOBManager::Inst().ConfirmEOF();
+       UARTTask::Inst().sobManager_.ConfirmEOF();
        break;
     }
     default:

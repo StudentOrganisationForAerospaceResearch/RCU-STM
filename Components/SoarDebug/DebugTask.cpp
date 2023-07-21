@@ -19,7 +19,7 @@
 #include "stm32l4xx_hal.h"
 
 #include "PIRxProtocolTask.hpp"
-#include "SOBRxRepeaterTask.hpp"
+#include "SOBRxProtocolTask.hpp"
 #include "DMBRxProtocolTask.hpp"
 
 /* Macros --------------------------------------------------------------------*/
@@ -46,7 +46,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
 	else if (huart->Instance == SystemHandles::UART_Radio->Instance)
         DMBRxProtocolTask::Inst().InterruptRxData();
 	else if (huart->Instance == SystemHandles::UART_SOB->Instance)
-        SOBRxRepeaterTask::Inst().InterruptRxData();
+        SOBRxProtocolTask::Inst().InterruptRxData();
 	else if (huart->Instance == SystemHandles::UART_PI->Instance)
         PIRxProtocolTask::Inst().InterruptRxData();
 }

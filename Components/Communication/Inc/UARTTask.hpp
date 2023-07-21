@@ -9,6 +9,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "Task.hpp"
 #include "SystemDefines.hpp"
+#include "SOBManager.hpp"
 
 
 
@@ -42,11 +43,13 @@ protected:
 
 	void ConfigureUART();
 	void HandleCommand(Command& cm);
+	SOBManager sobManager_;
 
 private:
 	UARTTask() : Task(UART_TASK_QUEUE_DEPTH_OBJS) {}	// Private constructor
 	UARTTask(const UARTTask&);						// Prevent copy-construction
 	UARTTask& operator=(const UARTTask&);			// Prevent assignment
+
 };
 
 

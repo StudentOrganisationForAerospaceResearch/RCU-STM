@@ -4,12 +4,13 @@
  * Description        : Protocol task, specific to SOBRx
  ******************************************************************************
 */
-#ifndef SOAR_SOBBRXPROTOCOL_HPP_
+#ifndef SOAR_SOBRXPROTOCOL_HPP_
 #define SOAR_SOBRXPROTOCOL_HPP_
 #include "ProtocolTask.hpp"
 #include "Task.hpp"
 #include "SystemDefines.hpp"
 #include "UARTTask.hpp"
+#include "SOBManager.hpp"
 
 
 

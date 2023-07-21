@@ -37,8 +37,8 @@ void UARTTask::InitTask()
 	//Ensure creation succeded
 	SOAR_ASSERT(rtValue == pdPASS, "UARTTask::InitTask() - xTaskCreate() failed");
 
-	// Configure DMA
-	 
+	// Configure DMA :)
+	sobManager_ = new SOBManager();
 }
 
 /**
