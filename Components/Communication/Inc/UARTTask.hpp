@@ -43,7 +43,6 @@ protected:
 
 	void ConfigureUART();
 	void HandleCommand(Command& cm);
-	SOBManager sobManager_;
 
 private:
 	UARTTask() : Task(UART_TASK_QUEUE_DEPTH_OBJS) {}	// Private constructor

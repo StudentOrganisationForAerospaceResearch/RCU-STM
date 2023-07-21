@@ -66,14 +66,12 @@ void SOBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     {
     case Proto::SOBCommand::Command::SOB_FAST_SAMPLE_IR: // EOF command from SOB
     {
-       UARTTask::Inst().sobManager_.ConfirmEOF();
+       SOBManager::Inst().ConfirmEOF();
        break;
     }
     default:
        break;
     }
-
-
 }
 
 /**

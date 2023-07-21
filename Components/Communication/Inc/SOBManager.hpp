@@ -1,5 +1,3 @@
-
-
 #ifndef SOAR_SOBMANAGER_HPP_
 #define SOAR_SOBMANAGER_HPP_
 #include "cmsis_os.h"
@@ -15,22 +13,15 @@ public:
 		return inst;
 	}
 
-	SOBManager()
-	{
-		pendingTxQ_ = new Queue();
-		isControllingLine = true;
-	}
-
-protected:
 	bool IsLineAvailable();
 	void ConfirmEOF();
 	void HandleSOBTx(Command& cm);
 
 
 private:
-
 	Queue* pendingTxQ_;
 	bool isControllingLine;
+	SOBManager() {pendingTxQ_ = new Queue(); isControllingLine = true;};        // Private constructor
 	SOBManager (const SOBManager&);						// Prevent copy-construction
 	SOBManager& operator=(const SOBManager&);			// Prevent assignment
 };

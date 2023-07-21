@@ -21,7 +21,7 @@
 #include "ThermocoupleTask.hpp"
 #include "PressureTransducerTask.hpp"
 #include "PIRxProtocolTask.hpp"
-#include "SOBRxRepeaterTask.hpp"
+#include "SOBRxProtocolTask.hpp"
 #include "DMBRxProtocolTask.hpp"
 #include "LoadCellTask.hpp"
 #include "TelemetryTask.hpp"
@@ -42,7 +42,7 @@ void run_main() {
 	PressureTransducerTask::Inst().InitTask();
 	PIRxProtocolTask::Inst().InitTask();
 	DMBRxProtocolTask::Inst().InitTask();
-	SOBRxRepeaterTask::Inst().InitTask();
+	SOBRxProtocolTask::Inst().InitTask();
 	TelemetryTask::Inst().InitTask();
 	LoadCellTask::Inst().InitTask();
 
