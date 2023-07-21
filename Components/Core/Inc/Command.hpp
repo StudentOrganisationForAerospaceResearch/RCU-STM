@@ -23,7 +23,9 @@ enum GLOBAL_COMMANDS : uint8_t
     CONTROL_ACTION,			// Control actions, used in Rocket State Machine, direct translation to RCU<->DMB Protocol
 	REQUEST_COMMAND,			// Request command
     PROTOCOL_COMMAND,           // Protocol command, used for commands to the Protocol Task
-    TELEMETRY_CHANGE_PERIOD	// Change Telemetry Period to Provided TaskCommand Period in Milliseconds
+    TELEMETRY_CHANGE_PERIOD,	// Change Telemetry Period to Provided TaskCommand Period in Milliseconds
+    TELEMETRY_ALLOW_SOB_DATA_REQUEST, //allow telemetry task to request SOB telemetry
+    TELEMETRY_DENY_SOB_DATA_REQUEST //deny temetry task from requesting SOB telemetry
 };
 
 /* Class -----------------------------------------------------------------*/

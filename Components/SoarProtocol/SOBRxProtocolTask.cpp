@@ -47,8 +47,6 @@ SOBRxProtocolTask::SOBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_SOB,
  */
 void SOBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
-
-
     Proto::CommandMessage msg;
     msg.deserialize(readBuffer);
 
@@ -62,9 +60,9 @@ void SOBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     SOAR_PRINT("PROTO-INFO: Received SOB Command Message\n");
 
     // Process the SOB command
-    switch (msg.get_sob_command().get_command_enum())
+    switch (msg.get_rcu_command().get_command_enum())
     {
-    case Proto::SOBCommand::Command::SOB_FAST_SAMPLE_IR: // EOF command from SOB
+    case Proto::RCUCommand::Command::RCU_LAST: // EOF command from SOB
     {
        SOBManager::Inst().ConfirmEOF();
        break;

@@ -12,6 +12,8 @@
 #include "FlightTask.hpp"
 #include "ThermocoupleTask.hpp"
 #include "PressureTransducerTask.hpp"
+#include "SOBManager.hpp"
+#include "SOBRxProtocolTask.hpp"
 /**
  * @brief Constructor for TelemetryTask
  */
@@ -136,8 +138,12 @@ void TelemetryTask::RunLogSequence()
     //Pressure Transducer
     PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_NEW_SAMPLE));
     PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_TRANSMIT));
-    
+
 	// Load Cell
     LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_NEW_SAMPLE));
     LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_TRANSMIT));
+
+    if(SOBManager::Inst().IsLineAvailable()) {
+        SOBRxProtocolTask::SendSOBCommand(Proto::SOBCommand::Command::SOB_SLOW_SAMPLE_IR);
+    }
 }

@@ -31,6 +31,19 @@ public:
         Inst().ProtocolTask::SendProtobufMessage(writeBuffer, msgId);
     }
 
+    static void SendSOBCommand(Proto::SOBCommand::Command cmd)
+    {
+        Proto::CommandMessage cmdMsg;
+        Proto::SOBCommand sobCmd;
+        cmdMsg.set_source(Proto::Node::NODE_RCU);
+        cmdMsg.set_target(Proto::Node::NODE_SOB);
+        sobCmd.set_command_enum(cmd);
+        cmdMsg.set_sob_command(sobCmd);
+        EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
+        cmdMsg.serialize(writeBuffer);
+        SOBRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+    }
+
 protected:
     static void RunTask(void* pvParams) { SOBRxProtocolTask::Inst().Run(pvParams); } // Static Task Interface, passes control to the instance Run();
 
