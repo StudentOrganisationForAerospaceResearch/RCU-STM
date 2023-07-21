@@ -21,14 +21,18 @@
 #define SOL4_OPEN GPIO_PIN_SET
 #define SOL4_CLOSE GPIO_PIN_RESET
 
+#define PADBOX_IGNITE RELAY_CLOSE
+#define PADBOX_KILL RELAY_OPEN
+
 #define IS_CONTINUOUS GPIO_PIN_SET
 
 #define AC1_GPIO_Port RELAY0_GPIO_Port
 #define AC1_Pin RELAY0_Pin
-#define AC2_GPIO_Port RELAY1_GPIO_Port
-#define AC2_Pin RELAY1_Pin
-#define AC3_GPIO_Port RELAY2_GPIO_Port
-#define AC3_Pin RELAY2_Pin
+
+#define PADBOX1_GPIO_Port RELAY1_GPIO_Port //silkscreen says AC2
+#define PADBOX1_Pin RELAY1_Pin
+#define PADBOX2_GPIO_Port RELAY2_GPIO_Port //silkscreen says AC3
+#define PADBOX2_Pin RELAY2_Pin
 
 #define PBV1_GPIO_Port RELAY3_GPIO_Port
 #define PBV1_Pin RELAY3_Pin
@@ -86,22 +90,22 @@ namespace GPIO
 		inline bool IsOpen() { return HAL_GPIO_ReadPin(AC1_GPIO_Port, AC1_Pin) == RELAY_OPEN; }
 	}
 
-	namespace AC2
+	namespace PADBOX1
 	{
-		inline void Open() { HAL_GPIO_WritePin(AC2_GPIO_Port, AC2_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(AC2_GPIO_Port, AC2_Pin, RELAY_CLOSE); }
-		inline void Toggle() { HAL_GPIO_TogglePin(AC2_GPIO_Port, AC2_Pin); }
+		inline void Ignite() { HAL_GPIO_WritePin(PADBOX1_GPIO_Port, PADBOX1_Pin, PADBOX_IGNITE); }
+		inline void Kill() { HAL_GPIO_WritePin(PADBOX1_GPIO_Port, PADBOX1_Pin, PADBOX_KILL); }
+		inline void Toggle() { HAL_GPIO_TogglePin(PADBOX1_GPIO_Port, PADBOX1_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(AC2_GPIO_Port, AC2_Pin) == RELAY_OPEN; }
+		inline bool IsLive() { return HAL_GPIO_ReadPin(PADBOX1_GPIO_Port, PADBOX1_Pin) == PADBOX_IGNITE; }
 	}
 
-	namespace AC3
+	namespace PADBOX2
 	{
-		inline void Open() { HAL_GPIO_WritePin(AC3_GPIO_Port, AC3_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(AC3_GPIO_Port, AC3_Pin, RELAY_CLOSE); }
-		inline void Toggle() { HAL_GPIO_TogglePin(AC3_GPIO_Port, AC3_Pin); }
+		inline void Ignite() { HAL_GPIO_WritePin(PADBOX2_GPIO_Port, PADBOX2_Pin, PADBOX_IGNITE); }
+		inline void Kill() { HAL_GPIO_WritePin(PADBOX2_GPIO_Port, PADBOX2_Pin, PADBOX_KILL); }
+		inline void Toggle() { HAL_GPIO_TogglePin(PADBOX2_GPIO_Port, PADBOX2_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(AC3_GPIO_Port, AC3_Pin) == RELAY_OPEN; }
+		inline bool IsLive() { return HAL_GPIO_ReadPin(PADBOX2_GPIO_Port, PADBOX2_Pin) == PADBOX_IGNITE; }
 	}
 
 	namespace PBV1

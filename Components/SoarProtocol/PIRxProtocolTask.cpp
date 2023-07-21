@@ -106,12 +106,24 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
         GPIO::AC1::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_AC2: {
-        GPIO::AC2::Open();
+    case Proto::RCUCommand::Command::RCU_KILL_PAD_BOX1: {
+        GPIO::PADBOX1::Kill();
+        GPIO::PADBOX2::Kill();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_AC2: {
-        GPIO::AC2::Close();
+    case Proto::RCUCommand::Command::RCU_IGNITE_PAD_BOX1: {
+        GPIO::PADBOX1::Ignite();
+        GPIO::PADBOX2::Ignite();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_KILL_PAD_BOX2: {
+        GPIO::PADBOX1::Kill();
+        GPIO::PADBOX2::Kill();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_IGNITE_PAD_BOX2: {
+        GPIO::PADBOX1::Ignite();
+        GPIO::PADBOX2::Ignite();
         break;
     }
     case Proto::RCUCommand::Command::RCU_OPEN_PBV1: {
