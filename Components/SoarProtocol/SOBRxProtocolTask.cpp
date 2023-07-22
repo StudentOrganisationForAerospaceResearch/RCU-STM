@@ -51,10 +51,10 @@ void SOBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     msg.deserialize(readBuffer);
 
     // Verify the target node, if it isn't as expected, do nothing
-    if (msg.get_target() != Proto::Node::NODE_SOB)
+    if (msg.get_source() != Proto::Node::NODE_SOB)
         return;
      // If the message does not have a SOB command, do nothing
-    if (!msg.has_sob_command())
+    if (!msg.has_rcu_command())
         return;
 
     SOAR_PRINT("PROTO-INFO: Received SOB Command Message\n");

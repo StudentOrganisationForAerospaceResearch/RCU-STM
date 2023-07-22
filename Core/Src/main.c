@@ -604,7 +604,7 @@ static void MX_GPIO_Init(void)
                           |NOS1_LC_CLK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(USART1_TX_EN_GPIO_Port, USART1_TX_EN_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(USART1_TX_EN_GPIO_Port, USART1_TX_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : CONT_CK0_Pin CONT_CK1_Pin RELAY9_Pin TC1_NCS_Pin
                            TC2_NCS_Pin RELAY4_Pin RELAY3_Pin RS422_TX_EN_Pin */

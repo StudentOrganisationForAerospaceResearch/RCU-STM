@@ -57,9 +57,9 @@ extern DMA_HandleTypeDef hdma_uart5_tx; // DMA UART 5 TX -
 
 namespace SystemHandles {
 	// Aliases
-	constexpr UART_HandleTypeDef* UART_SOB = &huart1;
+	constexpr UART_HandleTypeDef* UART_SOB = &huart3;
 	constexpr UART_HandleTypeDef* UART_Umbilical = &huart2;
-	constexpr UART_HandleTypeDef* UART_Radio = &huart3;
+	constexpr UART_HandleTypeDef* UART_Radio = &huart2; //should be uart3
 	constexpr UART_HandleTypeDef* UART_Debug = &huart2;
 	constexpr UART_HandleTypeDef* UART_PI = &hlpuart1;
 

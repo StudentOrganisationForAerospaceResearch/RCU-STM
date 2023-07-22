@@ -145,7 +145,7 @@ void TelemetryTask::RunLogSequence()
     LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_NEW_SAMPLE));
     LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_TRANSMIT));
 
-    if(SOBManager::Inst().IsLineAvailable()) {
+    if(SOBManager::Inst().IsLineAvailable()) { //TODO: change to SOBManager::Inst().IsLineAvailable()
         SOBRxProtocolTask::SendSOBCommand(Proto::SOBCommand::Command::SOB_SLOW_SAMPLE_IR);
     }
 }
