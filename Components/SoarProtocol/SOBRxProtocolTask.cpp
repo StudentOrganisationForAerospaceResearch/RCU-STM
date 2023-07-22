@@ -64,7 +64,7 @@ void SOBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     {
     case Proto::RCUCommand::Command::RCU_LAST: // EOF command from SOB
     {
-       SOBManager::Inst().ConfirmEOF();
+       //SOBManager::Inst().ConfirmEOF();
        break;
     }
     default:
