@@ -1,4 +1,4 @@
-
+#if 0
 #include "SOBManager.hpp"
 
 bool SOBManager::IsLineAvailable()
@@ -37,4 +37,4 @@ void SOBManager::HandleSOBTx(Command& cm)
     }
 }
 
-
+#endif

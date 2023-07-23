@@ -66,6 +66,9 @@ void FlightTask::Run(void * pvParams)
         GPIO::LED1::Off();
         osDelay(500);
 
+        uint32_t currRtosHeapFree = xPortGetFreeHeapSize();
+        SOAR_PRINT("currRtosHeapFree - %d", currRtosHeapFree);
+
         //Every cycle, print something out (for testing)
         SOAR_PRINT("FlightTask::Run() - [%d] Seconds\n", tempSecondCounter++);
         //osDelay(FLIGHT_PHASE_DISPLAY_FREQ);

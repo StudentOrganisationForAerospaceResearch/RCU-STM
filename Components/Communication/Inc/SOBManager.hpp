@@ -1,5 +1,7 @@
 #ifndef SOAR_SOBMANAGER_HPP_
 #define SOAR_SOBMANAGER_HPP_
+
+#if 0
 #include "cmsis_os.h"
 #include "main.h"
 #include "Queue.hpp"
@@ -27,5 +29,6 @@ private:
 	SOBManager& operator=(const SOBManager&);			// Prevent assignment
 };
 
+#endif //0
 
 #endif    // SOAR_SOBMANAGER_HPP_

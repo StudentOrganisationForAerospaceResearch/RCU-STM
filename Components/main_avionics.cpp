@@ -42,7 +42,7 @@ void run_main() {
 	PressureTransducerTask::Inst().InitTask();
 	PIRxProtocolTask::Inst().InitTask();
 	DMBRxProtocolTask::Inst().InitTask();
-	SOBRxProtocolTask::Inst().InitTask();
+	//SOBRxProtocolTask::Inst().InitTask();
 	TelemetryTask::Inst().InitTask();
 	LoadCellTask::Inst().InitTask();
 
@@ -85,35 +85,6 @@ void run_StartDefaultTask()
 */
 void print(const char* str, ...)
 {
-	//Try to take the VA list mutex
-	if (Global::vaListMutex.Lock(DEBUG_TAKE_MAX_TIME_MS)) {
-		// If we have a message, and can use VA list, extract the string into a new buffer, and null terminate it
-		uint8_t str_buffer[DEBUG_PRINT_MAX_SIZE] = {};
-		va_list argument_list;
-		va_start(argument_list, str);
-		int16_t buflen = vsnprintf(reinterpret_cast<char*>(str_buffer), sizeof(str_buffer) - 1, str, argument_list);
-		va_end(argument_list);
-		if (buflen > 0) {
-			str_buffer[buflen] = '\0';
-		}
-
-		// Release the VA List Mutex
-		Global::vaListMutex.Unlock();
-
-		//Generate a command
-		Command cmd(DATA_COMMAND, (uint16_t)UART_TASK_COMMAND_SEND_DEBUG); // Set the UART channel to send data on
-		
-		//Copy data into the command
-		cmd.CopyDataToCommand(str_buffer, buflen);
-			
-		//Send this packet off to the UART Task
-		UARTTask::Inst().GetEventQueue()->Send(cmd);
-	}
-	else
-	{
-		//TODO: Print out that we could not acquire the VA list mutex
-		SOAR_ASSERT(false, "Could not acquire VA_LIST mutex");
-	}
 }
 
 /**
