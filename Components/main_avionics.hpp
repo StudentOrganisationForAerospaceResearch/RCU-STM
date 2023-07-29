@@ -62,6 +62,7 @@ namespace SystemHandles {
 	constexpr UART_HandleTypeDef* UART_Radio = &huart3;
 	constexpr UART_HandleTypeDef* UART_Debug = &huart2;
 	constexpr UART_HandleTypeDef* UART_PI = &hlpuart1;
+	constexpr UART_HandleTypeDef* UART_Protocol = &hlpuart1; //unused, for compatibility with SoarProto
 
 	constexpr ADC_HandleTypeDef* ADC_CombustionChamber = &hadc1;
 	constexpr ADC_HandleTypeDef* ADC_Battery = &hadc2;

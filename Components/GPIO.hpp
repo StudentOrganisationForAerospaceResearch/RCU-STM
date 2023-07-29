@@ -99,7 +99,7 @@ namespace GPIO
 		inline bool IsLive() { return HAL_GPIO_ReadPin(PADBOX1_GPIO_Port, PADBOX1_Pin) == PADBOX_IGNITE; }
 	}
 
-	namespace PADBOX3
+	namespace PADBOX2
 	{
 		inline void Ignite() { HAL_GPIO_WritePin(PADBOX2_GPIO_Port, PADBOX2_Pin, PADBOX_IGNITE); }
         inline void Kill() { HAL_GPIO_WritePin(PADBOX2_GPIO_Port, PADBOX2_Pin, PADBOX_KILL); }
