@@ -91,14 +91,14 @@ void TelemetryTask::RunLogSequence()
     relayMsg.set_target(Proto::Node::NODE_RCU);
     relayMsg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
     Proto::RelayStatus relayStatus;
-    relayStatus.set_ac1_open(GPIO::AC1::IsOpen());
+    relayStatus.set_ac1_open(GPIO::SHEDAC::IsOpen());
     relayStatus.set_ac2_open(GPIO::PADBOX1::IsLive());
     relayStatus.set_pbv1_open(GPIO::PBV1::IsOpen());
     relayStatus.set_pbv2_open(GPIO::PBV2::IsOpen());
     relayStatus.set_pbv3_open(GPIO::PBV3::IsOpen());
-    relayStatus.set_sol1_open(GPIO::SOL1::IsOpen());
-    relayStatus.set_sol2_open(GPIO::SOL2::IsOpen());
-    relayStatus.set_sol3_open(GPIO::SOL3::IsOpen());
+    relayStatus.set_sol1_open(GPIO::PBV1::IsOpen());
+    relayStatus.set_sol2_open(GPIO::PBV2::IsOpen());
+    relayStatus.set_sol3_open(GPIO::PBV3::IsOpen());
     relayStatus.set_sol4_open(GPIO::SOL4::IsOpen());
     relayStatus.set_sol5_open(GPIO::SOL5::IsOpen());
     relayStatus.set_sol6_open(GPIO::SOL6::IsOpen());
