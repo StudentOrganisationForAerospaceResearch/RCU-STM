@@ -61,6 +61,10 @@ void Error_Handler(void);
 #define CONT_CK0_GPIO_Port GPIOC
 #define CONT_CK1_Pin GPIO_PIN_14
 #define CONT_CK1_GPIO_Port GPIOC
+#define NOS2_LC_CLK_Pin GPIO_PIN_0
+#define NOS2_LC_CLK_GPIO_Port GPIOC
+#define NOS2_LC_DATA_Pin GPIO_PIN_1
+#define NOS2_LC_DATA_GPIO_Port GPIOC
 #define SOL7_Pin GPIO_PIN_0
 #define SOL7_GPIO_Port GPIOA
 #define SOL6_Pin GPIO_PIN_1
@@ -107,6 +111,10 @@ void Error_Handler(void);
 #define LED_1_GPIO_Port GPIOB
 #define LED_0_Pin GPIO_PIN_7
 #define LED_0_GPIO_Port GPIOB
+#define NOS1_LC_CLK_Pin GPIO_PIN_8
+#define NOS1_LC_CLK_GPIO_Port GPIOB
+#define NOS1_LC_DATA_Pin GPIO_PIN_9
+#define NOS1_LC_DATA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

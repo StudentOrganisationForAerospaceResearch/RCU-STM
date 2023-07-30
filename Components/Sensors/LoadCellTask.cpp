@@ -45,7 +45,7 @@ void LoadCellTask::InitTask()
 void LoadCellTask::Run(void * pvParams)
 {
 	hx711_init(&nos1_loadcell, NOS1_LC_CLK_GPIO_Port, NOS1_LC_CLK_Pin , NOS1_LC_DATA_GPIO_Port, NOS1_LC_DATA_Pin);
-	//hx711_init(&nos2_loadcell, NOS2_LC_CLK_GPIO_Port, NOS2_LC_CLK_Pin , NOS2_LC_DATA_GPIO_Port, NOS2_LC_DATA_Pin);
+	hx711_init(&nos2_loadcell, NOS2_LC_CLK_GPIO_Port, NOS2_LC_CLK_Pin , NOS2_LC_DATA_GPIO_Port, NOS2_LC_DATA_Pin);
 
 	while (1) {
 
@@ -175,9 +175,10 @@ void LoadCellTask::LoadCellCalibrate(hx711_t* loadcell)
 void LoadCellTask::SampleLoadCellData()
 {
 	uint32_t nos1_ADCdata, nos2_ADCdata;
-	two_fill_mass_sample.nos1_mass_g = hx711_weight(&nos1_loadcell, 10, nos1_ADCdata);
-	// NOTE: currently not using NOS2 LC
-	// two_fill_mass_sample.nos2_mass_g = hx711_weight(&nos2_loadcell, 10, nos2_ADCdata);
+	hx711_weight(&nos1_loadcell, 10, nos1_ADCdata);
+	two_fill_mass_sample.nos1_mass_g = nos1_ADCdata;
+	hx711_weight(&nos2_loadcell, 10, nos2_ADCdata);
+	two_fill_mass_sample.nos2_mass_g = nos2_ADCdata;
 	two_fill_mass_sample.timestamp_ms = HAL_GetTick();
 }
 
