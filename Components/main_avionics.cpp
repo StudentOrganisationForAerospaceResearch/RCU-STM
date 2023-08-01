@@ -10,7 +10,7 @@
 
 #include "SystemDefines.hpp"
 #include "main_avionics.hpp"
-#include "stm32l4xx_hal_uart.h"
+#include "UARTDriver.hpp"
 #include "Mutex.hpp"
 #include "Command.hpp"
 
@@ -153,26 +153,26 @@ void soar_assert_debug(bool condition, const char* file, const uint16_t line, co
 			snprintf(reinterpret_cast<char*>(header_buf), ASSERT_BUFFER_MAX_SIZE - 1, "\r\n\n-- ASSERTION FAILED --\r\nFile [PATH_TOO_LONG] @ Line # [%d]\r\n", line);
 		}
 
-		// Output the header to the debug port
-		HAL_UART_Transmit(DEFAULT_ASSERT_UART_HANDLE, header_buf, strlen(reinterpret_cast<char*>(header_buf)), ASSERT_SEND_MAX_TIME_MS);
+        // Output the header to the debug port
+        DEFAULT_ASSERT_UART_DRIVER->Transmit(header_buf, strlen(reinterpret_cast<char*>(header_buf)));
 
-		// If we have a message, and can use VA list, extract the string into a new buffer, and null terminate it
-		if (printMessage && str != nullptr) {
-			uint8_t str_buffer[ASSERT_BUFFER_MAX_SIZE] = {};
-			va_list argument_list;
-			va_start(argument_list, str);
-			int16_t buflen = vsnprintf(reinterpret_cast<char*>(str_buffer), sizeof(str_buffer) - 1, str, argument_list);
-			va_end(argument_list);
-			if (buflen > 0) {
-				str_buffer[buflen] = '\0';
-				HAL_UART_Transmit(DEFAULT_ASSERT_UART_HANDLE, str_buffer, buflen, ASSERT_SEND_MAX_TIME_MS);
-			}
-		}
-	}
-	else {
-		//TODO: Should manually print out the assertion header
-		HAL_UART_Transmit(DEFAULT_ASSERT_UART_HANDLE, (uint8_t*)"-- ASSERTION FAILED --\r\nCould not acquire vaListMutex\r\n", 55, ASSERT_SEND_MAX_TIME_MS);
-	}
+        // If we have a message, and can use VA list, extract the string into a new buffer, and null terminate it
+        if (printMessage && str != nullptr) {
+            uint8_t str_buffer[ASSERT_BUFFER_MAX_SIZE] = {};
+            va_list argument_list;
+            va_start(argument_list, str);
+            int16_t buflen = vsnprintf(reinterpret_cast<char*>(str_buffer), sizeof(str_buffer) - 1, str, argument_list);
+            va_end(argument_list);
+            if (buflen > 0) {
+                str_buffer[buflen] = '\0';
+                DEFAULT_ASSERT_UART_DRIVER->Transmit(str_buffer, buflen);
+            }
+        }
+    }
+    else {
+        //TODO: Should manually print out the assertion header
+        DEFAULT_ASSERT_UART_DRIVER->Transmit((uint8_t*)"-- ASSERTION FAILED --\r\nCould not acquire vaListMutex\r\n", 55);
+    }
 
 	HAL_NVIC_SystemReset();
 

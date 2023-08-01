@@ -38,7 +38,7 @@ void PIRxProtocolTask::InitTask()
  * @brief Default constructor
  */
 PIRxProtocolTask::PIRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU, 
-    SystemHandles::UART_PI,
+    UART::RPI,
     UART_TASK_COMMAND_SEND_PI)
 {
 }
