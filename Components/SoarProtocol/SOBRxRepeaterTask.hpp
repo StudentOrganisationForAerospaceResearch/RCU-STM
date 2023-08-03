@@ -28,7 +28,7 @@
 
 /* Configuration ------------------------------------------------------------------*/
 constexpr UART_HandleTypeDef* SOBRx_REPEATER_TASK_HUART = SystemHandles::UART_SOB;
-constexpr uint16_t SOBRx_REPEATER_TASK_UART_TASK_COMMAND = UART_TASK_COMMAND_SEND_SOB;
+constexpr uint16_t SOBRx_REPEATER_TASK_UART_TASK_COMMAND = UART_TASK_COMMAND_SEND_PI;
 
 /* Class ------------------------------------------------------------------*/
 class SOBRxRepeaterTask : public RepeaterTask
