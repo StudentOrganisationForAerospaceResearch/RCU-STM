@@ -134,10 +134,10 @@ void LoadCellTask::HandleRequestCommand(uint16_t taskCommand)
     }
     case LOADCELL_REQUEST_DEBUG: {
         SOAR_PRINT("Load Cell read mass NOS1: %d.%d, NOS2: %d.%d grams\n",
-        		(int)two_fill_mass_sample.nos1_mass_g,
-				abs(int(two_fill_mass_sample.nos1_mass_g * 1000) % 1000),
-				(int)two_fill_mass_sample.nos2_mass_g,
-				abs(int(two_fill_mass_sample.nos2_mass_g * 1000) % 1000));
+        		(int)two_fill_mass_sample.nos1_adc_value,
+				abs(int(two_fill_mass_sample.nos1_adc_value * 1000) % 1000),
+				(int)two_fill_mass_sample.nos2_adc_value,
+				abs(int(two_fill_mass_sample.nos2_adc_value * 1000) % 1000));
         break;
     }
     default:
@@ -176,9 +176,9 @@ void LoadCellTask::SampleLoadCellData()
 {
 	uint32_t nos1_ADCdata, nos2_ADCdata;
 	hx711_weight(&nos1_loadcell, 10, nos1_ADCdata);
-	two_fill_mass_sample.nos1_mass_g = nos1_ADCdata;
+	two_fill_mass_sample.nos1_adc_value = nos1_ADCdata;
 	hx711_weight(&nos2_loadcell, 10, nos2_ADCdata);
-	two_fill_mass_sample.nos2_mass_g = nos2_ADCdata;
+	two_fill_mass_sample.nos2_adc_value = nos2_ADCdata;
 	two_fill_mass_sample.timestamp_ms = HAL_GetTick();
 }
 
@@ -190,8 +190,8 @@ void LoadCellTask::TransmitProtocolLoadCellData()
 //	msg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
 
 	Proto::NOSLoadCell twofillSample;
-	twofillSample.set_nos1_mass(two_fill_mass_sample.nos1_mass_g);
-	twofillSample.set_nos2_mass(two_fill_mass_sample.nos2_mass_g);
+	twofillSample.set_nos1_mass(two_fill_mass_sample.nos1_adc_value);
+	twofillSample.set_nos2_mass(two_fill_mass_sample.nos2_adc_value);
 	msg.set_nos(twofillSample);
 
 	EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
