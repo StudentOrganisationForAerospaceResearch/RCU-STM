@@ -49,8 +49,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -63,37 +61,39 @@ void Error_Handler(void);
 #define CONT_CK0_GPIO_Port GPIOC
 #define CONT_CK1_Pin GPIO_PIN_14
 #define CONT_CK1_GPIO_Port GPIOC
+#define NOS2_LC_CLK_Pin GPIO_PIN_0
+#define NOS2_LC_CLK_GPIO_Port GPIOC
 #define NOS2_LC_DATA_Pin GPIO_PIN_1
 #define NOS2_LC_DATA_GPIO_Port GPIOC
-#define RELAY11_Pin GPIO_PIN_0
-#define RELAY11_GPIO_Port GPIOA
-#define RELAY10_Pin GPIO_PIN_1
-#define RELAY10_GPIO_Port GPIOA
-#define NOS2_LC_CLK_Pin GPIO_PIN_5
-#define NOS2_LC_CLK_GPIO_Port GPIOA
-#define RELAY9_Pin GPIO_PIN_5
-#define RELAY9_GPIO_Port GPIOC
-#define RELAY8_Pin GPIO_PIN_0
-#define RELAY8_GPIO_Port GPIOB
-#define RELAY7_Pin GPIO_PIN_1
-#define RELAY7_GPIO_Port GPIOB
-#define RELAY6_Pin GPIO_PIN_2
-#define RELAY6_GPIO_Port GPIOB
-#define RELAY5_Pin GPIO_PIN_12
-#define RELAY5_GPIO_Port GPIOB
+#define SOL7_Pin GPIO_PIN_0
+#define SOL7_GPIO_Port GPIOA
+#define SOL6_Pin GPIO_PIN_1
+#define SOL6_GPIO_Port GPIOA
+#define PBV1_Pin GPIO_PIN_5
+#define PBV1_GPIO_Port GPIOC
+#define PBV2_Pin GPIO_PIN_0
+#define PBV2_GPIO_Port GPIOB
+#define PBV3_Pin GPIO_PIN_1
+#define PBV3_GPIO_Port GPIOB
+#define SOL4_Pin GPIO_PIN_2
+#define SOL4_GPIO_Port GPIOB
+#define SOL5_Pin GPIO_PIN_12
+#define SOL5_GPIO_Port GPIOB
 #define TC1_NCS_Pin GPIO_PIN_6
 #define TC1_NCS_GPIO_Port GPIOC
 #define TC2_NCS_Pin GPIO_PIN_7
 #define TC2_NCS_GPIO_Port GPIOC
-#define RELAY4_Pin GPIO_PIN_8
-#define RELAY4_GPIO_Port GPIOC
-#define RELAY3_Pin GPIO_PIN_9
-#define RELAY3_GPIO_Port GPIOC
-#define RELAY2_Pin GPIO_PIN_8
-#define RELAY2_GPIO_Port GPIOA
-#define RELAY1_Pin GPIO_PIN_11
-#define RELAY1_GPIO_Port GPIOA
-#define RELAY0_Pin GPIO_PIN_12
+#define SOL8A_Pin GPIO_PIN_8
+#define SOL8A_GPIO_Port GPIOC
+#define SOL8B_Pin GPIO_PIN_9
+#define SOL8B_GPIO_Port GPIOC
+#define PADBOX1_Pin GPIO_PIN_8
+#define PADBOX1_GPIO_Port GPIOA
+#define PADBOX2_Pin GPIO_PIN_11
+#define PADBOX2_GPIO_Port GPIOA
+#define SHEDAC_Pin GPIO_PIN_12
+#define SHEDAC_GPIO_Port GPIOA
+#define RELAY0_Pin GPIO_PIN_15
 #define RELAY0_GPIO_Port GPIOA
 #define RADIO_TX_Pin GPIO_PIN_10
 #define RADIO_TX_GPIO_Port GPIOC
@@ -103,6 +103,8 @@ void Error_Handler(void);
 #define RS422_TX_EN_GPIO_Port GPIOC
 #define USART1_TX_EN_Pin GPIO_PIN_2
 #define USART1_TX_EN_GPIO_Port GPIOD
+#define RELAY1_Pin GPIO_PIN_4
+#define RELAY1_GPIO_Port GPIOB
 #define LED_2_Pin GPIO_PIN_5
 #define LED_2_GPIO_Port GPIOB
 #define LED_1_Pin GPIO_PIN_6

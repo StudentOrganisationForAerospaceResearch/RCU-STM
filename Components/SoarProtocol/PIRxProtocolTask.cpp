@@ -99,19 +99,31 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
 		break;
     }
     case Proto::RCUCommand::Command::RCU_OPEN_AC1: {
-        GPIO::AC1::Open();
+        GPIO::SHEDAC::Open();
         break;
     }
     case Proto::RCUCommand::Command::RCU_CLOSE_AC1: {
-        GPIO::AC1::Close();
+        GPIO::SHEDAC::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_AC2: {
-        GPIO::AC2::Open();
+    case Proto::RCUCommand::Command::RCU_KILL_PAD_BOX1: {
+        GPIO::PADBOX1::Kill();
+        GPIO::PADBOX2::Kill();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_AC2: {
-        GPIO::AC2::Close();
+    case Proto::RCUCommand::Command::RCU_IGNITE_PAD_BOX1: {
+        GPIO::PADBOX1::Ignite();
+        GPIO::PADBOX2::Ignite();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_KILL_PAD_BOX2: {
+        GPIO::PADBOX1::Kill();
+        GPIO::PADBOX2::Kill();
+        break;
+    }
+    case Proto::RCUCommand::Command::RCU_IGNITE_PAD_BOX2: {
+        GPIO::PADBOX1::Ignite();
+        GPIO::PADBOX2::Ignite();
         break;
     }
     case Proto::RCUCommand::Command::RCU_OPEN_PBV1: {
@@ -136,30 +148,6 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
     }
     case Proto::RCUCommand::Command::RCU_CLOSE_PBV3: {
         GPIO::PBV3::Close();
-        break;
-    }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL1: {
-        GPIO::SOL1::Open();
-        break;
-    }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL1: {
-        GPIO::SOL1::Close();
-        break;
-    }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL2: {
-        GPIO::SOL2::Open();
-        break;
-    }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL2: {
-        GPIO::SOL2::Close();
-        break;
-    }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL3: {
-        GPIO::SOL3::Open();
-        break;
-    }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL3: {
-        GPIO::SOL3::Close();
         break;
     }
     case Proto::RCUCommand::Command::RCU_OPEN_SOL4: {
