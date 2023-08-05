@@ -29,8 +29,8 @@ enum LOADCELL_TASK_COMMANDS {
 
 struct TwoFillLoadCellSample
 {
-	float nos1_mass_g;
-	float nos2_mass_g;
+	float nos1_adc_value;
+	float nos2_adc_value;
 	uint32_t timestamp_ms;
 };
 

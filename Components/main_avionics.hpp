@@ -49,6 +49,7 @@ extern DMA_HandleTypeDef hdma_uart5_rx; // DMA UART 5 RX -
 extern DMA_HandleTypeDef hdma_uart5_tx; // DMA UART 5 TX -
 
 namespace SystemHandles {
+	// Aliases
 
 	constexpr ADC_HandleTypeDef* ADC_CombustionChamber = &hadc1;
 	constexpr ADC_HandleTypeDef* ADC_Battery = &hadc2;
