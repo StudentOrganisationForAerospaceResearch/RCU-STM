@@ -72,7 +72,7 @@ constexpr uint8_t TASK_THERMOCOUPLE_PRIORITY = 2;			// Priority of the thermocou
 constexpr uint8_t TASK_THERMOCOUPLE_QUEUE_DEPTH_OBJS = 10;		// Size of the thermocouple task queue
 constexpr uint16_t TASK_THERMOCOUPLE_STACK_DEPTH_WORDS = 384;		// Size of the thermocouple task stack
 
-constexpr uint32_t TELEMETRY_DEFAULT_LOGGING_RATE_MS = 1100; 	// Default logging delay for telemetry task
+constexpr uint32_t TELEMETRY_DEFAULT_LOGGING_RATE_MS = 400; 	// Default logging delay for telemetry task
 
 
 /* System Defines ------------------------------------------------------------------*/

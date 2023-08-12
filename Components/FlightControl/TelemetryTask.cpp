@@ -91,7 +91,7 @@ void TelemetryTask::RunLogSequence()
     relayMsg.set_target(Proto::Node::NODE_RCU);
     relayMsg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
     Proto::RelayStatus relayStatus;
-    relayStatus.set_ac1_open(GPIO::SHEDAC::IsOpen());
+    relayStatus.set_ac1_open(GPIO::SHEDAC::IsOff());
     relayStatus.set_ac2_open(GPIO::PADBOX1::IsLive());
     relayStatus.set_pbv1_open(GPIO::PBV1::IsOpen());
     relayStatus.set_pbv2_open(GPIO::PBV2::IsOpen());

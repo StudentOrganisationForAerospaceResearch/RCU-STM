@@ -99,11 +99,11 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
 		break;
     }
     case Proto::RCUCommand::Command::RCU_OPEN_AC1: {
-        GPIO::SHEDAC::Open();
+        GPIO::SHEDAC::Off();
         break;
     }
     case Proto::RCUCommand::Command::RCU_CLOSE_AC1: {
-        GPIO::SHEDAC::Close();
+        GPIO::SHEDAC::On();
         break;
     }
     case Proto::RCUCommand::Command::RCU_KILL_PAD_BOX1: {
