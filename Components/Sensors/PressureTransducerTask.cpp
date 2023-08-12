@@ -184,7 +184,7 @@ void ADC_Select_CH2 (void)
 	ADC_ChannelConfTypeDef sConfig = {0};
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
-	  sConfig.Channel = ADC_CHANNEL_9;
+	  sConfig.Channel = ADC_CHANNEL_10;
 	  sConfig.Rank = ADC_REGULAR_RANK_1;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
 	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
@@ -200,7 +200,7 @@ void ADC_Select_CH3 (void)
 	ADC_ChannelConfTypeDef sConfig = {0};
 	  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
 	  */
-	  sConfig.Channel = ADC_CHANNEL_10;
+	  sConfig.Channel = ADC_CHANNEL_9;
 	  sConfig.Rank = ADC_REGULAR_RANK_1;
 	  sConfig.SamplingTime = ADC_SAMPLETIME_247CYCLES_5;
 	  sConfig.SingleDiff = ADC_SINGLE_ENDED;
