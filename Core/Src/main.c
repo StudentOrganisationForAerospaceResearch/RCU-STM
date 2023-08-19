@@ -648,14 +648,14 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, PBV1_Pin|SOL8A_Pin|SOL8B_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, PBV2_Pin|PBV3_Pin|SOL5_Pin|RELAY1_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SOL4_Pin|LED_2_Pin|LED_1_Pin|LED_0_Pin
-                          |NOS1_LC_CLK_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, PBV2_Pin|PBV3_Pin|SOL4_Pin|SOL5_Pin
+                          |RELAY1_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USART1_TX_EN_GPIO_Port, USART1_TX_EN_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LED_2_Pin|LED_1_Pin|LED_0_Pin|NOS1_LC_CLK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : CONT_CK0_Pin CONT_CK1_Pin NOS2_LC_CLK_Pin PBV1_Pin
                            TC1_NCS_Pin TC2_NCS_Pin SOL8A_Pin SOL8B_Pin
