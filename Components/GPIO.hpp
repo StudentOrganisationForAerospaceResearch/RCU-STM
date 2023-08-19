@@ -18,11 +18,17 @@
 #define RELAY_OPEN GPIO_PIN_SET
 #define RELAY_CLOSE GPIO_PIN_RESET
 
-#define SOL4_OPEN GPIO_PIN_RESET
-#define SOL4_CLOSE GPIO_PIN_SET
+#define SOL_OPEN RELAY_CLOSE
+#define SOL_CLOSE RELAY_OPEN
+
+#define SOL4_OPEN RELAY_OPEN
+#define SOL4_CLOSE RELAY_CLOSE
 
 #define PADBOX_IGNITE RELAY_CLOSE
 #define PADBOX_KILL RELAY_OPEN
+
+#define AC_ON RELAY_CLOSE
+#define AC_OFF RELAY_OPEN
 
 #define IS_CONTINUOUS GPIO_PIN_SET
 
@@ -48,11 +54,11 @@ namespace GPIO
 
 	namespace SHEDAC
 	{
-		inline void Open() { HAL_GPIO_WritePin(SHEDAC_GPIO_Port, SHEDAC_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SHEDAC_GPIO_Port, SHEDAC_Pin, RELAY_CLOSE); }
+		inline void On() { HAL_GPIO_WritePin(SHEDAC_GPIO_Port, SHEDAC_Pin, AC_ON); }
+		inline void Off() { HAL_GPIO_WritePin(SHEDAC_GPIO_Port, SHEDAC_Pin, AC_OFF); }
 		inline void Toggle() { HAL_GPIO_TogglePin(SHEDAC_GPIO_Port, SHEDAC_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SHEDAC_GPIO_Port, SHEDAC_Pin) == RELAY_OPEN; }
+		inline bool IsOff() { return HAL_GPIO_ReadPin(SHEDAC_GPIO_Port, SHEDAC_Pin) == AC_OFF; }
 	}
 
 	namespace PADBOX1
@@ -75,29 +81,29 @@ namespace GPIO
 
 	namespace PBV1
 	{
-		inline void Open() { HAL_GPIO_WritePin(PBV1_GPIO_Port, PBV1_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(PBV1_GPIO_Port, PBV1_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(PBV1_GPIO_Port, PBV1_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(PBV1_GPIO_Port, PBV1_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(PBV1_GPIO_Port, PBV1_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV1_GPIO_Port, PBV1_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV1_GPIO_Port, PBV1_Pin) == SOL_OPEN; }
 	}
 
 	namespace PBV2
 	{
-		inline void Open() { HAL_GPIO_WritePin(PBV2_GPIO_Port, PBV2_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(PBV2_GPIO_Port, PBV2_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(PBV2_GPIO_Port, PBV2_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(PBV2_GPIO_Port, PBV2_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(PBV2_GPIO_Port, PBV2_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV2_GPIO_Port, PBV2_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV2_GPIO_Port, PBV2_Pin) == SOL_OPEN; }
 	}
 
 	namespace PBV3
 	{
-		inline void Open() { HAL_GPIO_WritePin(PBV3_GPIO_Port, PBV3_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(PBV3_GPIO_Port, PBV3_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(PBV3_GPIO_Port, PBV3_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(PBV3_GPIO_Port, PBV3_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(PBV3_GPIO_Port, PBV3_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV3_GPIO_Port, PBV3_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV3_GPIO_Port, PBV3_Pin) == SOL_OPEN; }
 	}
 
 	namespace SOL4
@@ -111,47 +117,47 @@ namespace GPIO
 
 	namespace SOL5
 	{
-		inline void Open() { HAL_GPIO_WritePin(SOL5_GPIO_Port, SOL5_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SOL5_GPIO_Port, SOL5_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(SOL5_GPIO_Port, SOL5_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(SOL5_GPIO_Port, SOL5_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(SOL5_GPIO_Port, SOL5_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL5_GPIO_Port, SOL5_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL5_GPIO_Port, SOL5_Pin) == SOL_OPEN; }
 	}
 
 	namespace SOL6
 	{
-		inline void Open() { HAL_GPIO_WritePin(SOL6_GPIO_Port, SOL6_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SOL6_GPIO_Port, SOL6_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(SOL6_GPIO_Port, SOL6_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(SOL6_GPIO_Port, SOL6_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(SOL6_GPIO_Port, SOL6_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL6_GPIO_Port, SOL6_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL6_GPIO_Port, SOL6_Pin) == SOL_OPEN; }
 	}
 
 	namespace SOL7
 	{
-		inline void Open() { HAL_GPIO_WritePin(SOL7_GPIO_Port, SOL7_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SOL7_GPIO_Port, SOL7_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(SOL7_GPIO_Port, SOL7_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(SOL7_GPIO_Port, SOL7_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(SOL7_GPIO_Port, SOL7_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL7_GPIO_Port, SOL7_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL7_GPIO_Port, SOL7_Pin) == SOL_OPEN; }
 	}
 
 	namespace SOL8A
 	{
-		inline void Open() { HAL_GPIO_WritePin(SOL8A_GPIO_Port, SOL8A_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SOL8A_GPIO_Port, SOL8A_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(SOL8A_GPIO_Port, SOL8A_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(SOL8A_GPIO_Port, SOL8A_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(SOL8A_GPIO_Port, SOL8A_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL8A_GPIO_Port, SOL8A_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL8A_GPIO_Port, SOL8A_Pin) == SOL_OPEN; }
 	}
 
 	namespace SOL8B
 	{
-		inline void Open() { HAL_GPIO_WritePin(SOL8B_GPIO_Port, SOL8B_Pin, RELAY_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SOL8B_GPIO_Port, SOL8B_Pin, RELAY_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(SOL8B_GPIO_Port, SOL8B_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(SOL8B_GPIO_Port, SOL8B_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(SOL8B_GPIO_Port, SOL8B_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL8B_GPIO_Port, SOL8B_Pin) == RELAY_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL8B_GPIO_Port, SOL8B_Pin) == SOL_OPEN; }
 	}
 
 	namespace CONT_CK0

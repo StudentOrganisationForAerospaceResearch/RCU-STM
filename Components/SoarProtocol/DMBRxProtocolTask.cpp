@@ -36,7 +36,7 @@ void DMBRxProtocolTask::InitTask()
  * @brief Default constructor
  */
 DMBRxProtocolTask::DMBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU, 
-    SystemHandles::UART_Radio,
+    UART::Radio,
     UART_TASK_COMMAND_SEND_DMB)
 {
 }

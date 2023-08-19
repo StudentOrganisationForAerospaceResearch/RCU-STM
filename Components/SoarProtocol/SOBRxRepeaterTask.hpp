@@ -27,7 +27,6 @@
 #include "UARTTask.hpp"
 
 /* Configuration ------------------------------------------------------------------*/
-constexpr UART_HandleTypeDef* SOBRx_REPEATER_TASK_HUART = SystemHandles::UART_SOB;
 constexpr uint16_t SOBRx_REPEATER_TASK_UART_TASK_COMMAND = UART_TASK_COMMAND_SEND_PI;
 
 /* Class ------------------------------------------------------------------*/
@@ -60,7 +59,7 @@ protected:
     static void RunTask(void* pvParams) { SOBRxRepeaterTask::Inst().Run(pvParams); } // Static Task Interface, passes control to the instance Run();
 
 private:
-    SOBRxRepeaterTask() : RepeaterTask((UART_HandleTypeDef*)SOBRx_REPEATER_TASK_HUART, SOBRx_REPEATER_TASK_UART_TASK_COMMAND) {}
+    SOBRxRepeaterTask() : RepeaterTask(UART::SOB, SOBRx_REPEATER_TASK_UART_TASK_COMMAND) {}
     SOBRxRepeaterTask(const SOBRxRepeaterTask&);                       // Prevent copy-construction
     SOBRxRepeaterTask& operator=(const SOBRxRepeaterTask&);            // Prevent assignment
 };
