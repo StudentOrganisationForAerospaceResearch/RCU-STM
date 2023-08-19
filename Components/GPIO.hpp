@@ -21,9 +21,6 @@
 #define SOL_OPEN RELAY_CLOSE
 #define SOL_CLOSE RELAY_OPEN
 
-#define SOL4_OPEN RELAY_OPEN
-#define SOL4_CLOSE RELAY_CLOSE
-
 #define PADBOX_IGNITE RELAY_CLOSE
 #define PADBOX_KILL RELAY_OPEN
 
@@ -108,11 +105,11 @@ namespace GPIO
 
 	namespace SOL4
 	{
-		inline void Open() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL4_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL4_CLOSE); }
+		inline void Open() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL_OPEN); }
+		inline void Close() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL_CLOSE); }
 		inline void Toggle() { HAL_GPIO_TogglePin(SOL4_GPIO_Port, SOL4_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL4_GPIO_Port, SOL4_Pin) == SOL4_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL4_GPIO_Port, SOL4_Pin) == SOL_OPEN; }
 	}
 
 	namespace SOL5
