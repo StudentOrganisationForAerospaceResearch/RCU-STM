@@ -152,7 +152,7 @@ void PressureTransducerTask::TransmitProtocolPressureData()
     pressureData.set_pt2_pressure(data->pressure_2);
     pressureData.set_pt3_pressure(data->pressure_3);
     pressureData.set_pt4_pressure(data->pressure_4);
-	msg.set_pressrcu(pressureData);
+	msg.set_rcuPressure(pressureData);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);
