@@ -89,7 +89,6 @@ void TelemetryTask::RunLogSequence()
     Proto::TelemetryMessage relayMsg;
     relayMsg.set_source(Proto::Node::NODE_RCU);
     relayMsg.set_target(Proto::Node::NODE_RCU);
-    relayMsg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
     Proto::RelayStatus relayStatus;
     relayStatus.set_ac1_open(GPIO::SHEDAC::IsOff());
     relayStatus.set_ac2_open(GPIO::PADBOX1::IsLive());
@@ -105,7 +104,7 @@ void TelemetryTask::RunLogSequence()
     relayStatus.set_sol7_open(GPIO::SOL7::IsOpen());
     relayStatus.set_sol8a_open(GPIO::SOL8A::IsOpen());
     relayStatus.set_sol8b_open(GPIO::SOL8B::IsOpen());
-    relayMsg.set_relay(relayStatus);
+    relayMsg.set_relayStatus(relayStatus);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> relayWriteBuffer;
     relayMsg.serialize(relayWriteBuffer);
@@ -117,13 +116,12 @@ void TelemetryTask::RunLogSequence()
     Proto::TelemetryMessage padBoxMsg;
     padBoxMsg.set_source(Proto::Node::NODE_RCU);
     padBoxMsg.set_target(Proto::Node::NODE_RCU);
-    padBoxMsg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
     Proto::PadBoxStatus padBoxStatus;
-    padBoxStatus.set_cont1(GPIO::CONT_CK0::IsContinuous());
-    padBoxStatus.set_cont2(GPIO::CONT_CK1::IsContinuous());
+    padBoxStatus.set_continuity_1(GPIO::CONT_CK0::IsContinuous());
+    padBoxStatus.set_continuity_2(GPIO::CONT_CK1::IsContinuous());
     padBoxStatus.set_box1_on(GPIO::PADBOX1::IsLive());
     padBoxStatus.set_box2_on(GPIO::PADBOX2::IsLive());
-    padBoxMsg.set_padbox(padBoxStatus);
+    padBoxMsg.set_padBoxStatus(padBoxStatus);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> padBoxWriteBuffer;
     padBoxMsg.serialize(padBoxWriteBuffer);
