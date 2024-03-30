@@ -70,19 +70,19 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
     }
 
     switch(msg.get_rcu_command().get_command_enum()) {
-    case Proto::RCUCommand::Command::RCU_TARE_NOS1_LOAD_CELL: {
+    case Proto::RcuCommand::Command::RCU_TARE_NOS1_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Tare NOS1 Load Cell Command\n");
         LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)NOS1_LOADCELL_REQUEST_TARE));
         break;
     }
-    case Proto::RCUCommand::Command::RCU_TARE_NOS2_LOAD_CELL: {
+    case Proto::RcuCommand::Command::RCU_TARE_NOS2_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Tare NOS2 Load Cell Command\n");
         LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)NOS2_LOADCELL_REQUEST_TARE));
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CALIBRATE_NOS1_LOAD_CELL: {
+    case Proto::RcuCommand::Command::RCU_CALIBRATE_NOS1_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Calibrate NOS1 Load Cell Command\n");
         int32_t mass_mg = msg.get_rcu_command().get_command_param();
@@ -90,7 +90,7 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
 		LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, NOS1_LOADCELL_REQUEST_CALIBRATE));
 		break;
     }
-    case Proto::RCUCommand::Command::RCU_CALIBRATE_NOS2_LOAD_CELL: {
+    case Proto::RcuCommand::Command::RCU_CALIBRATE_NOS2_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Calibrate NOS2 Load Cell Command\n");
         int32_t mass_mg = msg.get_rcu_command().get_command_param();
@@ -98,103 +98,103 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
 		LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, NOS2_LOADCELL_REQUEST_CALIBRATE));
 		break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_AC1: {
+    case Proto::RcuCommand::Command::RCU_OPEN_AC1: {
         GPIO::SHEDAC::Off();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_AC1: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_AC1: {
         GPIO::SHEDAC::On();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_KILL_PAD_BOX1: {
+    case Proto::RcuCommand::Command::RCU_KILL_PAD_BOX1: {
         GPIO::PADBOX1::Kill();
         GPIO::PADBOX2::Kill();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_IGNITE_PAD_BOX1: {
+    case Proto::RcuCommand::Command::RCU_IGNITE_PAD_BOX1: {
         GPIO::PADBOX1::Ignite();
         GPIO::PADBOX2::Ignite();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_KILL_PAD_BOX2: {
+    case Proto::RcuCommand::Command::RCU_KILL_PAD_BOX2: {
         GPIO::PADBOX1::Kill();
         GPIO::PADBOX2::Kill();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_IGNITE_PAD_BOX2: {
+    case Proto::RcuCommand::Command::RCU_IGNITE_PAD_BOX2: {
         GPIO::PADBOX1::Ignite();
         GPIO::PADBOX2::Ignite();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_PBV1: {
+    case Proto::RcuCommand::Command::RCU_OPEN_PBV1: {
         GPIO::PBV1::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_PBV1: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_PBV1: {
         GPIO::PBV1::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_PBV2: {
+    case Proto::RcuCommand::Command::RCU_OPEN_PBV2: {
         GPIO::PBV2::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_PBV2: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_PBV2: {
         GPIO::PBV2::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_PBV3: {
+    case Proto::RcuCommand::Command::RCU_OPEN_PBV3: {
         GPIO::PBV3::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_PBV3: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_PBV3: {
         GPIO::PBV3::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL4: {
+    case Proto::RcuCommand::Command::RCU_OPEN_SOL4: {
         GPIO::SOL4::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL4: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_SOL4: {
         GPIO::SOL4::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL5: {
+    case Proto::RcuCommand::Command::RCU_OPEN_SOL5: {
         GPIO::SOL5::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL5: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_SOL5: {
         GPIO::SOL5::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL6: {
+    case Proto::RcuCommand::Command::RCU_OPEN_SOL6: {
         GPIO::SOL6::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL6: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_SOL6: {
         GPIO::SOL6::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL7: {
+    case Proto::RcuCommand::Command::RCU_OPEN_SOL7: {
         GPIO::SOL7::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL7: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_SOL7: {
         GPIO::SOL7::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL8A: {
+    case Proto::RcuCommand::Command::RCU_OPEN_SOL8A: {
         GPIO::SOL8A::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL8A: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_SOL8A: {
         GPIO::SOL8A::Close();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_OPEN_SOL8B: {
+    case Proto::RcuCommand::Command::RCU_OPEN_SOL8B: {
         GPIO::SOL8B::Open();
         break;
     }
-    case Proto::RCUCommand::Command::RCU_CLOSE_SOL8B: {
+    case Proto::RcuCommand::Command::RCU_CLOSE_SOL8B: {
         GPIO::SOL8B::Close();
         break;
     }

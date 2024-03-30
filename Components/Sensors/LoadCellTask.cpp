@@ -187,12 +187,11 @@ void LoadCellTask::TransmitProtocolLoadCellData()
     Proto::TelemetryMessage msg;
 	msg.set_source(Proto::Node::NODE_RCU);
 	msg.set_target(Proto::Node::NODE_RCU);
-//	msg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
 
-	Proto::NOSLoadCell twofillSample;
+	Proto::NosLoadCell twofillSample;
 	twofillSample.set_nos1_mass(two_fill_mass_sample.nos1_adc_value);
 	twofillSample.set_nos2_mass(two_fill_mass_sample.nos2_adc_value);
-	msg.set_nos(twofillSample);
+	msg.set_nosLoadCell(twofillSample);
 
 	EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
 	msg.serialize(writeBuffer);
