@@ -106,7 +106,7 @@ namespace GPIO
 		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV3_GPIO_Port, PBV3_Pin) == SOL_OPEN; }
 	}
 
-	namespace SOL4
+	namespace PBV4
 	{
 		inline void Open() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL4_OPEN); }
 		inline void Close() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL4_CLOSE); }

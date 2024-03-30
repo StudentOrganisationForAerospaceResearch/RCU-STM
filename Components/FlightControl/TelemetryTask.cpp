@@ -95,10 +95,7 @@ void TelemetryTask::RunLogSequence()
     relayStatus.set_pbv1_open(GPIO::PBV1::IsOpen());
     relayStatus.set_pbv2_open(GPIO::PBV2::IsOpen());
     relayStatus.set_pbv3_open(GPIO::PBV3::IsOpen());
-    relayStatus.set_sol1_open(GPIO::PBV1::IsOpen());
-    relayStatus.set_sol2_open(GPIO::PBV2::IsOpen());
-    relayStatus.set_sol3_open(GPIO::PBV3::IsOpen());
-    relayStatus.set_sol4_open(GPIO::SOL4::IsOpen());
+    relayStatus.set_pbv4_open(GPIO::PBV4::IsOpen());
     relayStatus.set_sol5_open(GPIO::SOL5::IsOpen());
     relayStatus.set_sol6_open(GPIO::SOL6::IsOpen());
     relayStatus.set_sol7_open(GPIO::SOL7::IsOpen());

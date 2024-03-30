@@ -150,12 +150,12 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
         GPIO::PBV3::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_SOL4: {
-        GPIO::SOL4::Open();
+    case Proto::RcuCommand::Command::RCU_OPEN_PBV4: {
+        GPIO::PBV4::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_SOL4: {
-        GPIO::SOL4::Close();
+    case Proto::RcuCommand::Command::RCU_CLOSE_PBV4: {
+        GPIO::PBV4::Close();
         break;
     }
     case Proto::RcuCommand::Command::RCU_OPEN_SOL5: {
