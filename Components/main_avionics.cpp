@@ -43,8 +43,9 @@ void run_main() {
 	PIRxProtocolTask::Inst().InitTask();
 	DMBRxProtocolTask::Inst().InitTask();
 	SOBRxRepeaterTask::Inst().InitTask();
-	TelemetryTask::Inst().InitTask();
 	LoadCellTask::Inst().InitTask();
+	TelemetryTask::Inst().InitTask();
+
 
 	// Print System Boot Info : Warning, don't queue more than 10 prints before scheduler starts
 	SOAR_PRINT("\n-- AVIONICS CORE --\n");

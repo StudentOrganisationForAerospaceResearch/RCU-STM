@@ -175,9 +175,9 @@ void LoadCellTask::LoadCellCalibrate(hx711_t* loadcell)
 void LoadCellTask::SampleLoadCellData()
 {
 	uint32_t nos1_ADCdata, nos2_ADCdata;
-	hx711_weight(&nos1_loadcell, 10, nos1_ADCdata);
+	hx711_weight(&nos1_loadcell, 3, nos1_ADCdata);
 	two_fill_mass_sample.nos1_adc_value = nos1_ADCdata;
-	hx711_weight(&nos2_loadcell, 10, nos2_ADCdata);
+	hx711_weight(&nos2_loadcell, 3, nos2_ADCdata);
 	two_fill_mass_sample.nos2_adc_value = nos2_ADCdata;
 	two_fill_mass_sample.timestamp_ms = HAL_GetTick();
 }
