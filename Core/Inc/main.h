@@ -88,8 +88,8 @@ void Error_Handler(void);
 #define PBV2_GPIO_Port GPIOB
 #define PBV3_Pin GPIO_PIN_1
 #define PBV3_GPIO_Port GPIOB
-#define SOL4_Pin GPIO_PIN_2
-#define SOL4_GPIO_Port GPIOB
+#define PBV4_Pin GPIO_PIN_2
+#define PBV4_GPIO_Port GPIOB
 #define SOL5_Pin GPIO_PIN_12
 #define SOL5_GPIO_Port GPIOB
 #define TC1_NCS_Pin GPIO_PIN_6
@@ -128,6 +128,7 @@ void Error_Handler(void);
 #define NOS1_LC_CLK_GPIO_Port GPIOB
 #define NOS1_LC_DATA_Pin GPIO_PIN_9
 #define NOS1_LC_DATA_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
