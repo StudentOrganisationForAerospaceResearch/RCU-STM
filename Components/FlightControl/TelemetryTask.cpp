@@ -89,23 +89,19 @@ void TelemetryTask::RunLogSequence()
     Proto::TelemetryMessage relayMsg;
     relayMsg.set_source(Proto::Node::NODE_RCU);
     relayMsg.set_target(Proto::Node::NODE_RCU);
-    relayMsg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
     Proto::RelayStatus relayStatus;
     relayStatus.set_ac1_open(GPIO::SHEDAC::IsOff());
     relayStatus.set_ac2_open(GPIO::PADBOX1::IsLive());
     relayStatus.set_pbv1_open(GPIO::PBV1::IsOpen());
     relayStatus.set_pbv2_open(GPIO::PBV2::IsOpen());
     relayStatus.set_pbv3_open(GPIO::PBV3::IsOpen());
-    relayStatus.set_sol1_open(GPIO::PBV1::IsOpen());
-    relayStatus.set_sol2_open(GPIO::PBV2::IsOpen());
-    relayStatus.set_sol3_open(GPIO::PBV3::IsOpen());
-    relayStatus.set_sol4_open(GPIO::SOL4::IsOpen());
+    relayStatus.set_pbv4_open(GPIO::PBV4::IsOpen());
     relayStatus.set_sol5_open(GPIO::SOL5::IsOpen());
     relayStatus.set_sol6_open(GPIO::SOL6::IsOpen());
     relayStatus.set_sol7_open(GPIO::SOL7::IsOpen());
     relayStatus.set_sol8a_open(GPIO::SOL8A::IsOpen());
     relayStatus.set_sol8b_open(GPIO::SOL8B::IsOpen());
-    relayMsg.set_relay(relayStatus);
+    relayMsg.set_relayStatus(relayStatus);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> relayWriteBuffer;
     relayMsg.serialize(relayWriteBuffer);
@@ -117,13 +113,12 @@ void TelemetryTask::RunLogSequence()
     Proto::TelemetryMessage padBoxMsg;
     padBoxMsg.set_source(Proto::Node::NODE_RCU);
     padBoxMsg.set_target(Proto::Node::NODE_RCU);
-    padBoxMsg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
     Proto::PadBoxStatus padBoxStatus;
-    padBoxStatus.set_cont1(GPIO::CONT_CK0::IsContinuous());
-    padBoxStatus.set_cont2(GPIO::CONT_CK1::IsContinuous());
+    padBoxStatus.set_continuity_1(GPIO::CONT_CK0::IsContinuous());
+    padBoxStatus.set_continuity_2(GPIO::CONT_CK1::IsContinuous());
     padBoxStatus.set_box1_on(GPIO::PADBOX1::IsLive());
     padBoxStatus.set_box2_on(GPIO::PADBOX2::IsLive());
-    padBoxMsg.set_padbox(padBoxStatus);
+    padBoxMsg.set_padBoxStatus(padBoxStatus);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> padBoxWriteBuffer;
     padBoxMsg.serialize(padBoxWriteBuffer);
@@ -138,6 +133,7 @@ void TelemetryTask::RunLogSequence()
     //Pressure Transducer
     PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_NEW_SAMPLE));
     PressureTransducerTask::Inst().SendCommand(Command(REQUEST_COMMAND, PT_REQUEST_TRANSMIT));
+
 	// Load Cell
     LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_NEW_SAMPLE));
     LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)LOADCELL_REQUEST_TRANSMIT));

@@ -147,13 +147,12 @@ void PressureTransducerTask::TransmitProtocolPressureData()
     Proto::TelemetryMessage msg;
     msg.set_source(Proto::Node::NODE_RCU);
     msg.set_target(Proto::Node::NODE_RCU);
-    msg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
-    Proto::RCUPressure pressureData;
+    Proto::RcuPressure pressureData;
     pressureData.set_pt1_pressure(data->pressure_1);
     pressureData.set_pt2_pressure(data->pressure_2);
     pressureData.set_pt3_pressure(data->pressure_3);
     pressureData.set_pt4_pressure(data->pressure_4);
-	msg.set_pressrcu(pressureData);
+	msg.set_rcuPressure(pressureData);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);

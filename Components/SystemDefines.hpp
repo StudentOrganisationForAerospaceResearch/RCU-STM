@@ -108,7 +108,7 @@ constexpr UARTDriver* const DEFAULT_ASSERT_UART_DRIVER = UART::Debug;    // UART
 #define SOAR_ASSERT(expr, ...) ((expr) ? (void)0U : soar_assert_debug(false, (const char *)__FILE__, __LINE__, ##__VA_ARGS__)) 
 
 // SOAR_PRINT macro, acts as an interface to the print function which sends a packet to the UART Task to print data
-#define SOAR_PRINT(str, ...) (print(str, ##__VA_ARGS__))
+#define SOAR_PRINT(str, ...)//(print(str, ##__VA_ARGS__))
 
 /**
  * @brief Malloc inline function, wraps malloc for multi-platform support, asserts successful allocation
