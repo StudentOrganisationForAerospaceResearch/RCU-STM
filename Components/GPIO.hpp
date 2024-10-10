@@ -21,8 +21,8 @@
 #define SOL_OPEN RELAY_CLOSE
 #define SOL_CLOSE RELAY_OPEN
 
-#define SOL4_OPEN RELAY_OPEN
-#define SOL4_CLOSE RELAY_CLOSE
+#define PBV4_DEENERGIZED RELAY_CLOSE // Valce OPEN
+#define PBV4_ENERGIZED RELAY_OPEN // Valve CLOSED
 
 #define PADBOX_IGNITE RELAY_CLOSE
 #define PADBOX_KILL RELAY_OPEN
@@ -106,13 +106,13 @@ namespace GPIO
 		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV3_GPIO_Port, PBV3_Pin) == SOL_OPEN; }
 	}
 
-	namespace SOL4
+	namespace PBV4
 	{
-		inline void Open() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL4_OPEN); }
-		inline void Close() { HAL_GPIO_WritePin(SOL4_GPIO_Port, SOL4_Pin, SOL4_CLOSE); }
-		inline void Toggle() { HAL_GPIO_TogglePin(SOL4_GPIO_Port, SOL4_Pin); }
+		inline void Open() { HAL_GPIO_WritePin(PBV4_GPIO_Port, PBV4_Pin, PBV4_DEENERGIZED); }
+		inline void Close() { HAL_GPIO_WritePin(PBV4_GPIO_Port, PBV4_Pin, PBV4_ENERGIZED); }
+		inline void Toggle() { HAL_GPIO_TogglePin(PBV4_GPIO_Port, PBV4_Pin); }
 
-		inline bool IsOpen() { return HAL_GPIO_ReadPin(SOL4_GPIO_Port, SOL4_Pin) == SOL4_OPEN; }
+		inline bool IsOpen() { return HAL_GPIO_ReadPin(PBV4_GPIO_Port, PBV4_Pin) == PBV4_DEENERGIZED; }
 	}
 
 	namespace SOL5

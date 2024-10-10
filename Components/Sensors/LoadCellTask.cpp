@@ -175,9 +175,9 @@ void LoadCellTask::LoadCellCalibrate(hx711_t* loadcell)
 void LoadCellTask::SampleLoadCellData()
 {
 	uint32_t nos1_ADCdata, nos2_ADCdata;
-	hx711_weight(&nos1_loadcell, 10, nos1_ADCdata);
+	hx711_weight(&nos1_loadcell, 3, nos1_ADCdata);
 	two_fill_mass_sample.nos1_adc_value = nos1_ADCdata;
-	hx711_weight(&nos2_loadcell, 10, nos2_ADCdata);
+	hx711_weight(&nos2_loadcell, 3, nos2_ADCdata);
 	two_fill_mass_sample.nos2_adc_value = nos2_ADCdata;
 	two_fill_mass_sample.timestamp_ms = HAL_GetTick();
 }
@@ -187,12 +187,11 @@ void LoadCellTask::TransmitProtocolLoadCellData()
     Proto::TelemetryMessage msg;
 	msg.set_source(Proto::Node::NODE_RCU);
 	msg.set_target(Proto::Node::NODE_RCU);
-//	msg.set_message_id((uint32_t)Proto::MessageID::MSG_TELEMETRY);
 
-	Proto::NOSLoadCell twofillSample;
+	Proto::NosLoadCell twofillSample;
 	twofillSample.set_nos1_mass(two_fill_mass_sample.nos1_adc_value);
 	twofillSample.set_nos2_mass(two_fill_mass_sample.nos2_adc_value);
-	msg.set_nos(twofillSample);
+	msg.set_nosLoadCell(twofillSample);
 
 	EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
 	msg.serialize(writeBuffer);
