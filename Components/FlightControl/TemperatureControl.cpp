@@ -15,16 +15,18 @@
 #include "Task.hpp"
 
 //GPIO initialize
-GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin;
+
+
+// Initialize the TempControl array with AC units and target temperatures - make static array
+tempControl[0] = {TARGET_CONTROLS::AC1, 10, false, 0};  // AC1, target temperature 10, initially off, currentTemp
+tempControl[1] = {TARGET_CONTROLS::AC2, 20, false, 0};  // AC2, target temperature 20, initially off, currentTemp
 
 /**
  * @brief Constructor for TemperatureControl
  */
 TemperatureControl::TemperatureControl() : Task()
 {
-    // Initialize the TempControl array with AC units and target temperatures
-	tempControl[0] = {TARGET_CONTROLS::AC1, 10, false, 0};  // AC1, target temperature 10, initially off, currentTemp
-	tempControl[1] = {TARGET_CONTROLS::AC2, 20, false, 0};  // AC2, target temperature 20, initially off, currentTemp
+
 }
 
 
@@ -59,23 +61,22 @@ void TemperatureControl::InitTask()
 void TemperatureControl::Run(void* pvParams)
 {
 	while (1) {
-	        Command cm;
+		Command cm;
 
-	        //Wait forever for a command
-	        qEvtQueue->ReceiveWait(cm);
-	        for (int i = 0; i<2; ++i){
-	        	HandleCommand(cm); //would proccess the command
-	        	//int currTemp = SampleThermocouple(i); //Read current temp from Termocouples -> given from GUI
-	        	//need to store in the array
+		//Wait forever for a command
+		qEvtQueue->ReceiveWait(cm);
+		for (int i = 0; i<2; ++i){
+			HandleCommand(cm); //would proccess the command
+			//int currTemp = SampleThermocouple(i); //Read current temp from Termocouples -> given from GUI
+			//need to store in the array
 
-	        	if (currTemp > tempControl[i].targetTemperature){
-	        		GPIO::AcStatus::On();
-	        	}
-	        	else{
-	        		GPIO::AcStatus::OFF();
-	        	}
-	        }
-
+			if (currTemp > tempControl[i].targetTemperature){
+				GPIO::AcStatus::On();
+			}
+			else{
+				GPIO::AcStatus::OFF();
+			}
+		}
 	}
 }
 
@@ -86,22 +87,23 @@ void TemperatureControl::Run(void* pvParams)
 void TemperatureControl::HandleCommand(Command& cm)
 {
 	//Switch for the GLOBAL_COMMAND
-//	    switch (cm.GetCommand()) {
-//	    case REQUEST_COMMAND: {
-//	        HandleRequestCommand(cm.GetTaskCommand()); //Sends task specific request command to task request handler
-//	        break;
-//	    }
-//	    case TASK_SPECIFIC_COMMAND: {
-//	        break; //No task specific commands need
-//	    }
-//	    default:
-//	        SOAR_PRINT("ThermocoupleTask - Received Unsupported Command {%d}\n", cm.GetCommand());//change
-//	        break;
-//	    }
-//
-//	    cm.Reset();
+	    switch (cm.GetCommand()) {
+	    case REQUEST_COMMAND: {
+	        HandleRequestCommand(cm.GetTaskCommand()); //Sends task specific request command to task request handler
+	        break;
+	    }
+	    case TASK_SPECIFIC_COMMAND: {
+	    	Hangle task specific command() -> function
+	        break; //No task specific commands need
+	    }
+	    default:
+	        SOAR_PRINT("ThermocoupleTask - Received Unsupported Command {%d}\n", cm.GetCommand());//change
+	        break;
+	    }
 
-	//Set TargetTemp
+	    cm.Reset();
+
+	//Set TargetTemp -> user should be able to change through the GUI
 
 }
 
@@ -131,7 +133,7 @@ void TemperatureControl::HandleCommand(Command& cm)
 /**
  * @brief This method receives the voltage reading through spi from the thermocouple readings
  */
-void TemperatureControl::SampleThermocouple(Temp_Control& temp_p){
+void TemperatureControl::SampleThermocouple(Temp_Control& temp_p){ //only need targetcontrol and target temperature, pass in enum and int respecifvely
 	//Will update and store the current temp received into the array
 
 	temperature1 = ExtractTempurature(dataBuffer1); // Extract Temp is a palce holder where we will get TEMP from GUI -> implemented later

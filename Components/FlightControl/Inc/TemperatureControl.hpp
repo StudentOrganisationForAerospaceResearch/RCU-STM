@@ -18,19 +18,20 @@
 #define THERMOCOUPLE_SPI_TIMEOUT 100 //in ms
 
 /* Macros/Enums ------------------------------------------------------------*/
-//enum THERMOCOUPLE_TASK_COMMANDS {
-//	THERMOCOUPLE_NULL = 0,
-//	THERMOCOUPLE_REQUEST_NEW_SAMPLE,	// Get a new temperature sample
-//	THERMOCOUPLE_REQUEST_TRANSMIT,		// Send the current temperature over the Protobuff
-//	THERMOCOUPLE_REQUEST_DEBUG       	// Send the current temperature data over the Debug UART
-//};
+enum THERMOCOUPLE_TASK_COMMANDS {
+	THERMOCOUPLE_NULL = 0,
+	THERMOCOUPLE_REQUEST_NEW_SAMPLE,	// Get a new temperature sample
+	THERMOCOUPLE_REQUEST_TRANSMIT,		// Send the current temperature over the Protobuff
+	THERMOCOUPLE_REQUEST_DEBUG       	// Send the current temperature data over the Debug UART
+};
 
-enum TARGET_CONTROLS{
+enum class TARGET_CONTROLS{
 	AC1 = 0,
 	AC2,
 	AC3
 };
 
+//diff functions for each in the struct and and to be able to store them
 struct Temp_Control {
 	TARGET_CONTROLS acUnit;
     int targetTemperature;
@@ -57,12 +58,6 @@ protected:
 
     void SampleThermocouple();
     int16_t ExtractTempurature(uint8_t temperatureData[]);
-
-    //Fields
-    uint8_t dataBuffer1[4] = {0};
-    uint8_t dataBuffer2[4] = {0};
-    int16_t temperature1 = 0;
-    int16_t temperature2 = 0;
 
     Temp_Control tempControl[2];
 
