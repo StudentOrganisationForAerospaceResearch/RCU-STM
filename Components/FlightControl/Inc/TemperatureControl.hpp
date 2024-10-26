@@ -51,14 +51,18 @@ public:
     void InitTask();
 
 protected:
-    static void RunTask(void* pvParams) { TemperatureControl::Inst().Run(pvParams); }
 
-    void Run(void* pvParams);
+    static void RunTask(void* pvParams) {
+    	TemperatureControl::Inst().Run(pvParams);
+	}  // Static Task Interface, passes control to the instance Run();
+
+	void Run(void* pvParams);  // Main run code
     void HandleCommand(Command& cm);
-    void HandleRequestCommand(uint16_t taskCommand);
+    void HandleTaskCommand(uint16_t taskCommand);
 
-    void SampleThermocouple();
-    int16_t ExtractTempurature(uint8_t temperatureData[]);
+    void SetTargetTemp(TARGET_CONTROLS Target, uint Target_Temp);
+    void SetCurrentTemp(TARGET_CONTROLS Target, uint8_t tempReceived);
+    void SetTargetState(TARGET_CONTROLS Target, bool currentState);
 
 private:
     TemperatureControl();

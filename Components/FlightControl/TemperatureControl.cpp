@@ -17,7 +17,7 @@
 
 
 // Initialize the TempControl array with AC units and target temperatures - make static array
-static TempControl tempControl[2] = {
+static Temp_Control tempControl[2] = {
     {TARGET_CONTROLS::AC1, 10, false, 0},  // AC1, target temperature 10, initially off, currentTemp
     {TARGET_CONTROLS::AC2, 20, false, 0}   // AC2, target temperature 20, initially off, currentTemp
 };
@@ -54,8 +54,7 @@ void TemperatureControl::InitTask()
  * @brief Runs loop, waits for a command
  *
  */
-void TemperatureControl::Run(void* pvParams)
-{
+void TemperatureControl::Run(void* pvParams){
 	while (1) {
 		Command cm;
 
@@ -114,7 +113,7 @@ void TemperatureControl::HandleTaskCommand(uint16_t taskCommand)
 	//
 	switch (taskCommand) {
 	    case SET_TARGET_TEMP: {
-	    	SetTargetTemp();
+	    	SetTargetTemp(Temp_Control.acUnit, 30); //args must be fixed
 	    }
 
 	    case SET_TARGET_STATE: {
