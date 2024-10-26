@@ -20,23 +20,24 @@
 /* Macros/Enums ------------------------------------------------------------*/
 enum THERMOCOUPLE_TASK_COMMANDS {
 	THERMOCOUPLE_NULL = 0,
-	THERMOCOUPLE_REQUEST_NEW_SAMPLE,	// Get a new temperature sample
-	THERMOCOUPLE_REQUEST_TRANSMIT,		// Send the current temperature over the Protobuff
-	THERMOCOUPLE_REQUEST_DEBUG       	// Send the current temperature data over the Debug UART
+	SET_TARGET_TEMP,
+	SET_TARGET_STATE,
+	SET_CURRENT_TEMP
 };
 
 enum class TARGET_CONTROLS{
 	AC1 = 0,
 	AC2,
-	AC3
+	AC3,
+	NUMBER_OF_CONTROLS, // NOTE: Always keep this as the last item
 };
 
 //diff functions for each in the struct and and to be able to store them
 struct Temp_Control {
 	TARGET_CONTROLS acUnit;
-    int targetTemperature;
+    uint8_t targetTemperature;
     bool isOn;
-    int currTemperature;
+    uint8_t currTemperature; //will be updated as temp being passed through from GUI
 };
 
 class TemperatureControl : public Task
@@ -58,8 +59,6 @@ protected:
 
     void SampleThermocouple();
     int16_t ExtractTempurature(uint8_t temperatureData[]);
-
-    Temp_Control tempControl[2];
 
 private:
     TemperatureControl();

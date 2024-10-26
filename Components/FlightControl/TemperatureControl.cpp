@@ -10,7 +10,6 @@
 */
 #include <TemperatureControl.hpp>
 #include "GPIO.hpp"
-#include "GPIO.hpp"
 #include "SystemDefines.hpp"
 #include "Task.hpp"
 
@@ -18,17 +17,17 @@
 
 
 // Initialize the TempControl array with AC units and target temperatures - make static array
-tempControl[0] = {TARGET_CONTROLS::AC1, 10, false, 0};  // AC1, target temperature 10, initially off, currentTemp
-tempControl[1] = {TARGET_CONTROLS::AC2, 20, false, 0};  // AC2, target temperature 20, initially off, currentTemp
-
+static TempControl tempControl[2] = {
+    {TARGET_CONTROLS::AC1, 10, false, 0},  // AC1, target temperature 10, initially off, currentTemp
+    {TARGET_CONTROLS::AC2, 20, false, 0}   // AC2, target temperature 20, initially off, currentTemp
+};
 /**
  * @brief Constructor for TemperatureControl
  */
-TemperatureControl::TemperatureControl() : Task()
-{
+
+TemperatureControl::TemperatureControl() : Task(){
 
 }
-
 
 /**
  * @brief Initialize the TemperatureControl
@@ -36,21 +35,18 @@ TemperatureControl::TemperatureControl() : Task()
 
 void TemperatureControl::InitTask()
 {
-    // Make sure the task is not already initialized
-//    SOAR_ASSERT(rtTaskHandle == nullptr, "Cannot initialize flight task twice");
-//
-//    BaseType_t rtValue =
-//        xTaskCreate((TaskFunction_t)TemperatureControl::RunTask,
-//            (const char*)"TemperatureControl",
-//            (uint16_t)TEMPERATURE_TASK_STACK_DEPTH_WORDS, //define
-//            (void*)this,
-//            (UBaseType_t)TEMPERATURE_TASK_RTOS_PRIORITY, //define
-//            (TaskHandle_t*)&rtTaskHandle);
-//
-//    SOAR_ASSERT(rtValue == pdPASS, "TemperatureTask::InitTask() - xTaskCreate() failed");
+//     Make sure the task is not already initialized
+    SOAR_ASSERT(rtTaskHandle == nullptr, "Cannot initialize flight task twice");
 
-	//Task setup
+    BaseType_t rtValue =
+        xTaskCreate((TaskFunction_t)TemperatureControl::RunTask,
+            (const char*)"TemperatureControl",
+            (uint16_t)TEMPERATURE_TASK_STACK_DEPTH_WORDS, //define
+            (void*)this,
+            (UBaseType_t)TEMPERATURE_TASK_RTOS_PRIORITY, //define
+            (TaskHandle_t*)&rtTaskHandle);
 
+    SOAR_ASSERT(rtValue == pdPASS, "TemperatureTask::InitTask() - xTaskCreate() failed");
 
 }
 
@@ -64,17 +60,22 @@ void TemperatureControl::Run(void* pvParams)
 		Command cm;
 
 		//Wait forever for a command
-		qEvtQueue->ReceiveWait(cm);
-		for (int i = 0; i<2; ++i){
-			HandleCommand(cm); //would proccess the command
-			//int currTemp = SampleThermocouple(i); //Read current temp from Termocouples -> given from GUI
-			//need to store in the array
+		if (qEvtQueue->Receive(cm, 1000)) {
+			HandleCommand(cm);
+		}
+		else {
+			// Update target state depending on temp
+			for (int i = 0; i<NUMBER_OF_CONTROLS; i++){
 
-			if (currTemp > tempControl[i].targetTemperature){
-				GPIO::AcStatus::On();
-			}
-			else{
-				GPIO::AcStatus::OFF();
+				//int currTemp = SampleThermocouple(i); //Read current temp from Termocouples -> given from GUI
+				//need to store in the array
+
+				if (currTemp > tempControl[i].targetTemperature){
+					GPIO::AcStatus::On();
+				}
+				else{
+					GPIO::AcStatus::OFF();
+				}
 			}
 		}
 	}
@@ -88,13 +89,10 @@ void TemperatureControl::HandleCommand(Command& cm)
 {
 	//Switch for the GLOBAL_COMMAND
 	    switch (cm.GetCommand()) {
-	    case REQUEST_COMMAND: {
-	        HandleRequestCommand(cm.GetTaskCommand()); //Sends task specific request command to task request handler
-	        break;
-	    }
+
 	    case TASK_SPECIFIC_COMMAND: {
-	    	Hangle task specific command() -> function
-	        break; //No task specific commands need
+	    	HandleTaskCommand(cm.GetTaskCommand());
+	    	break; //No task specific commands need
 	    }
 	    default:
 	        SOAR_PRINT("ThermocoupleTask - Received Unsupported Command {%d}\n", cm.GetCommand());//change
@@ -111,44 +109,60 @@ void TemperatureControl::HandleCommand(Command& cm)
  * @brief Handles a Request Command
  *
  */
-//void TemperatureControl::HandleRequestCommand(uint16_t taskCommand)
-//{
-//	//
-//	switch (taskCommand) {
-//	    case THERMOCOUPLE_REQUEST_NEW_SAMPLE: //Sample TC and store in class fields
-//	    	SampleThermocouple();
-//	        break;
-//	    case THERMOCOUPLE_REQUEST_TRANSMIT: //Sending data to PI
-//	        TransmitProtocolThermoData();
-//	        break;
-//	    case THERMOCOUPLE_REQUEST_DEBUG: //Output TC data
-//	        ThermocoupleDebugPrint();
-//	        break;
-//	    default:
-//	        SOAR_PRINT("UARTTask - Received Unsupported REQUEST_COMMAND {%d}\n", taskCommand);
-//	        break;
-//	    }
-//}
+void TemperatureControl::HandleTaskCommand(uint16_t taskCommand)
+{
+	//
+	switch (taskCommand) {
+	    case SET_TARGET_TEMP: {
+	    	SetTargetTemp();
+	    }
 
-/**
- * @brief This method receives the voltage reading through spi from the thermocouple readings
- */
-void TemperatureControl::SampleThermocouple(Temp_Control& temp_p){ //only need targetcontrol and target temperature, pass in enum and int respecifvely
-	//Will update and store the current temp received into the array
+	    case SET_TARGET_STATE: {
+	    	SetTargetState();
+	    }
 
-	temperature1 = ExtractTempurature(dataBuffer1); // Extract Temp is a palce holder where we will get TEMP from GUI -> implemented later
-
-	temp_p.currTemperature = temperature1;
-
+	    case SET_CURRENT_TEMP: {
+			SetCurrentTemp();
+	    }
+	    default:
+	        SOAR_PRINT("UARTTask - Received Unsupported REQUEST_COMMAND {%d}\n", taskCommand);
+	        break;
+	    }
 }
 
+void SetTargetTemp(TARGET_CONTROLS Target, uint Target_Temp){
+	// for everything in the target array
+	// if target == target
+	// then set
 
-/**TAKEN FROM THERMOCOUPLE - NEEDS TO BE EDITED/CHANGED
- * @brief This method converts the thermocouple data buffer information to readable a temperature
- * takes the array containing temperature data, returns a temperature value
- */
-int16_t TemperatureControl::ExtractTempurature(uint8_t temperatureData[]) //TAKEN FROM THERMOCOUPLE - NEEDS TO BE EDITED/CHANGED
-{
-	//read/extract value from packet
-	return 0;
+	for (Temp_Control targetSettings : tempControl) {
+	    if (targetSettings.acUnit == Target) {
+	        targetSettings.targetTemperature = Target_Temp;
+	    }
+	}
+}
+
+void SetCurrentTemp(TARGET_CONTROLS Target, uint8_t tempReceived){
+	// for everything in the target array
+	// if tempReceived == tempReceived
+	// then set
+
+	for (Temp_Control targetSettings : tempControl) {
+	    if (targetSettings.acUnit == Target) {
+	        targetSettings.currTemperature = tempReceived;
+	    }
+	}
+}
+
+void SetTargetState(TARGET_CONTROLS Target, bool currentState){
+	for (Temp_Control targetSettings : tempControl) {
+		    if (targetSettings.acUnit == Target) {
+		        targetSettings.isOn = 1;
+		    }
+
+		    else{
+		    	targetSettings.isOn = 0;
+		    }
+	}
+
 }
