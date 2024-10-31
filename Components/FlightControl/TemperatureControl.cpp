@@ -18,8 +18,8 @@
 
 // Initialize the TempControl array with AC units and target temperatures - make static array
 static Temp_Control tempControl[2] = {
-    {TARGET_CONTROLS::AC1, 10, false, 0},  // AC1, target temperature 10, initially off, currentTemp
-    {TARGET_CONTROLS::AC2, 20, false, 0}   // AC2, target temperature 20, initially off, currentTemp
+    {TARGET_CONTROLS::AC1, 10, false, 0, LED_1_GPIO_Port, LED_1_Pin},  // AC1, target temperature 10, initially off, currentTemp
+    {TARGET_CONTROLS::AC2, 20, false, 0, LED_1_GPIO_Port, LED_1_Pin}   // AC2, target temperature 20, initially off, currentTemp
 };
 /**
  * @brief Constructor for TemperatureControl
@@ -55,6 +55,7 @@ void TemperatureControl::InitTask()
  *
  */
 void TemperatureControl::Run(void* pvParams){
+
 	while (1) {
 		Command cm;
 
@@ -64,16 +65,16 @@ void TemperatureControl::Run(void* pvParams){
 		}
 		else {
 			// Update target state depending on temp
-			for (int i = 0; i<NUMBER_OF_CONTROLS; i++){
+			for (Temp_Control target : tempControl){
 
 				//int currTemp = SampleThermocouple(i); //Read current temp from Termocouples -> given from GUI
 				//need to store in the array
 
-				if (currTemp > tempControl[i].targetTemperature){
-					GPIO::AcStatus::On();
+				if (target.currTemperature > target.targetTemperature){
+					HAL_GPIO_WritePin(target.targetPinPort, target.targetPin, GPIO_PIN_SET);
 				}
 				else{
-					GPIO::AcStatus::OFF();
+					HAL_GPIO_WritePin(target.targetPinPort, target.targetPin, GPIO_PIN_RESET);
 				}
 			}
 		}
@@ -113,7 +114,7 @@ void TemperatureControl::HandleTaskCommand(uint16_t taskCommand)
 	//
 	switch (taskCommand) {
 	    case SET_TARGET_TEMP: {
-	    	SetTargetTemp(Temp_Control.acUnit, 30); //args must be fixed
+	    	SetTargetTemp(); //args must be fixed
 	    }
 
 	    case SET_TARGET_STATE: {
@@ -129,7 +130,7 @@ void TemperatureControl::HandleTaskCommand(uint16_t taskCommand)
 	    }
 }
 
-void SetTargetTemp(TARGET_CONTROLS Target, uint Target_Temp){
+void SetTargetTemp(TARGET_CONTROLS Target, uint8_t Target_Temp){
 	// for everything in the target array
 	// if target == target
 	// then set
@@ -156,11 +157,11 @@ void SetCurrentTemp(TARGET_CONTROLS Target, uint8_t tempReceived){
 void SetTargetState(TARGET_CONTROLS Target, bool currentState){
 	for (Temp_Control targetSettings : tempControl) {
 		    if (targetSettings.acUnit == Target) {
-		        targetSettings.isOn = 1;
+		        targetSettings.isOn = true;
 		    }
 
 		    else{
-		    	targetSettings.isOn = 0;
+		    	targetSettings.isOn = false;
 		    }
 	}
 

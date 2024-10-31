@@ -10,6 +10,7 @@
 
 /* INCLUDES */
 #include "Task.hpp"
+#include "GPIO.hpp"
 #include "SystemDefines.hpp"
 
 /* DEFINES */
@@ -25,7 +26,7 @@ enum THERMOCOUPLE_TASK_COMMANDS {
 	SET_CURRENT_TEMP
 };
 
-enum class TARGET_CONTROLS{
+enum class TARGET_CONTROLS : uint8_t {
 	AC1 = 0,
 	AC2,
 	AC3,
@@ -38,6 +39,9 @@ struct Temp_Control {
     uint8_t targetTemperature;
     bool isOn;
     uint8_t currTemperature; //will be updated as temp being passed through from GUI
+    GPIO_TypeDef * targetPinPort;
+    uint16_t targetPin;
+
 };
 
 class TemperatureControl : public Task
