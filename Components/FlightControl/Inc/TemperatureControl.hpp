@@ -64,7 +64,7 @@ protected:
     void HandleCommand(Command& cm);
     void HandleTaskCommand(uint16_t taskCommand);
 
-    void SetTargetTemp(TARGET_CONTROLS Target, uint Target_Temp);
+    void SetTargetTemp(TARGET_CONTROLS Target, uint8_t Target_Temp);
     void SetCurrentTemp(TARGET_CONTROLS Target, uint8_t tempReceived);
     void SetTargetState(TARGET_CONTROLS Target, bool currentState);
 

@@ -114,15 +114,22 @@ void TemperatureControl::HandleTaskCommand(uint16_t taskCommand)
 	//
 	switch (taskCommand) {
 	    case SET_TARGET_TEMP: {
-	    	SetTargetTemp(); //args must be fixed
+	    	for (Temp_Control& target : tempControl) {
+	    		//for loop will iterate over all instances of Temp_Control
+	    		//ensures that the SetTargetTemp function is called for each air conditioning unit (AC1, AC2, etc.),
+	    		//dynamically updating their respective target temperatures if needed.
+	    	    SetTargetTemp(target.acUnit, target.targetTemperature);
+	    	}
 	    }
 
 	    case SET_TARGET_STATE: {
-	    	SetTargetState();
+	    	for(Temp_Control& target : tempControl)
+	    		SetTargetState(target.acUnit, target.currTemperature);
 	    }
 
 	    case SET_CURRENT_TEMP: {
-			SetCurrentTemp();
+	    	for(Temp_Control& target : tempControl)
+	    		SetCurrentTemp(target.acUnit, target.isOn);
 	    }
 	    default:
 	        SOAR_PRINT("UARTTask - Received Unsupported REQUEST_COMMAND {%d}\n", taskCommand);
@@ -130,7 +137,7 @@ void TemperatureControl::HandleTaskCommand(uint16_t taskCommand)
 	    }
 }
 
-void SetTargetTemp(TARGET_CONTROLS Target, uint8_t Target_Temp){
+void TemperatureControl::SetTargetTemp(TARGET_CONTROLS Target, uint8_t Target_Temp){ // Data_command, setcurrenttemp into the Command IMUData -> sent as a struct then you would destruct it
 	// for everything in the target array
 	// if target == target
 	// then set
@@ -142,7 +149,7 @@ void SetTargetTemp(TARGET_CONTROLS Target, uint8_t Target_Temp){
 	}
 }
 
-void SetCurrentTemp(TARGET_CONTROLS Target, uint8_t tempReceived){
+void TemperatureControl::SetCurrentTemp(TARGET_CONTROLS Target, uint8_t tempReceived){
 	// for everything in the target array
 	// if tempReceived == tempReceived
 	// then set
@@ -152,9 +159,11 @@ void SetCurrentTemp(TARGET_CONTROLS Target, uint8_t tempReceived){
 	        targetSettings.currTemperature = tempReceived;
 	    }
 	}
+
+	//Command;
 }
 
-void SetTargetState(TARGET_CONTROLS Target, bool currentState){
+void TemperatureControl::SetTargetState(TARGET_CONTROLS Target, bool currentState){
 	for (Temp_Control targetSettings : tempControl) {
 		    if (targetSettings.acUnit == Target) {
 		        targetSettings.isOn = true;
