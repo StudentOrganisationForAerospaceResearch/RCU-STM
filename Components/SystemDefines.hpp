@@ -72,6 +72,11 @@ constexpr uint8_t TASK_THERMOCOUPLE_PRIORITY = 2;			// Priority of the thermocou
 constexpr uint8_t TASK_THERMOCOUPLE_QUEUE_DEPTH_OBJS = 10;		// Size of the thermocouple task queue
 constexpr uint16_t TASK_THERMOCOUPLE_STACK_DEPTH_WORDS = 384;		// Size of the thermocouple task stack
 
+// TEMPERATURE CONTROL TASK
+constexpr uint8_t TEMPERATURE_TASK_RTOS_PRIORITY = 2;			// Priority of the temperature control task
+constexpr uint8_t TEMPERATURE_TASK_QUEUE_DEPTH_OBJS = 10;		// Size of the temperature control task queue
+constexpr uint16_t TEMPERATURE_TASK_STACK_DEPTH_WORDS = 384;		// Size of the temperature control task stack
+
 constexpr uint32_t TELEMETRY_DEFAULT_LOGGING_RATE_MS = 400; 	// Default logging delay for telemetry task
 
 

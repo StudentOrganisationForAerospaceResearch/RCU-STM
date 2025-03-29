@@ -1,0 +1,78 @@
+/**
+ ******************************************************************************
+ * File Name          : TemperatureControl.hpp
+ * Description        : Functions defined, macros and etc for Temperature Control
+ * 						Task
+ ******************************************************************************
+*/
+#ifndef SOAR_TEMPERATURECONTROL_HPP_
+#define SOAR_TEMPERATURECONTROL_HPP_
+
+/* INCLUDES */
+#include "Task.hpp"
+#include "GPIO.hpp"
+#include "SystemDefines.hpp"
+
+/* DEFINES */
+#define ERROR_TEMPERATURE_VALUE 9999
+#define TEMPERATURE_OFFSET -4.0 //in degrees Celsius
+#define THERMOCOUPLE_SPI_TIMEOUT 100 //in ms
+
+/* Macros/Enums ------------------------------------------------------------*/
+enum THERMOCOUPLE_TASK_COMMANDS {
+	THERMOCOUPLE_NULL = 0,
+	SET_TARGET_TEMP,
+	SET_TARGET_STATE,
+	SET_CURRENT_TEMP
+};
+
+enum class TARGET_CONTROLS : uint8_t {
+	AC1 = 0,
+	AC2,
+	AC3,
+	NUMBER_OF_CONTROLS, // NOTE: Always keep this as the last item
+};
+
+//diff functions for each in the struct and and to be able to store them
+struct Temp_Control {
+	TARGET_CONTROLS acUnit;
+    uint8_t targetTemperature;
+    bool isOn;
+    uint8_t currTemperature; //will be updated as temp being passed through from GUI
+    GPIO_TypeDef * targetPinPort;
+    uint16_t targetPin;
+
+};
+
+class TemperatureControl : public Task
+{
+public:
+    static TemperatureControl& Inst() {
+        static TemperatureControl inst;
+        return inst;
+    }
+
+    void InitTask();
+
+protected:
+
+    static void RunTask(void* pvParams) {
+    	TemperatureControl::Inst().Run(pvParams);
+	}  // Static Task Interface, passes control to the instance Run();
+
+	void Run(void* pvParams);  // Main run code
+    void HandleCommand(Command& cm);
+    void HandleTaskCommand(uint16_t taskCommand);
+
+    void SetTargetTemp(TARGET_CONTROLS Target, uint8_t Target_Temp);
+    void SetCurrentTemp(TARGET_CONTROLS Target, uint8_t tempReceived);
+    void SetTargetState(TARGET_CONTROLS Target, bool currentState);
+
+private:
+    TemperatureControl();
+    TemperatureControl(const TemperatureControl&);
+    TemperatureControl& operator=(const TemperatureControl&);
+    bool acStatus;
+};
+
+#endif    // SOAR_TEMPERATURECONTROL_HPP_
