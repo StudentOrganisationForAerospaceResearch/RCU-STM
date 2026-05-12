@@ -1,3 +1,3 @@
-[submodule "Components/SoarProtocol/SoarProto"]
-	path = Components/SoarProtocol/SoarProto
-	url = git@github.com:StudentOrganisationForAerospaceResearch/SoarProto.git
+[submodule "SoarCommunications"]
+	path = SoarCommunications
+	url = https://github.com/UCSOAR/CommunicationSystemsSubmodule.git
