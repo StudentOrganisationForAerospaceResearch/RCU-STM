@@ -35,7 +35,7 @@ void DMBRxProtocolTask::InitTask()
 /**
  * @brief Default constructor
  */
-DMBRxProtocolTask::DMBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU, 
+DMBRxProtocolTask::DMBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU,
     UART::Radio,
     UART_TASK_COMMAND_SEND_DMB)
 {
@@ -63,7 +63,7 @@ void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);
 
-    SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+    // SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
 }
 
 /**

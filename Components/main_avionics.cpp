@@ -42,7 +42,7 @@ void run_main() {
 	PressureTransducerTask::Inst().InitTask();
 	PIRxProtocolTask::Inst().InitTask();
 	DMBRxProtocolTask::Inst().InitTask();
-	SOBRxRepeaterTask::Inst().InitTask();
+	//SOBRxRepeaterTask::Inst().InitTask();
 	LoadCellTask::Inst().InitTask();
 	TelemetryTask::Inst().InitTask();
 

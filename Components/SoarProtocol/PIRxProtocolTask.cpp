@@ -60,10 +60,10 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
         return;
     }
 
-    if(msg.get_target() == Proto::Node::NODE_SOB) {
-        SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
-        return;
-    }
+    // if(msg.get_target() == Proto::Node::NODE_SOB) {
+    //     SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+    //     return;
+    // }
 
     if(msg.get_target() != Proto::Node::NODE_RCU) {
         return;
@@ -223,10 +223,10 @@ void PIRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFi
         return;
     }
 
-    if(msg.get_target() == Proto::Node::NODE_SOB) {
-        SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
-        return;
-    }
+    // if(msg.get_target() == Proto::Node::NODE_SOB) {
+    //     SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
+    //     return;
+    // }
 }
 
 /**
