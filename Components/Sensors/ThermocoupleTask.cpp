@@ -140,12 +140,12 @@ void ThermocoupleTask::TransmitProtocolThermoData()
     //ThermocoupleDebugPrint();
 
     Proto::TelemetryMessage msg;
-    msg.set_source(Proto::Node::NODE_RCU);
-    msg.set_target(Proto::Node::NODE_RCU);
-    Proto::RcuTemperature tempData;
+    msg.set_source(Proto::Node::NODE_FSB);
+    msg.set_target(Proto::Node::NODE_FSB);
+    Proto::FsbTemperature tempData;
 	tempData.set_tc1_temperature(temperature1);
 	tempData.set_tc2_temperature(temperature2);
-	msg.set_rcuTemperature(tempData);
+	msg.set_fsbTemperature(tempData);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);

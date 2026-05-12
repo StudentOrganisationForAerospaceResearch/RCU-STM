@@ -145,14 +145,14 @@ void PressureTransducerTask::TransmitProtocolPressureData()
     SOAR_PRINT("Pressure Transducer Task Transmit...\n");
 
     Proto::TelemetryMessage msg;
-    msg.set_source(Proto::Node::NODE_RCU);
-    msg.set_target(Proto::Node::NODE_RCU);
-    Proto::RcuPressure pressureData;
+    msg.set_source(Proto::Node::NODE_FSB);
+    msg.set_target(Proto::Node::NODE_FSB);
+    Proto::FsbPressure pressureData;
     pressureData.set_pt1_pressure(data->pressure_1);
     pressureData.set_pt2_pressure(data->pressure_2);
     pressureData.set_pt3_pressure(data->pressure_3);
     pressureData.set_pt4_pressure(data->pressure_4);
-	msg.set_rcuPressure(pressureData);
+	msg.set_fsbPressure(pressureData);
 
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);
