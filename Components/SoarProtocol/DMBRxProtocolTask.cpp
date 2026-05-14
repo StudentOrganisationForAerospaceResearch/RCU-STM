@@ -50,7 +50,7 @@ void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     msg.deserialize(readBuffer);
 
     // Verify the source and target nodes, echo it if it does not have DMBRx as the target
-    if (msg.get_source() != Proto::Node::NODE_FSB || msg.get_target() != Proto::Node::NODE_PBB)
+    if (msg.get_source() != Proto::Node::NODE_FCB || msg.get_target() != Proto::Node::NODE_PBB)
         return;
 
     // If the message does not have a SOB command, do nothing

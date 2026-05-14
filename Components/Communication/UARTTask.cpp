@@ -81,7 +81,7 @@ void UARTTask::HandleCommand(Command& cm)
 			UART::SOB->Transmit(cm.GetDataPointer(), cm.GetDataSize());
 			break;
 		case UART_TASK_COMMAND_SEND_PBB:
-			UART::Radio->Transmit(cm.GetDataPointer(), cm.GetDataSize());
+			UART::SOB->Transmit(cm.GetDataPointer(), cm.GetDataSize());
 			break;
 		case UART_TASK_COMMAND_SEND_PI:
 			UART::RPI->Transmit(cm.GetDataPointer(), cm.GetDataSize());

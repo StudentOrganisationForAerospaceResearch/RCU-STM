@@ -13,7 +13,6 @@
 #include "RCUProtoTask.hpp"
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
-#include "WatchdogTask.hpp"
 
 /************************************
  * PRIVATE MACROS AND DEFINES
@@ -45,7 +44,7 @@ void RCUProtocolTask::InitTask()
             (const char*)"ProtocolTask",
             (uint16_t)TASK_PROTOCOL_STACK_DEPTH_WORDS,
             (void*)this,
-            (UBaseType_t)TASK_RCU_PROTOCOL_PRIORITY,
+            (UBaseType_t)TASK_PROTOCOL_PRIORITY,
             (TaskHandle_t*)&rtTaskHandle);
 
     //Ensure creation succeded
@@ -56,8 +55,8 @@ void RCUProtocolTask::InitTask()
  * @brief Default constructor
  */
 RCUProtocolTask::RCUProtocolTask() : ProtocolTask(
-        Proto::Node::NODE_FCB,
-        UART::RPI,
+        Proto::Node::NODE_FSB,
+        UART::SOB,
         UART_TASK_COMMAND_SEND_PBB)
 {
 }
@@ -79,7 +78,7 @@ void RCUProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixe
         return;
 
 
-    ;
+
 }
 
 /**
@@ -90,3 +89,11 @@ void RCUProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFix
    ;
 }
 
+
+/**
+ * @brief Handle a control message
+ */
+void RCUProtocolTask::HandleProtobufTelemetryMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
+{
+   ;
+}
