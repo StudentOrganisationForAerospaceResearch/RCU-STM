@@ -87,8 +87,8 @@ void TelemetryTask::RunLogSequence()
 
 	//Relay status
     Proto::TelemetryMessage relayMsg;
-    relayMsg.set_source(Proto::Node::NODE_RCU);
-    relayMsg.set_target(Proto::Node::NODE_RCU);
+    relayMsg.set_source(Proto::Node::NODE_FSB);
+    relayMsg.set_target(Proto::Node::NODE_FSB);
     Proto::RelayStatus relayStatus;
     relayStatus.set_ac1_open(GPIO::SHEDAC::IsOff());
     relayStatus.set_ac2_open(GPIO::PADBOX1::IsLive());
@@ -111,8 +111,8 @@ void TelemetryTask::RunLogSequence()
 
     //Padbox continuity status
     Proto::TelemetryMessage padBoxMsg;
-    padBoxMsg.set_source(Proto::Node::NODE_RCU);
-    padBoxMsg.set_target(Proto::Node::NODE_RCU);
+    padBoxMsg.set_source(Proto::Node::NODE_FSB);
+    padBoxMsg.set_target(Proto::Node::NODE_FSB);
     Proto::PadBoxStatus padBoxStatus;
     padBoxStatus.set_continuity_1(GPIO::CONT_CK0::IsContinuous());
     padBoxStatus.set_continuity_2(GPIO::CONT_CK1::IsContinuous());

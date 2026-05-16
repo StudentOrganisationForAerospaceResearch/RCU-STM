@@ -35,7 +35,7 @@ void DMBRxProtocolTask::InitTask()
 /**
  * @brief Default constructor
  */
-DMBRxProtocolTask::DMBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU, 
+DMBRxProtocolTask::DMBRxProtocolTask() : ProtocolTask(Proto::Node::NODE_FSB,
     UART::Radio,
     UART_TASK_COMMAND_SEND_DMB)
 {
@@ -50,11 +50,11 @@ void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     msg.deserialize(readBuffer);
 
     // Verify the source and target nodes, echo it if it does not have DMBRx as the target
-    if (msg.get_source() != Proto::Node::NODE_DMB || msg.get_target() != Proto::Node::NODE_SOB)
+    if (msg.get_source() != Proto::Node::NODE_FCB || msg.get_target() != Proto::Node::NODE_PBB)
         return;
 
     // If the message does not have a SOB command, do nothing
-    if (!msg.has_sob_command())
+    if (!msg.has_pbb_command())
         return;
 
     SOAR_PRINT("PROTO-INFO: Received DMBRx Command Message");
@@ -63,7 +63,8 @@ void DMBRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFi
     EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
     msg.serialize(writeBuffer);
 
-    SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+    // TODO NEW
+    // SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
 }
 
 /**

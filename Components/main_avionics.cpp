@@ -25,6 +25,7 @@
 #include "DMBRxProtocolTask.hpp"
 #include "LoadCellTask.hpp"
 #include "TelemetryTask.hpp"
+#include "RCUProtoTask.hpp"
 
 /* Global Variables ------------------------------------------------------------------*/
 Mutex Global::vaListMutex;
@@ -42,9 +43,10 @@ void run_main() {
 	PressureTransducerTask::Inst().InitTask();
 	PIRxProtocolTask::Inst().InitTask();
 	DMBRxProtocolTask::Inst().InitTask();
-	SOBRxRepeaterTask::Inst().InitTask();
+	//SOBRxRepeaterTask::Inst().InitTask();
 	LoadCellTask::Inst().InitTask();
 	TelemetryTask::Inst().InitTask();
+	RCUProtocolTask::Inst().InitTask();
 
 
 	// Print System Boot Info : Warning, don't queue more than 10 prints before scheduler starts

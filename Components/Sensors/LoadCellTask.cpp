@@ -185,8 +185,8 @@ void LoadCellTask::SampleLoadCellData()
 void LoadCellTask::TransmitProtocolLoadCellData()
 {
     Proto::TelemetryMessage msg;
-	msg.set_source(Proto::Node::NODE_RCU);
-	msg.set_target(Proto::Node::NODE_RCU);
+	msg.set_source(Proto::Node::NODE_FSB);
+	msg.set_target(Proto::Node::NODE_FSB);
 
 	Proto::NosLoadCell twofillSample;
 	twofillSample.set_nos1_mass(two_fill_mass_sample.nos1_adc_value);

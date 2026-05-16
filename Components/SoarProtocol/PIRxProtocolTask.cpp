@@ -12,6 +12,7 @@
 #include "UARTTask.hpp"
 #include "LoadCellTask.hpp"
 #include "GPIO.hpp"
+#include "RCUProtoTask.hpp"
 
 /**
  * @brief Initialize the PIRxProtocolTask
@@ -37,7 +38,7 @@ void PIRxProtocolTask::InitTask()
 /**
  * @brief Default constructor
  */
-PIRxProtocolTask::PIRxProtocolTask() : ProtocolTask(Proto::Node::NODE_RCU, 
+PIRxProtocolTask::PIRxProtocolTask() : ProtocolTask(Proto::Node::NODE_FSB,
     UART::RPI,
     UART_TASK_COMMAND_SEND_PI)
 {
@@ -55,146 +56,148 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
     msg.serialize(writeBuffer);
 
     //Send to relevant destination
-    if(msg.get_target() == Proto::Node::NODE_DMB || msg.get_target() == Proto::Node::NODE_PBB) {
+    if(msg.get_target() == Proto::Node::NODE_FCB) {
         DMBRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+        // TODO NEW MAKE SURE SAFE IN PBB
+        RCUProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
     }
 
-    if(msg.get_target() == Proto::Node::NODE_SOB) {
-        SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+    if(msg.get_target() == Proto::Node::NODE_PBB) {
+        RCUProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
     }
 
-    if(msg.get_target() != Proto::Node::NODE_RCU) {
+    if(msg.get_target() != Proto::Node::NODE_FSB) {
         return;
     }
 
-    switch(msg.get_rcu_command().get_command_enum()) {
-    case Proto::RcuCommand::Command::RCU_TARE_NOS1_LOAD_CELL: {
+    switch(msg.get_fsb_command().get_command_enum()) {
+    case Proto::FsbCommand::Command::FSB_TARE_NOS1_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Tare NOS1 Load Cell Command\n");
         LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)NOS1_LOADCELL_REQUEST_TARE));
         break;
     }
-    case Proto::RcuCommand::Command::RCU_TARE_NOS2_LOAD_CELL: {
+    case Proto::FsbCommand::Command::FSB_TARE_NOS2_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Tare NOS2 Load Cell Command\n");
         LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, (uint16_t)NOS2_LOADCELL_REQUEST_TARE));
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CALIBRATE_NOS1_LOAD_CELL: {
+    case Proto::FsbCommand::Command::FSB_CALIBRATE_NOS1_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Calibrate NOS1 Load Cell Command\n");
-        int32_t mass_mg = msg.get_rcu_command().get_command_param();
+        int32_t mass_mg = msg.get_fsb_command().get_command_param();
 		LoadCellTask::Inst().SetCalibrationMassGrams((float)mass_mg / 1000);
 		LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, NOS1_LOADCELL_REQUEST_CALIBRATE));
 		break;
     }
-    case Proto::RcuCommand::Command::RCU_CALIBRATE_NOS2_LOAD_CELL: {
+    case Proto::FsbCommand::Command::FSB_CALIBRATE_NOS2_LOAD_CELL: {
     	//NOTE: WORKS FOR TO NOS1 ONLY
         SOAR_PRINT("PROTO-INFO: Received RCU Calibrate NOS2 Load Cell Command\n");
-        int32_t mass_mg = msg.get_rcu_command().get_command_param();
+        int32_t mass_mg = msg.get_fsb_command().get_command_param();
 		LoadCellTask::Inst().SetCalibrationMassGrams((float)mass_mg / 1000);
 		LoadCellTask::Inst().SendCommand(Command(REQUEST_COMMAND, NOS2_LOADCELL_REQUEST_CALIBRATE));
 		break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_AC1: {
+    case Proto::FsbCommand::Command::FSB_OPEN_AC1: {
         GPIO::SHEDAC::Off();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_AC1: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_AC1: {
         GPIO::SHEDAC::On();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_KILL_PAD_BOX1: {
+    case Proto::FsbCommand::Command::FSB_KILL_PAD_BOX1: {
         GPIO::PADBOX1::Kill();
         GPIO::PADBOX2::Kill();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_IGNITE_PAD_BOX1: {
+    case Proto::FsbCommand::Command::FSB_IGNITE_PAD_BOX1: {
         GPIO::PADBOX1::Ignite();
         GPIO::PADBOX2::Ignite();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_KILL_PAD_BOX2: {
+    case Proto::FsbCommand::Command::FSB_KILL_PAD_BOX2: {
         GPIO::PADBOX1::Kill();
         GPIO::PADBOX2::Kill();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_IGNITE_PAD_BOX2: {
+    case Proto::FsbCommand::Command::FSB_IGNITE_PAD_BOX2: {
         GPIO::PADBOX1::Ignite();
         GPIO::PADBOX2::Ignite();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_PBV1: {
+    case Proto::FsbCommand::Command::FSB_OPEN_PBV1: {
         GPIO::PBV1::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_PBV1: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_PBV1: {
         GPIO::PBV1::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_PBV2: {
+    case Proto::FsbCommand::Command::FSB_OPEN_PBV2: {
         GPIO::PBV2::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_PBV2: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_PBV2: {
         GPIO::PBV2::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_PBV3: {
+    case Proto::FsbCommand::Command::FSB_OPEN_PBV3: {
         GPIO::PBV3::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_PBV3: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_PBV3: {
         GPIO::PBV3::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_PBV4: {
+    case Proto::FsbCommand::Command::FSB_OPEN_PBV4: {
         GPIO::PBV4::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_PBV4: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_PBV4: {
         GPIO::PBV4::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_SOL5: {
+    case Proto::FsbCommand::Command::FSB_OPEN_SOL5: {
         GPIO::SOL5::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_SOL5: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_SOL5: {
         GPIO::SOL5::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_SOL6: {
+    case Proto::FsbCommand::Command::FSB_OPEN_SOL6: {
         GPIO::SOL6::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_SOL6: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_SOL6: {
         GPIO::SOL6::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_SOL7: {
+    case Proto::FsbCommand::Command::FSB_OPEN_SOL7: {
         GPIO::SOL7::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_SOL7: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_SOL7: {
         GPIO::SOL7::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_SOL8A: {
+    case Proto::FsbCommand::Command::FSB_OPEN_SOL8A: {
         GPIO::SOL8A::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_SOL8A: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_SOL8A: {
         GPIO::SOL8A::Close();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_OPEN_SOL8B: {
+    case Proto::FsbCommand::Command::FSB_OPEN_SOL8B: {
         GPIO::SOL8B::Open();
         break;
     }
-    case Proto::RcuCommand::Command::RCU_CLOSE_SOL8B: {
+    case Proto::FsbCommand::Command::FSB_CLOSE_SOL8B: {
         GPIO::SOL8B::Close();
         break;
     }
@@ -218,15 +221,15 @@ void PIRxProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFi
     msg.serialize(writeBuffer);
 
     //Send to relevant destination
-    if(msg.get_target() == Proto::Node::NODE_DMB || msg.get_target() == Proto::Node::NODE_PBB) {
+    if(msg.get_target() == Proto::Node::NODE_FCB || msg.get_target() == Proto::Node::NODE_PBB) {
         DMBRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
         return;
     }
 
-    if(msg.get_target() == Proto::Node::NODE_SOB) {
-        SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
-        return;
-    }
+    // if(msg.get_target() == Proto::Node::NODE_SOB) {
+    //     SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
+    //     return;
+    // }
 }
 
 /**
