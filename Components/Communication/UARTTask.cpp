@@ -6,6 +6,7 @@
 */
 
 #include "UARTTask.hpp"
+#include "main.h"
 
 /**
  * TODO: Currently not used, would be used for DMA buffer configuration or interrupt setup
@@ -81,7 +82,11 @@ void UARTTask::HandleCommand(Command& cm)
 			UART::SOB->Transmit(cm.GetDataPointer(), cm.GetDataSize());
 			break;
 		case UART_TASK_COMMAND_SEND_PBB:
+			HAL_GPIO_WritePin(USART1_TX_EN_GPIO_Port, USART1_TX_EN_Pin, GPIO_PIN_SET);
+			HAL_Delay(1);
 			UART::SOB->Transmit(cm.GetDataPointer(), cm.GetDataSize());
+			HAL_Delay(1);
+			HAL_GPIO_WritePin(USART1_TX_EN_GPIO_Port, USART1_TX_EN_Pin, GPIO_PIN_RESET);
 			break;
 		case UART_TASK_COMMAND_SEND_PI:
 			UART::RPI->Transmit(cm.GetDataPointer(), cm.GetDataSize());

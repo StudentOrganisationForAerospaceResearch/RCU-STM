@@ -12,6 +12,7 @@
 #include "UARTTask.hpp"
 #include "LoadCellTask.hpp"
 #include "GPIO.hpp"
+#include "RCUProtoTask.hpp"
 
 /**
  * @brief Initialize the PIRxProtocolTask
@@ -55,15 +56,17 @@ void PIRxProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFix
     msg.serialize(writeBuffer);
 
     //Send to relevant destination
-    if(msg.get_target() == Proto::Node::NODE_FCB || msg.get_target() == Proto::Node::NODE_PBB) {
+    if(msg.get_target() == Proto::Node::NODE_FCB) {
         DMBRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+        // TODO NEW MAKE SURE SAFE IN PBB
+        RCUProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
         return;
     }
 
-    // if(msg.get_target() == Proto::Node::NODE_SOB) {
-    //     SOBRxRepeaterTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
-    //     return;
-    // }
+    if(msg.get_target() == Proto::Node::NODE_PBB) {
+        RCUProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_COMMAND);
+        return;
+    }
 
     if(msg.get_target() != Proto::Node::NODE_FSB) {
         return;

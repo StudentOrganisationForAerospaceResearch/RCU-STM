@@ -13,6 +13,7 @@
 #include "RCUProtoTask.hpp"
 #include "FlightTask.hpp"
 #include "ReadBufferFixedSize.h"
+#include "PIRxProtocolTask.hpp"
 
 /************************************
  * PRIVATE MACROS AND DEFINES
@@ -66,18 +67,24 @@ RCUProtocolTask::RCUProtocolTask() : ProtocolTask(
  */
 void RCUProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
-    Proto::CommandMessage msg;
-    msg.deserialize(readBuffer);
+    // Proto::CommandMessage msg;
+    // msg.deserialize(readBuffer);
 
-    // Verify the source and target nodes, if they aren't as expected, do nothing
-    if (msg.get_source() != Proto::Node::NODE_FSB || msg.get_target() != Proto::Node::NODE_FCB)
-        return;
+    // // Verify the source and target nodes, if they aren't as expected, do nothing
+    // if (msg.get_source() != Proto::Node::NODE_FSB || msg.get_target() != Proto::Node::NODE_FCB)
+    //     return;
 
-    // If the message does not have a FSB command, do nothing
-    if (!msg.has_fsb_command()) // idk if its supposed to be an fsb command
-        return;
+    // // If the message does not have a FSB command, do nothing
+    // if (!msg.has_fsb_command()) // idk if its supposed to be an fsb command
+    //     return;
 
+    // Proto::ControlMessage msg;
+    // msg.deserialize(readBuffer);
 
+    // EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
+    // msg.serialize(writeBuffer);
+
+    // PIRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
 
 }
 
@@ -86,7 +93,14 @@ void RCUProtocolTask::HandleProtobufCommandMessage(EmbeddedProto::ReadBufferFixe
  */
 void RCUProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
-   ;
+    //rewrap into a write buffer var because readBuffer and writeBuffer are not interchangeable
+    Proto::ControlMessage msg;
+    msg.deserialize(readBuffer);
+
+    EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
+    msg.serialize(writeBuffer);
+
+    PIRxProtocolTask::SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_CONTROL);
 }
 
 
@@ -95,5 +109,12 @@ void RCUProtocolTask::HandleProtobufControlMesssage(EmbeddedProto::ReadBufferFix
  */
 void RCUProtocolTask::HandleProtobufTelemetryMessage(EmbeddedProto::ReadBufferFixedSize<PROTOCOL_RX_BUFFER_SZ_BYTES>& readBuffer)
 {
-   ;
+    //rewrap into a write buffer var because readBuffer and writeBuffer are not interchangeable
+    Proto::TelemetryMessage msg;
+    msg.deserialize(readBuffer);
+
+    EmbeddedProto::WriteBufferFixedSize<DEFAULT_PROTOCOL_WRITE_BUFFER_SIZE> writeBuffer;
+    msg.serialize(writeBuffer);
+
+    PIRxProtocolTask::Inst().SendProtobufMessage(writeBuffer, Proto::MessageID::MSG_TELEMETRY);
 }
