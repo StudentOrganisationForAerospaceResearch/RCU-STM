@@ -31,6 +31,7 @@ namespace Driver {
  */
 bool UARTDriver::Transmit(uint8_t* data, uint16_t len)
 {
+	LL_USART_ClearFlag_TC(kUart_);
 	// Loop through and transmit each byte via. polling
 	for (uint16_t i = 0; i < len; i++) {
 		LL_USART_TransmitData8(kUart_, data[i]);

@@ -83,9 +83,10 @@ void UARTTask::HandleCommand(Command& cm)
 			break;
 		case UART_TASK_COMMAND_SEND_PBB:
 			HAL_GPIO_WritePin(USART1_TX_EN_GPIO_Port, USART1_TX_EN_Pin, GPIO_PIN_SET);
-			HAL_Delay(1);
+			for(volatile uint16_t i = 0; i < 150; i++) {
+				__NOP();
+			}
 			UART::SOB->Transmit(cm.GetDataPointer(), cm.GetDataSize());
-			HAL_Delay(1);
 			HAL_GPIO_WritePin(USART1_TX_EN_GPIO_Port, USART1_TX_EN_Pin, GPIO_PIN_RESET);
 			break;
 		case UART_TASK_COMMAND_SEND_PI:
